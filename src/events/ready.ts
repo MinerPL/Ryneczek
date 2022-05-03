@@ -15,16 +15,15 @@ export default {
 			type: ActivityType.Watching,
 		});
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		writeFileSync('./slowmode.json', JSON.stringify(clearFile(JSON.parse(readFileSync('./slowmode.json'))), null, 2));
-
 		schedule('01 00 00 * * *', () => {
 			const channelsArray: Channel[] = client.config.channels.filter(ch => ch.deletionTime);
 
 			for(const channel of channelsArray) {
 				deleteOldOffert(client.channels.cache.get(channel.id), client.ms(channel.deletionTime)).then(() => null);
 			}
+
+			// @ts-ignore
+			writeFileSync('./slowmode.json', JSON.stringify(clearFile(JSON.parse(readFileSync('./slowmode.json'))), null, 2));
 		});
 	},
 };

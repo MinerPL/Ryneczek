@@ -7,7 +7,6 @@ export default {
 	run(client: Ryneczek, interaction: ButtonInteraction) {
 		const userId = interaction.customId.split('_').at(-1);
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		const slowmode = JSON.parse(readFileSync('./slowmode.json'));
 

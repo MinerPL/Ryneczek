@@ -38,7 +38,6 @@ export default {
 	run(client: Ryneczek, interaction: CommandInteraction) {
 		const user = interaction.options.getUser('użytkownik') || interaction.user;
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		const slowmode = JSON.parse(readFileSync('./slowmode.json'))[user.id] || {};
 
@@ -49,7 +48,6 @@ export default {
 
 		const components = [];
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		if(interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
 			components.push(new ActionRowBuilder()

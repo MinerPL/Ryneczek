@@ -63,9 +63,7 @@ export default class Ryneczek extends Client {
 
 		if(typeof time !== 'string') throw new Error('Time is not a string!');
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		time = time.split(/(\d+)(mo|[smhdyw])/gmi).filter(e => e).chunk(2);
+		time = this.chunk(time.split(/(\d+)(mo|[smhdyw])/gmi).filter(e => e), 2);
 
 		let ms = 0;
 
@@ -76,5 +74,11 @@ export default class Ryneczek extends Client {
 		if(isNaN(ms)) return undefined;
 
 		return ms;
+	}
+
+	chunk(array, size): string[] {
+		const arr = [];
+		for (let i = 0; i < array.length; i += size) arr.push(array.slice(i, i + size));
+		return arr;
 	}
 }
