@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "discord-api-types": "^0.27.1",
-    "discord.js": "^14.0.0-dev.1651493371-4ba0f56",
+    "discord.js": "^14.0.0-dev.1653480262-68d5169",
     "eslit": "^6.0.0",
     "node-cron": "^3.0.0",
     "undici": "^4.14.1"
