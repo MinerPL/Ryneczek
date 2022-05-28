@@ -1,13 +1,14 @@
 import { CommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { Routes } from 'discord-api-types/v10';
 import { REST } from '@discordjs/rest';
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 
 export default {
 	...new SlashCommandBuilder()
 		.setName('deploy')
 		.setDescription('Zaktualizuj slashcommands')
-		.setDefaultPermission(false)
+		.setDefaultMemberPermissions(8)
+		.setDMPermission(false)
 		.toJSON(),
 	default_member_permissions: String(PermissionFlagsBits.ManageGuild),
 	async run(client: Ryneczek, interaction: CommandInteraction) {
