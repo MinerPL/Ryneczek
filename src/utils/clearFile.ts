@@ -1,4 +1,4 @@
-export function clearFile(slowmode: object): object {
+export function clearFile(slowmode: object): Record<string, any> {
 
 	for(const [user, data] of Object.entries(slowmode)) {
 
