@@ -1,5 +1,4 @@
 import { Client, Collection, IntentsBitField } from 'discord.js';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import config from './../../config.json';
 

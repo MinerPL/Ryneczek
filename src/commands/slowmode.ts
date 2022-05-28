@@ -5,7 +5,7 @@ import {
 	ActionRowBuilder,
 	ButtonBuilder, ButtonStyle, PermissionFlagsBits,
 } from 'discord.js';
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { readFileSync } from 'fs';
 import { Channel } from 'types/Config';
 
@@ -38,8 +38,7 @@ export default {
 	run(client: Ryneczek, interaction: CommandInteraction) {
 		const user = interaction.options.getUser('użytkownik') || interaction.user;
 
-		// @ts-ignore
-		const slowmode = JSON.parse(readFileSync('./slowmode.json'))[user.id] || {};
+		const slowmode = JSON.parse(readFileSync('./slowmode.json', 'utf-8'))[user.id] || {};
 
 		const embed = new EmbedBuilder()
 			.setTitle(`Slowmode użytkownik ${user.tag}`)
@@ -47,7 +46,7 @@ export default {
 			.setDescription(getLeftTimeTimestamps(client, slowmode).join('\n'));
 
 		const components = [];
-
+		
 		// @ts-ignore
 		if(interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
 			components.push(new ActionRowBuilder()

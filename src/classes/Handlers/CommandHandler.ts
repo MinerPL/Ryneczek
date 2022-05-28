@@ -1,5 +1,5 @@
 import { readdirSync } from 'fs';
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { Collection } from 'discord.js';
 import { Command } from 'types/Commands';
 

@@ -1,6 +1,6 @@
 import { suggestionCreate } from '@functions/suggestionCreate';
 import { Message } from 'discord.js';
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { Channel } from 'types/Config';
 import { deleteOldMessages } from '@functions/deleteOldMessages';
 

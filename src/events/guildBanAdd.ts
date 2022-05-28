@@ -1,6 +1,6 @@
 import { GuildBan, Message } from 'discord.js';
 import { fetchAllMessages } from '@utils/fetchAllMessages';
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { Channel } from 'types/Config';
 
 export default {

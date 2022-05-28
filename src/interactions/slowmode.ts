@@ -1,5 +1,5 @@
 import { ButtonInteraction } from 'discord.js';
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { readFileSync, writeFileSync } from 'fs';
 
 export default {
@@ -7,8 +7,7 @@ export default {
 	run(client: Ryneczek, interaction: ButtonInteraction) {
 		const userId = interaction.customId.split('_').at(-1);
 
-		// @ts-ignore
-		const slowmode = JSON.parse(readFileSync('./slowmode.json'));
+		const slowmode = JSON.parse(readFileSync('./slowmode.json', 'utf-8'));
 
 		if(!slowmode[userId]) return interaction.update({ content: 'Użytkownik nie posiada slowmode na żadnym kanale!', embeds: [], components: [] });
 		else delete slowmode[userId];

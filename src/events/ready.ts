@@ -1,4 +1,4 @@
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { ActivityType } from 'discord-api-types/v10';
 import { schedule } from 'node-cron';
 import { Channel } from 'types/Config';
@@ -22,8 +22,7 @@ export default {
 				deleteOldOffert(client.channels.cache.get(channel.id), client.ms(channel.deletionTime)).then(() => null);
 			}
 
-			// @ts-ignore
-			writeFileSync('./slowmode.json', JSON.stringify(clearFile(JSON.parse(readFileSync('./slowmode.json'))), null, 2));
+			writeFileSync('./slowmode.json', JSON.stringify(clearFile(JSON.parse(readFileSync('./slowmode.json', 'utf-8'))), null, 2));
 		});
 	},
 };

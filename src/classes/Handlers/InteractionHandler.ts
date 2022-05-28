@@ -1,5 +1,5 @@
 import { readdirSync } from 'fs';
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { Collection, Interaction } from 'discord.js';
 
 export class InteractionHandler extends Collection<string, Interaction> {

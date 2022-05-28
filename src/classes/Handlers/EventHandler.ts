@@ -1,4 +1,4 @@
-import Ryneczek from '@classes/Client';
+import Ryneczek from '@classes/Ryneczek';
 import { readdirSync } from 'fs';
 
 export default class EventHandler {
