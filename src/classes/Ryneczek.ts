@@ -20,9 +20,9 @@ const durations = {
 
 export default class Ryneczek extends Client {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	commands: Map<string, any>;
+	commands: Collection<string, any>;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	interactions: Map<string, any>;
+	interactions: Collection<string, any>;
 	config: Config;
 	constructor() {
 		super({

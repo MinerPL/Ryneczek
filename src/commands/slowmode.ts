@@ -3,7 +3,10 @@ import {
 	SlashCommandBuilder,
 	CommandInteraction,
 	ActionRowBuilder,
-	ButtonBuilder, ButtonStyle, PermissionFlagsBits,
+	ButtonBuilder, 
+	ButtonStyle, 
+	PermissionFlagsBits,
+	GuildMember
 } from 'discord.js';
 import Ryneczek from '@classes/Ryneczek';
 import { readFileSync } from 'fs';
@@ -47,8 +50,7 @@ export default {
 
 		const components = [];
 		
-		// @ts-ignore
-		if(interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
+		if((interaction.member as GuildMember).permissions.has(PermissionFlagsBits.ModerateMembers)) {
 			components.push(new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
