@@ -15,9 +15,9 @@ export class CommandHandler extends Collection<string, Command> {
 		for(const file of files) {
 			if(!file.endsWith('.js')) continue;
 
-			const command = await (await import(`${__dirname}/../../commands/${file}`)).default;
+			const command = await (await import(`${__dirname}/../../commands/${file}`));
 
-			this.set(command.name, command);
+			this.set(command.data.name, { ...command });
 		}
 		console.log(`${files.length} commands loaded.`);
 		return this;

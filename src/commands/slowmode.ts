@@ -3,8 +3,8 @@ import {
 	SlashCommandBuilder,
 	CommandInteraction,
 	ActionRowBuilder,
-	ButtonBuilder, 
-	ButtonStyle, 
+	ButtonBuilder,
+	ButtonStyle,
 	PermissionFlagsBits,
 	GuildMember
 } from 'discord.js';
@@ -28,7 +28,7 @@ const getLeftTimeTimestamps = (client: Ryneczek, slowmode: object): string[] => 
 };
 
 
-export default {
+export const data = {
 	...new SlashCommandBuilder()
 		.setName('slowmode')
 		.setDescription('Sprawdź swój aktualny slowmode!')
@@ -38,28 +38,31 @@ export default {
 				.setRequired(false),
 		)
 		.toJSON(),
-	run(client: Ryneczek, interaction: CommandInteraction) {
-		const user = interaction.options.getUser('użytkownik') || interaction.user;
-
-		const slowmode = JSON.parse(readFileSync('./slowmode.json', 'utf-8'))[user.id] || {};
-
-		const embed = new EmbedBuilder()
-			.setTitle(`Slowmode użytkownik ${user.tag}`)
-			.setColor('#92c55f')
-			.setDescription(getLeftTimeTimestamps(client, slowmode).join('\n'));
-
-		const components = [];
-		
-		if((interaction.member as GuildMember).permissions.has(PermissionFlagsBits.ModerateMembers)) {
-			components.push(new ActionRowBuilder()
-				.addComponents([
-					new ButtonBuilder()
-						.setStyle(ButtonStyle.Danger)
-						.setLabel('Reset Slowmode')
-						.setCustomId(`slowmode_${user.id}`),
-				]));
-		}
-
-		return interaction.reply({ embeds: [embed], ephemeral: true, components });
-	},
 };
+
+export async function run(client: Ryneczek, interaction: CommandInteraction) {
+	const user = interaction.options.getUser('użytkownik') || interaction.user;
+
+
+	const slowmode = JSON.parse(readFileSync('./slowmode.json', 'utf-8'))[user.id] || {};
+
+	const embed = new EmbedBuilder()
+		.setTitle(`Slowmode użytkownik ${user.tag}`)
+		.setColor('#92c55f')
+		.setDescription(getLeftTimeTimestamps(client, slowmode).join('\n'));
+
+	const components = [];
+
+
+	if((interaction.member as GuildMember).permissions.has(PermissionFlagsBits.ModerateMembers)) {
+		components.push(new ActionRowBuilder()
+			.addComponents([
+				new ButtonBuilder()
+					.setStyle(ButtonStyle.Danger)
+					.setLabel('Reset Slowmode')
+					.setCustomId(`slowmode_${user.id}`),
+			]));
+	}
+
+	return interaction.reply({ embeds: [embed], ephemeral: true, components });
+}
