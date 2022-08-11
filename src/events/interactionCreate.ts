@@ -13,11 +13,8 @@ const otherInteractions = (interaction, client: Ryneczek) => {
 	client.interactions.get(interaction.customId.split('_')[0])?.run(client, interaction);
 };
 
-export default {
-	name: 'interactionCreate',
-	run(client: Ryneczek, interaction: Interaction) {
-		if(interaction.isCommand()) commandsHandler(interaction, client);
-		else otherInteractions(interaction, client);
+export async function run(client: Ryneczek, interaction: Interaction) {
+	if(interaction.isCommand()) commandsHandler(interaction, client);
+	else otherInteractions(interaction, client);
 
-	},
-};
+}

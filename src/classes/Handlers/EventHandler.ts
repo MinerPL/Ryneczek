@@ -11,9 +11,9 @@ export default class EventHandler {
 		const files = readdirSync(`${__dirname}/../../events`);
 
 		for (const rawFile of files) {
-			const file = (await import(`${__dirname}/../../events/${rawFile}`)).default;
+			const file = await import(`${__dirname}/../../events/${rawFile}`);
 
-			this.client.on(file.name, (...event) => {
+			this.client.on(rawFile.slice(0, -3), (...event) => {
 				file.run(this.client, ...event);
 			});
 		}
