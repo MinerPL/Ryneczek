@@ -7,10 +7,9 @@ export const data = {
 	...new SlashCommandBuilder()
 		.setName('deploy')
 		.setDescription('Zaktualizuj slashcommands')
-		.setDefaultMemberPermissions(8)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 		.setDMPermission(false)
 		.toJSON(),
-	default_member_permissions: String(PermissionFlagsBits.ManageGuild),
 };
 
 export async function run(client: Ryneczek, interaction: CommandInteraction) {
@@ -23,7 +22,7 @@ export async function run(client: Ryneczek, interaction: CommandInteraction) {
 	await rest.put(
 		Routes.applicationGuildCommands(client.user.id, '811550188823904277'),
 
-		{ body: [...client.commands.values(), ...client.commands.filter(x => x.context).map(x => x.context)] },
+		{ body: [...client.commands.map(x => x.data), ...client.commands.filter(x => x.data.context).map(x => x.data.context)] },
 	);
 
 	await interaction.editReply({ content: 'Pomyslnie zaktualizowano slashcommands!' });

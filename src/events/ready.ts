@@ -1,10 +1,6 @@
 import Ryneczek from '@classes/Ryneczek';
-import { ActivityType } from 'discord-api-types/v10';
-import { schedule } from 'node-cron';
-import { Channel } from 'types/Config';
-import { deleteOldOffert } from '@functions/deleteOldOffert';
-import { clearFile } from '@utils/clearFile';
-import { readFileSync, writeFileSync } from 'fs';
+import { ActivityType, Routes } from 'discord-api-types/v10';
+import { REST } from '@discordjs/rest';
 
 export async function run(client: Ryneczek) {
 	console.log(`${client.user.tag} is ready!`);
@@ -13,13 +9,15 @@ export async function run(client: Ryneczek) {
 		type: ActivityType.Watching,
 	});
 
-	schedule('01 00 00 * * *', () => {
-		const channelsArray: Channel[] = client.config.channels.filter(ch => ch.deletionTime);
+	if(process.argv.includes('--deploy')) {
+		const rest = new REST({ version: '10' }).setToken(client.config.token);
 
-		for(const channel of channelsArray) {
-			deleteOldOffert(client.channels.cache.get(channel.id), client.ms(channel.deletionTime)).then(() => null);
-		}
+		await rest.put(
+			Routes.applicationGuildCommands(client.user.id, '811550188823904277'),
 
-		writeFileSync('./slowmode.json', JSON.stringify(clearFile(JSON.parse(readFileSync('./slowmode.json', 'utf-8'))), null, 2));
-	});
+			{ body: [...client.commands.map(x => x.data), ...client.commands.filter(x => x.data.context).map(x => x.data.context)] },
+		);
+
+		console.log('Pomyslnie zaktualizowano slashcommands!');
+	}
 }
