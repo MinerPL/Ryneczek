@@ -1,8 +1,5 @@
 export interface Channel {
     id: string,
-    slowmode?: string,
-    deletionTime?: string,
-    maxOfferts?: number,
     clear?: boolean
     autoPublish?: boolean
 }

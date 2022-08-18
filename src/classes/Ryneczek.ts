@@ -1,4 +1,13 @@
-import { Client, Collection, IntentsBitField } from 'discord.js';
+import {
+	APIModalInteractionResponseCallbackData,
+	Client,
+	Collection,
+	CommandInteraction,
+	IntentsBitField,
+	Interaction,
+	ModalBuilder, ModalComponentData,
+	ModalData,
+} from 'discord.js';
 // @ts-ignore
 import config from './../../config.json';
 
@@ -79,5 +88,18 @@ export default class Ryneczek extends Client {
 		const arr = [];
 		for (let i = 0; i < array.length; i += size) arr.push(array.slice(i, i + size));
 		return arr;
+	}
+
+	async useModal(interaction: CommandInteraction, modal: APIModalInteractionResponseCallbackData, timeout = this.ms('60s')) {
+		await interaction.showModal(modal);
+
+		return interaction
+			.awaitModalSubmit({
+				time: timeout,
+				filter: (filterInteraction) =>
+					filterInteraction.customId === modal.custom_id
+					&& filterInteraction.user.id === interaction.user.id,
+			})
+			.catch(() => null);
 	}
 }

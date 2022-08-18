@@ -4,7 +4,7 @@ export async function suggestionCreate(client, message) {
 
 	const theard = await message.startThread({
 		name: 'Komentarze do propozycji',
-		autoArchiveDuration: 'MAX',
+		autoArchiveDuration: 10080,
 		reason: `Komentarz do propozycji uzytkownika ${message.author.tag}`,
 	});
 

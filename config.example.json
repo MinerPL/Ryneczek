@@ -2,10 +2,7 @@
 	"token": "TOKEN",
 	"channels": [
 		{
-			"id": "CHANNEL_ID",
-			"slowmode": "SLOWMODE_TIME EG. 12h",
-			"deletionTime": "DELETE_AFTER EG. 30d",
-			"maxOfferts": 1,
+			"id": "ID",
 			"clear": true,
 			"autoPublish": true
 		}
