@@ -61,7 +61,7 @@ export default class Ryneczek extends Client {
 		this.login(this.config.token).then(() => null);
 
 		this.commands = await new CommandHandler(this).loadCommands();
-		this.interactions = await new InteractionHandler(this).loadInteractions();
+		// this.interactions = await new InteractionHandler(this).loadInteractions();
 
 		new EventHandler(this).loadEvents().then(() => null);
 	}
