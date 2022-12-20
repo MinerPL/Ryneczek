@@ -8,4 +8,5 @@ export interface Config {
     token: string,
     channels: Channel[],
     suggestions: string
+    logs: string;
 }

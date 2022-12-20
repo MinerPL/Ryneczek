@@ -1,12 +1,11 @@
 import {
 	APIModalInteractionResponseCallbackData,
+	BaseGuildTextChannel,
 	Client,
 	Collection,
-	CommandInteraction,
+	CommandInteraction, ForumChannel,
+	Guild,
 	IntentsBitField,
-	Interaction,
-	ModalBuilder, ModalComponentData,
-	ModalData,
 } from 'discord.js';
 // @ts-ignore
 import config from './../../config.json';
@@ -14,7 +13,7 @@ import config from './../../config.json';
 import { CommandHandler } from '@classes/Handlers/CommandHandler';
 import EventHandler from '@classes/Handlers/EventHandler';
 import { Config } from 'types/Config';
-import { InteractionHandler } from '@classes/Handlers/InteractionHandler';
+import { ChannelType } from 'discord-api-types/v9';
 
 const durations = {
 	ms: 1,
@@ -101,5 +100,24 @@ export default class Ryneczek extends Client {
 					&& filterInteraction.user.id === interaction.user.id,
 			})
 			.catch(() => null);
+	}
+
+	async fetchMessages(guild: Guild, limit = 100, before = null, after = null, around = null) {
+		let count = 0;
+
+		for (const channel of guild.channels.cache.filter(x => ![ChannelType.GuildCategory, ChannelType.GuildDirectory, ChannelType.GuildStageVoice].includes(x.type)).values()) {
+			if (channel instanceof ForumChannel) {
+				for (const thread of channel.threads.cache.values()) {
+					const fetched = await thread.messages.fetch({ limit, before, after, around });
+					count += fetched.size;
+				}
+			}
+			else {
+				const fetched = await (channel as BaseGuildTextChannel).messages.fetch({ limit, before, after, around });
+				count += fetched.size;
+			}
+		}
+
+		return count;
 	}
 }

@@ -7,5 +7,6 @@
 			"autoPublish": true
 		}
 	],
-	"suggestions": "SUGGESTIONS CHANNEL ID"
+	"suggestions": "SUGGESTIONS CHANNEL ID",
+	"logs": "LOGS CHANNEL ID"
 }
