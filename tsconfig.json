@@ -6,9 +6,9 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "baseUrl": "src",
+    "sourceMap": true,
     "paths": {
       "@classes/*": ["classes/*"],
-      "@types/*": ["types/*"],
       "@functions/*": ["functions/*"],
       "@utils/*": ["utils/*"]
     },
