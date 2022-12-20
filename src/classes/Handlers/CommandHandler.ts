@@ -11,15 +11,20 @@ export class CommandHandler extends Collection<string, Command> {
 	}
 
 	async loadCommands() {
-		const files = readdirSync(`${__dirname}/../../commands`);
-		for(const file of files) {
-			if(!file.endsWith('.js')) continue;
+		const dirs = readdirSync(`${__dirname}/../../commands`);
 
-			const command = await (await import(`${__dirname}/../../commands/${file}`));
+		for(const dir of dirs) {
+			const files = readdirSync(`${__dirname}/../../commands/${dir}`);
 
-			this.set(command.data.name, { ...command });
+			for (const file of files) {
+				if(!file.endsWith('.js')) continue;
+
+				const command = await (await import(`${__dirname}/../../commands/${dir}/${file}`));
+
+				this.set(command.data.name, { ...command });
+			}
 		}
-		console.log(`${files.length} commands loaded.`);
+		console.log(`${this.size} commands loaded.`);
 		return this;
 	}
 }

@@ -4,7 +4,7 @@ import { Interaction } from 'discord.js';
 const commandsHandler = (interaction, client: Ryneczek) => {
 	const command = client.commands.get(interaction.commandName);
 
-	if(!command) return;
+	if(!command) return interaction.reply({ content: 'Coś poszło nie tak!', ephemeral: true });
 
 	command.run(client, interaction);
 };
@@ -14,6 +14,7 @@ const otherInteractions = (interaction, client: Ryneczek) => {
 };
 
 export async function run(client: Ryneczek, interaction: Interaction) {
+	console.log('sus');
 	if(interaction.isCommand()) commandsHandler(interaction, client);
 	else otherInteractions(interaction, client);
 
