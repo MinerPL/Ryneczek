@@ -13,7 +13,7 @@ import config from './../../config.json';
 import { CommandHandler } from '@classes/Handlers/CommandHandler';
 import EventHandler from '@classes/Handlers/EventHandler';
 import { Config } from 'types/Config';
-import { ChannelType } from 'discord-api-types/v9';
+import { ChannelType } from 'discord-api-types/v10';
 
 const durations = {
 	ms: 1,
