@@ -24,7 +24,7 @@ export async function run(client: Ryneczek, message: Message) {
 			},
 			{
 				name: 'Treść wiadomości',
-				value: `${message.content}`,
+				value: message.content || 'Brak treści',
 				inline: false,
 			},
 		])
