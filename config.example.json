@@ -8,5 +8,6 @@
 		}
 	],
 	"suggestions": "SUGGESTIONS CHANNEL ID",
-	"logs": "LOGS CHANNEL ID"
+	"logs": "LOGS CHANNEL ID",
+	"moderation_alerts": "MODERATION ALERTS CHANNEL ID"
 }

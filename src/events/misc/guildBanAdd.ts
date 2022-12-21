@@ -7,7 +7,7 @@ export async function run(client: Ryneczek, member: GuildBan) {
 	const channelsToCheck: Channel[] = client.config.channels.filter(channel => channel.clear);
 
 	for(const channel of channelsToCheck) {
-		const channelMessages = await fetchAllMessages(channel);
+		const channelMessages = await fetchAllMessages(client.channels.cache.get(channel.id));
 
 		const userMessages: Message[] = channelMessages.filter((m: Message) => m.author.id === member.user.id);
 

@@ -9,4 +9,5 @@ export interface Config {
     channels: Channel[],
     suggestions: string
     logs: string;
+    moderation_alerts: string;
 }
