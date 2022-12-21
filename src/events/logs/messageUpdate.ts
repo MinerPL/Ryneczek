@@ -24,12 +24,12 @@ export async function run(client: Ryneczek, oldMessage: Message, newMessage: Mes
 			},
 			{
 				name: 'Stara treść wiadomości',
-				value: `${oldMessage.content}`,
+				value: oldMessage.content || 'Brak treści',
 				inline: false,
 			},
 			{
 				name: 'Nowa treść wiadomości',
-				value: `${newMessage.content}`,
+				value: newMessage.content || 'Brak treści',
 				inline: false,
 			},
 		])
