@@ -1,11 +1,15 @@
 import Ryneczek from '@classes/Ryneczek';
-import { BaseGuildTextChannel, EmbedBuilder, Message } from 'discord.js';
+import { AttachmentBuilder, BaseGuildTextChannel, EmbedBuilder, Message } from 'discord.js';
 
 export async function run(client: Ryneczek, message: Message) {
 	const channel = message.guild.channels.cache.get(client.config.logs) as BaseGuildTextChannel;
 	if(!channel) return;
 
+	const attachments = [];
+	const embeds = [];
+
 	const embed = new EmbedBuilder()
+		.setURL('https://discord.com/users/' + message.author.id)
 		.setTitle('ℹ️ Wiadomość usunięta')
 		.setAuthor({
 			name: `${message.author.tag} (${message.author.id})`,
@@ -31,5 +35,21 @@ export async function run(client: Ryneczek, message: Message) {
 		.setColor('#af1d1d')
 		.setTimestamp();
 
-	return channel.send({ embeds: [embed] });
+	let i = 0;
+	for(const attachment of message.attachments.values()) {
+		const newAttachment = new AttachmentBuilder(attachment.attachment, {
+			name: `${attachment.name.split('.')[0]}.${i}.${attachment.name.split('.')[1]}`,
+			description: attachment.description,
+		});
+
+		const tempEmbed = EmbedBuilder.from(embed.toJSON());
+		tempEmbed.setImage('attachment://' + `${attachment.name.split('.')[0]}.${i}.${attachment.name.split('.')[1]}`);
+
+		attachments.push(newAttachment);
+		embeds.push(tempEmbed);
+
+		i++;
+	}
+
+	return channel.send({ embeds: embeds, files: attachments });
 }
