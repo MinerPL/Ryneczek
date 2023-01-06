@@ -2,6 +2,7 @@ import Ryneczek from '@classes/Ryneczek';
 import { BaseGuildTextChannel, EmbedBuilder, Message } from 'discord.js';
 
 export async function run(client: Ryneczek, oldMessage: Message, newMessage: Message) {
+	if (oldMessage.content === newMessage.content) return;
 	const channel = oldMessage.guild.channels.cache.get(client.config.logs) as BaseGuildTextChannel;
 	if(!channel) return;
 
