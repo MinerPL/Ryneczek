@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist",
   "author": "MinerPL <contact@minerpl.xyz>",
+  "license": "MIT",
   "scripts": {
     "dev": "npm run build && npm start",
     "build": "rm -rf dist/ && tsc && resolve-tspaths",
