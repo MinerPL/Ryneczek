@@ -9,7 +9,7 @@ export async function run(client: Ryneczek, message: Message) {
 	const embeds = [];
 
 	const embed = new EmbedBuilder()
-		.setURL('https://discord.com/users/' + message.author.id)
+		.setURL('https://discord.gg/' + await message.guild.invites.fetch().then(invites => invites.first().code))
 		.setTitle('ℹ️ Wiadomość usunięta')
 		.setAuthor({
 			name: `${message.author.tag} (${message.author.id})`,
@@ -50,6 +50,8 @@ export async function run(client: Ryneczek, message: Message) {
 
 		i++;
 	}
+
+	if(!embeds.length) embeds.push(embed);
 
 	return channel.send({ embeds: embeds, files: attachments });
 }

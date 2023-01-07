@@ -13,11 +13,11 @@ export const data = {
 
 export async function run(client: Ryneczek, interaction: CommandInteraction) {
 
-	if(!(interaction.member as GuildMember).roles.cache.has('811550637518487563')) return interaction.reply({ content: 'Nie masz uprawnień do tej komendy!', ephemeral: true });
+	if(!(interaction.member as GuildMember).roles.cache.has(client.config.admin_role)) return interaction.reply({ content: 'Nie masz uprawnień do tej komendy!', ephemeral: true });
 	await interaction.deferReply();
 
 	await client.rest.put(
-		Routes.applicationGuildCommands(client.user.id, '811550188823904277'),
+		Routes.applicationGuildCommands(client.user.id, client.config.guild_id),
 
 		{ body: [...client.commands.map(x => x.data), ...client.commands.filter(x => x.data.context).map(x => x.data.context)] },
 	);

@@ -10,4 +10,6 @@ export interface Config {
     suggestions: string
     logs: string;
     moderation_alerts: string;
+    guild_id: string;
+    admin_role: string;
 }
