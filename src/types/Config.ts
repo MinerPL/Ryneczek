@@ -12,4 +12,5 @@ export interface Config {
     moderation_alerts: string;
     guild_id: string;
     admin_role: string;
+    offerts_category: string;
 }

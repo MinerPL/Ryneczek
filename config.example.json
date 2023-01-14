@@ -9,5 +9,8 @@
 	],
 	"suggestions": "SUGGESTIONS CHANNEL ID",
 	"logs": "LOGS CHANNEL ID",
-	"moderation_alerts": "MODERATION ALERTS CHANNEL ID"
+	"moderation_alerts": "MODERATION ALERTS CHANNEL ID",
+	"guild_id": "GUILD_ID",
+	"admin_role": "ADMIN_ROLE_ID",
+	"offerts_category": "OFFERTS_CATEGORY_ID"
 }
