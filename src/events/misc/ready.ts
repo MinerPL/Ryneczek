@@ -9,6 +9,7 @@ export async function run(client: Ryneczek) {
 	});
 
 	console.log(`Successfully fetched ${await client.fetchMessages(client.guilds.cache.get(client.config.guild_id))} messages.`);
+	console.log(`Successfully fetchec ${(await client.guilds.cache.get(client.config.guild_id).members.fetch()).size} members.`);
 
 	if(process.argv.includes('--deploy')) {
 		await client.rest.put(
