@@ -11,6 +11,7 @@ import {
 import config from './../../config.json';
 
 import { CommandHandler } from '@classes/Handlers/CommandHandler';
+import { InteractionHandler } from '@classes/Handlers/InteractionHandler';
 import EventHandler from '@classes/Handlers/EventHandler';
 import { Config } from 'types/Config';
 import { ChannelType } from 'discord-api-types/v10';
@@ -60,7 +61,7 @@ export default class Ryneczek extends Client {
 		this.login(this.config.token).then(() => null);
 
 		this.commands = await new CommandHandler(this).loadCommands();
-		// this.interactions = await new InteractionHandler(this).loadInteractions();
+		this.interactions = await new InteractionHandler(this).loadInteractions();
 
 		new EventHandler(this).loadEvents().then(() => null);
 	}

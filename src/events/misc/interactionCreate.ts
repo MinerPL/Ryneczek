@@ -16,5 +16,4 @@ const otherInteractions = (interaction, client: Ryneczek) => {
 export async function run(client: Ryneczek, interaction: Interaction) {
 	if(interaction.isCommand() || interaction.isContextMenuCommand()) commandsHandler(interaction, client);
 	else otherInteractions(interaction, client);
-
 }

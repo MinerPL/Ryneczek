@@ -14,9 +14,9 @@ export class InteractionHandler extends Collection<string, Interaction> {
 		for(const file of files) {
 			if(!file.endsWith('.js')) continue;
 
-			const interaction = await (await import(`${__dirname}/../../interactions/${file}`)).default;
+			const interaction = await (await import(`${__dirname}/../../interactions/${file}`));
 
-			this.set(interaction.name, interaction);
+			this.set(file.slice(0, -3), interaction);
 		}
 		console.log(`${files.length} interactions loaded.`);
 		return this;
