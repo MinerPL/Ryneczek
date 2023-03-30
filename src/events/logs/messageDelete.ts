@@ -37,6 +37,7 @@ export async function run(client: Ryneczek, message: Message) {
 
 	let i = 0;
 	for(const attachment of message.attachments.values()) {
+		// @ts-expect-error
 		const newAttachment = new AttachmentBuilder(attachment.attachment, {
 			name: `${attachment.name.split('.')[0]}.${i}.${attachment.name.split('.')[1]}`,
 			description: attachment.description,
