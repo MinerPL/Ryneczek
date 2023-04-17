@@ -13,4 +13,5 @@ export interface Config {
     guild_id: string;
     admin_role: string;
     offerts_category: string;
+    report_channel: string;
 }
