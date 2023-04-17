@@ -12,7 +12,7 @@ export const data = {
 	...new ContextMenuCommandBuilder()
 		.setName('Ban')
 		.setDMPermission(false)
-		.setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
 		.setType(ApplicationCommandType.User),
 };
 
