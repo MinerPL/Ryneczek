@@ -41,6 +41,7 @@ export async function run(client: Ryneczek, interaction: ContextMenuCommandInter
 		.toJSON();
 
 	const modal = await client.useModal(interaction, reasonModal, client.ms('5m'));
+	if(!modal) return;
 
 	const reason = modal.fields.getTextInputValue('reason');
 
