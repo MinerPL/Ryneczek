@@ -2,8 +2,7 @@ import {
 	ActionRowBuilder,
 	BaseGuildTextChannel,
 	ButtonBuilder,
-	ButtonStyle,
-	CommandInteraction,
+	ButtonStyle, ChatInputCommandInteraction,
 	EmbedBuilder,
 	GuildMember,
 	ModalBuilder,
@@ -26,7 +25,7 @@ export const data = {
 		.toJSON(),
 };
 
-export async function run(client: Ryneczek, interaction: CommandInteraction) {
+export async function run(client: Ryneczek, interaction: ChatInputCommandInteraction) {
 	const user = interaction.options.getMember('użytkownik') as GuildMember;
 	const reportTimestamp = Date.now();
 
