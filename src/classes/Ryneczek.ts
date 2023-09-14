@@ -39,7 +39,7 @@ export default class Ryneczek extends Client {
 				IntentsBitField.Flags.Guilds,
 				IntentsBitField.Flags.GuildMessages,
 				IntentsBitField.Flags.GuildMembers,
-				IntentsBitField.Flags.GuildBans,
+				IntentsBitField.Flags.GuildModeration,
 				IntentsBitField.Flags.MessageContent,
 				IntentsBitField.Flags.DirectMessages,
 			],
