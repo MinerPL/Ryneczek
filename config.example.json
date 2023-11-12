@@ -1,5 +1,6 @@
 {
 	"token": "TOKEN",
+	"hostgier_forum": "HOSTGIER_API_FORUM",
 	"channels": [
 		{
 			"id": "ID",

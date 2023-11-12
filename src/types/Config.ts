@@ -6,6 +6,7 @@ export interface Channel {
 
 export interface Config {
     token: string,
+    hostgier_forum: string;
     channels: Channel[],
     suggestions: string
     logs: string;

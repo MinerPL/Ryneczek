@@ -1,7 +1,9 @@
 import Ryneczek from '@classes/Ryneczek';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ThreadChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ForumChannel, ThreadChannel } from 'discord.js';
+import { readFile, writeFile } from 'node:fs/promises';
+import { ForumJson } from '../../types/Forum';
 
-export async function run(client: Ryneczek, thread: ThreadChannel) {
+const buttonsManager = (thread: ThreadChannel) => {
 	const buttons = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
 			new ButtonBuilder()
@@ -18,4 +20,52 @@ export async function run(client: Ryneczek, thread: ThreadChannel) {
 		content: 'Menu zarządzania wątkiem.',
 		components: [buttons],
 	});
+};
+
+const forumIntegration = async (client: Ryneczek, thread: ThreadChannel) => {
+	const forumChannel: ForumChannel | undefined = thread.guild.channels.cache.get(thread.parentId) as ForumChannel;
+
+	if(!forumChannel) return;
+
+	if(forumChannel.availableTags.find(tag => tag.id === '1009540921991385199') && !thread.appliedTags.includes('1009540921991385199')) return;
+
+	let content = (await thread.fetchStarterMessage()).content;
+	content += '\n\n';
+	content += `Oferta została wysłana na [Ryneczku](https://discord.gg/Ex4qDHHyXR) na [kanale ${forumChannel.name}](https://discord.com/channels/${thread.guildId}/${thread.id})`;
+
+	const item = await client.hostgier.createDiscussion({
+		data: {
+			type: 'discussions',
+			attributes: {
+				title: thread.name,
+				content: content,
+			},
+			relationships: {
+				tags: {
+					data: [
+						{
+							type: 'tags',
+							id: client.hostgier.tags.find(tag => tag.attributes.name === 'Ryneczek').id,
+						},
+					],
+				},
+			},
+		},
+	});
+
+	if(item) {
+		const forumJson: ForumJson[] = JSON.parse(await readFile('./forum.json', 'utf-8'));
+
+		forumJson.push({
+			discord: thread.id,
+			forum: item.data.id,
+		});
+
+		await writeFile('./forum.json', JSON.stringify(forumJson), 'utf-8');
+	}
+};
+
+export async function run(client: Ryneczek, thread: ThreadChannel) {
+	buttonsManager(thread);
+	await forumIntegration(client, thread);
 }
