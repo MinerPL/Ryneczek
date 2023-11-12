@@ -13,7 +13,7 @@ export async function run(client: Ryneczek, message: Message) {
 	const channels: Channel[] = Object.values(client.config.channels);
 
 	if(channels.filter(x => x.autoPublish).map(ch => ch.id).includes(message.channel.id)) {
-		if(message.channel.type !== ChannelType.GuildNews) return;
+		if(message.channel.type !== ChannelType.GuildAnnouncement) return;
 		await message.crosspost().catch(() => null);
 	}
 }
