@@ -26,6 +26,8 @@ const buttonsManager = (thread: ThreadChannel) => {
 const forumIntegration = async (client: Ryneczek, thread: ThreadChannel) => {
 	const forumChannel: ForumChannel | undefined = thread.guild.channels.cache.get(thread.parentId) as ForumChannel;
 
+	if(forumChannel.parentId !== client.config.offerts_category) return;
+
 	if(!forumChannel) return;
 
 	if(forumChannel.id == client.config.hostgier_resend) return;
