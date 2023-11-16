@@ -2,12 +2,17 @@ import { suggestionCreate } from '@functions/suggestionCreate';
 import { ChannelType, Message } from 'discord.js';
 import Ryneczek from '@classes/Ryneczek';
 import { Channel } from 'types/Config';
+import { hostgierIntegration } from '@functions/hostgierIntegration';
 
 export async function run(client: Ryneczek, message: Message) {
-	if(message.author.bot || message.channel.type === ChannelType.DM) return;
+	if(message.channel.type === ChannelType.DM) return;
 
 	if(message.channel.id === client.config.suggestions) {
 		await suggestionCreate(client, message);
+	}
+
+	if(message.channel.id === client.config.hostgier_channel) {
+		await hostgierIntegration(client, message);
 	}
 
 	const channels: Channel[] = Object.values(client.config.channels);

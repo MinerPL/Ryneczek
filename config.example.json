@@ -1,6 +1,8 @@
 {
 	"token": "TOKEN",
 	"hostgier_forum": "HOSTGIER_API_FORUM",
+	"hostgier_channel": "HOSTGIER_WEBHOOK_CHANNEL",
+	"hostgier_resend": "HOSTGIER_FORUM_RESEND_CHANNEL",
 	"channels": [
 		{
 			"id": "ID",

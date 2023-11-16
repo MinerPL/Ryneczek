@@ -1,4 +1,4 @@
-import { CreateDiscussion, Discusions, Discussion, TagsResponse } from '../types/Flarum';
+import { CreateDiscussion, Discusions, Discussion, TagsResponse, Error } from '../types/Flarum';
 import { RequestInit } from 'undici';
 
 export default class HostGier {
@@ -44,8 +44,14 @@ export default class HostGier {
 		});
 	}
 
-	async getDiscussions(): Promise<Discusions> {
+	async getDiscussions(): Promise<Discusions[]> {
 		return await this.request('/api/discussions', {
+			method: 'GET',
+		});
+	}
+
+	async getDiscussion(id: string): Promise<Discussion | Error> {
+		return await this.request(`/api/discussions/${id}`, {
 			method: 'GET',
 		});
 	}

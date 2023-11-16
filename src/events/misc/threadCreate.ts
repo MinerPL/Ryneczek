@@ -4,6 +4,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { ForumJson } from '../../types/Forum';
 
 const buttonsManager = (thread: ThreadChannel) => {
+
 	const buttons = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
 			new ButtonBuilder()
@@ -26,6 +27,8 @@ const forumIntegration = async (client: Ryneczek, thread: ThreadChannel) => {
 	const forumChannel: ForumChannel | undefined = thread.guild.channels.cache.get(thread.parentId) as ForumChannel;
 
 	if(!forumChannel) return;
+
+	if(forumChannel.id == client.config.hostgier_resend) return;
 
 	if(forumChannel.availableTags.find(tag => tag.id === '1009540921991385199') && !thread.appliedTags.includes('1009540921991385199')) return;
 
@@ -66,6 +69,8 @@ const forumIntegration = async (client: Ryneczek, thread: ThreadChannel) => {
 };
 
 export async function run(client: Ryneczek, thread: ThreadChannel) {
+	if(thread.parentId == client.config.hostgier_resend) return;
+
 	buttonsManager(thread);
 	await forumIntegration(client, thread);
 }

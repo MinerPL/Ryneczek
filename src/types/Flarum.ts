@@ -200,3 +200,10 @@ export interface TagsResponse {
         }
     }
 }
+
+export interface Error {
+    errors: {
+        status: string;
+        code: string;
+    }[];
+}
