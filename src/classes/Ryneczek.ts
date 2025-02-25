@@ -15,7 +15,6 @@ import { InteractionHandler } from '@classes/Handlers/InteractionHandler';
 import EventHandler from '@classes/Handlers/EventHandler';
 import { Config } from 'types/Config';
 import { ChannelType } from 'discord-api-types/v10';
-import HostGier from '@classes/HostGier';
 
 const durations = {
 	ms: 1,
@@ -35,7 +34,6 @@ export default class Ryneczek extends Client {
 	interactions: Collection<string, any>;
 	config: Config;
 
-	hostgier: HostGier;
 	constructor() {
 		super({
 			intents: [
@@ -58,8 +56,6 @@ export default class Ryneczek extends Client {
 		this.interactions = new Collection();
 
 		this.config = config;
-
-		this.hostgier = new HostGier(this.config.hostgier_forum);
 	}
 
 	async init(): Promise<void> {
