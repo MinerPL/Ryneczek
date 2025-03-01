@@ -23,6 +23,6 @@ const buttonsManager = (thread: ThreadChannel) => {
 
 
 export async function run(client: Ryneczek, thread: ThreadChannel) {
-	if(thread.parentId !== client.config.offerts_category) return;
+	if(thread.parent.parentId !== client.config.offerts_category) return;
 	buttonsManager(thread);
 }
