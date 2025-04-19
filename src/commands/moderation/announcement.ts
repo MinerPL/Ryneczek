@@ -13,7 +13,7 @@ export const data = {
 	...new SlashCommandBuilder()
 		.setName("announcement")
 		.setDescription("Wysyła ogłoszenie na wybrany kanał.")
-		.setDMPermission(false)
+		.setContexts(0)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 		.addChannelOption((option) =>
 			option
@@ -66,5 +66,5 @@ export async function run(
 		.setTimestamp();
 
 	await channel.send({ embeds: [embed] });
-	await interaction.reply({ content: "Wysłano ogłoszenie.", ephemeral: true });
+	await interaction.reply({ content: "Wysłano ogłoszenie.", flags: 64 });
 }

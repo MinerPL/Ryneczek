@@ -1,6 +1,6 @@
 import { readdirSync } from "fs";
 import Ryneczek from "@classes/Ryneczek";
-import { Collection, Interaction } from "discord.js";
+import { Collection } from "discord.js";
 import { InteractionType } from "../../types/Commands";
 
 export class InteractionHandler extends Collection<string, InteractionType> {
@@ -17,9 +17,9 @@ export class InteractionHandler extends Collection<string, InteractionType> {
 				continue;
 			}
 
-			const interaction = await await import(
+			const interaction = await import(
 				`${__dirname}/../../interactions/${file}`
-			);
+				);
 
 			this.set(file.slice(0, -3), interaction);
 		}

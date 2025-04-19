@@ -16,7 +16,7 @@ import {
 export const data = {
 	...new ContextMenuCommandBuilder()
 		.setName("Ban")
-		.setDMPermission(false)
+		.setContexts(0)
 		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
 		.setType(ApplicationCommandType.User),
 };
@@ -31,7 +31,7 @@ export async function run(
 	if (!member) {
 		return interaction.reply({
 			content: "Nie znaleziono użytkownika!",
-			ephemeral: true,
+			flags: 64,
 		});
 	}
 
@@ -84,13 +84,13 @@ export async function run(
 					client.config.moderation_alerts,
 				) as BaseGuildTextChannel
 			)?.send({ embeds: [embed] });
-			modal.reply({ content: "Sukces!", ephemeral: true });
+			modal.reply({ content: "Sukces!", flags: 64 });
 		})
 		.catch((e) => {
 			console.error(e);
 			return modal.reply({
 				content: `Coś poszło nie tak!\n\nBłąd: ${e.message}`,
-				ephemeral: true,
+				flags: 64,
 			});
 		});
 }

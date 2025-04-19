@@ -14,7 +14,7 @@ export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 	) {
 		return interaction.reply({
 			content: "Nie jesteś właścicielem tego wątku!",
-			ephemeral: true,
+			flags: 64,
 		});
 	}
 

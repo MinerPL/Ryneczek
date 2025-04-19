@@ -13,7 +13,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	) {
 		return interaction.reply({
 			content: "Nie możesz zarządzaj zgłoszeniami!",
-			ephemeral: true,
+			flags: 64,
 		});
 	}
 
@@ -32,7 +32,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		await interaction.reply({
 			content:
 				"Zgłoszenie zostało zaakceptowane! W celu ukarania użytkownika użyj `ban` znajdującego się w context menu (PPM na użytkownika).",
-			ephemeral: true,
+			flags: 64,
 		});
 	} else {
 		embed.setColor("#b55b5b").setFooter({

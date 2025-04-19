@@ -16,7 +16,7 @@ import EventHandler from "@classes/Handlers/EventHandler";
 import { InteractionHandler } from "@classes/Handlers/InteractionHandler";
 import { ChannelType } from "discord-api-types/v10";
 import { Config } from "types/Config";
-import { Command, InteractionType } from "../types/Commands";
+import { InteractionType } from "../types/Commands";
 
 const durations = {
 	ms: 1,

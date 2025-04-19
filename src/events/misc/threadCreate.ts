@@ -28,5 +28,5 @@ export async function run(client: Ryneczek, thread: ThreadChannel) {
 	if (thread.parent.parentId !== client.config.offerts_category) {
 		return;
 	}
-	buttonsManager(thread);
+	await buttonsManager(thread);
 }

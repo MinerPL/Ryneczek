@@ -12,7 +12,7 @@ export const data = {
 		.setName("deploy")
 		.setDescription("Zaktualizuj slashcommands")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-		.setDMPermission(false)
+		.setContexts(0)
 		.toJSON(),
 };
 
@@ -27,7 +27,7 @@ export async function run(
 	) {
 		return interaction.reply({
 			content: "Nie masz uprawnień do tej komendy!",
-			ephemeral: true,
+			flags: 64,
 		});
 	}
 	await interaction.deferReply();

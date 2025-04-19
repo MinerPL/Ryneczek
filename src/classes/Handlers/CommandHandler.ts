@@ -21,9 +21,9 @@ export class CommandHandler extends Collection<string, Command> {
 					continue;
 				}
 
-				const command = await await import(
+				const command = await import(
 					`${__dirname}/../../commands/${dir}/${file}`
-				);
+					);
 
 				this.set(command.data.name, { ...command });
 			}

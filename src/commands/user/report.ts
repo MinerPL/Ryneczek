@@ -23,7 +23,7 @@ export const data = {
 				.setDescription("Wybierz użytkownika łamiącego regulamin")
 				.setRequired(true),
 		)
-		.setDMPermission(false)
+		.setContexts(0)
 		.toJSON(),
 };
 
@@ -72,7 +72,7 @@ export async function run(
 
 	await modalUse.reply({
 		content: "Zgłoszenie zostało wysłane!",
-		ephemeral: true,
+		flags: 64,
 	});
 
 	const reason = modalUse.fields.getTextInputValue("report_reason");

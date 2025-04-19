@@ -7,7 +7,7 @@ const commandsHandler = (interaction, client: Ryneczek) => {
 	if (!command) {
 		return interaction.reply({
 			content: "Coś poszło nie tak!",
-			ephemeral: true,
+			flags: 64,
 		});
 	}
 
