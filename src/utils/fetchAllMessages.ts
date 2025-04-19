@@ -1,10 +1,9 @@
-import { Message } from 'discord.js';
+import { Message } from "discord.js";
 
 export async function fetchAllMessages(channel): Promise<Message[]> {
 	let messages: Message[] = [];
 	let lastID: string | undefined;
 
-	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		const fetchedMessages = await channel.messages.fetch({
 			limit: 100,

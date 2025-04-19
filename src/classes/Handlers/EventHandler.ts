@@ -1,5 +1,5 @@
-import Ryneczek from '@classes/Ryneczek';
-import { readdirSync } from 'fs';
+import { readdirSync } from "fs";
+import Ryneczek from "@classes/Ryneczek";
 
 export default class EventHandler {
 	client: Ryneczek;
@@ -14,9 +14,13 @@ export default class EventHandler {
 		for (const dir of dirs) {
 			const files = readdirSync(`${__dirname}/../../events/${dir}`);
 
-			for(const rawFile of files) {
-				if (!rawFile.endsWith('.js')) continue;
-				const file = await import(`${__dirname}/../../events/${dir}/${rawFile}`);
+			for (const rawFile of files) {
+				if (!rawFile.endsWith(".js")) {
+					continue;
+				}
+				const file = await import(
+					`${__dirname}/../../events/${dir}/${rawFile}`
+				);
 
 				this.client.on(rawFile.slice(0, -3), (...event) => {
 					file.run(this.client, ...event);

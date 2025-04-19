@@ -1,4 +1,4 @@
 export interface ForumJson {
-    discord: string;
-    forum: string;
+	discord: string;
+	forum: string;
 }

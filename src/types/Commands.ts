@@ -1,6 +1,26 @@
-import Ryneczek from '@classes/Ryneczek';
-import { Interaction } from 'discord.js';
+import Ryneczek from "@classes/Ryneczek";
+import {
+	AnySelectMenuInteraction,
+	AutocompleteInteraction,
+	ButtonInteraction,
+	Interaction,
+	ModalSubmitInteraction,
+	SlashCommandBuilder,
+} from "discord.js";
 
 export interface Command {
-    run: (client: Ryneczek, interaction: Interaction) => void;
+	data: SlashCommandBuilder;
+	run: (client: Ryneczek, interaction: Interaction) => void;
+}
+
+export interface InteractionType {
+	run: (
+		client: Ryneczek,
+		interaction:
+			| Interaction
+			| ButtonInteraction
+			| AnySelectMenuInteraction
+			| ModalSubmitInteraction
+			| AutocompleteInteraction,
+	) => void;
 }

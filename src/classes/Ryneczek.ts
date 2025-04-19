@@ -3,18 +3,20 @@ import {
 	BaseGuildTextChannel,
 	Client,
 	Collection,
-	CommandInteraction, ForumChannel,
+	CommandInteraction,
+	ForumChannel,
 	Guild,
 	IntentsBitField,
-} from 'discord.js';
+} from "discord.js";
 // @ts-expect-error
-import config from './../../config.json';
+import config from "./../../config.json";
 
-import { CommandHandler } from '@classes/Handlers/CommandHandler';
-import { InteractionHandler } from '@classes/Handlers/InteractionHandler';
-import EventHandler from '@classes/Handlers/EventHandler';
-import { Config } from 'types/Config';
-import { ChannelType } from 'discord-api-types/v10';
+import { CommandHandler } from "@classes/Handlers/CommandHandler";
+import EventHandler from "@classes/Handlers/EventHandler";
+import { InteractionHandler } from "@classes/Handlers/InteractionHandler";
+import { ChannelType } from "discord-api-types/v10";
+import { Config } from "types/Config";
+import { Command, InteractionType } from "../types/Commands";
 
 const durations = {
 	ms: 1,
@@ -28,10 +30,10 @@ const durations = {
 };
 
 export default class Ryneczek extends Client {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+	// biome-ignore lint/suspicious/noExplicitAny: to much things to change to add type here
 	commands: Collection<string, any>;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	interactions: Collection<string, any>;
+	interactions: Collection<string, InteractionType>;
 	config: Config;
 
 	constructor() {
@@ -68,54 +70,93 @@ export default class Ryneczek extends Client {
 	}
 
 	ms(time = undefined): number {
-		if(!time) return undefined;
+		if (!time) {
+			return undefined;
+		}
 
-		if(typeof time !== 'string') throw new Error('Time is not a string!');
+		if (typeof time !== "string") {
+			throw new Error("Time is not a string!");
+		}
 
-		time = this.chunk(time.split(/(\d+)(mo|[smhdyw])/gmi).filter(e => e), 2);
+		time = this.chunk(
+			time.split(/(\d+)(mo|[smhdyw])/gim).filter((e) => e),
+			2,
+		);
 
 		let ms = 0;
 
-		for(const array of time) {
-			ms += durations[array[1] || 's'] * array[0];
+		for (const array of time) {
+			ms += durations[array[1] || "s"] * array[0];
 		}
 
-		if(isNaN(ms)) return undefined;
+		if (isNaN(ms)) {
+			return undefined;
+		}
 
 		return ms;
 	}
 
 	chunk(array, size): string[] {
 		const arr = [];
-		for (let i = 0; i < array.length; i += size) arr.push(array.slice(i, i + size));
+		for (let i = 0; i < array.length; i += size) {
+			arr.push(array.slice(i, i + size));
+		}
 		return arr;
 	}
 
-	async useModal(interaction: CommandInteraction, modal: APIModalInteractionResponseCallbackData, timeout = this.ms('60s')) {
+	async useModal(
+		interaction: CommandInteraction,
+		modal: APIModalInteractionResponseCallbackData,
+		timeout = this.ms("60s"),
+	) {
 		await interaction.showModal(modal);
 
 		return interaction
 			.awaitModalSubmit({
 				time: timeout,
 				filter: (filterInteraction) =>
-					filterInteraction.customId === modal.custom_id
-					&& filterInteraction.user.id === interaction.user.id,
+					filterInteraction.customId === modal.custom_id &&
+					filterInteraction.user.id === interaction.user.id,
 			})
 			.catch(() => null);
 	}
 
-	async fetchMessages(guild: Guild, limit = 100, before = null, after = null, around = null) {
+	async fetchMessages(
+		guild: Guild,
+		limit = 100,
+		before = null,
+		after = null,
+		around = null,
+	) {
 		let count = 0;
 
-		for (const channel of guild.channels.cache.filter(x => ![ChannelType.GuildCategory, ChannelType.GuildDirectory, ChannelType.GuildStageVoice].includes(x.type)).values()) {
+		for (const channel of guild.channels.cache
+			.filter(
+				(x) =>
+					![
+						ChannelType.GuildCategory,
+						ChannelType.GuildDirectory,
+						ChannelType.GuildStageVoice,
+					].includes(x.type),
+			)
+			.values()) {
 			if (channel instanceof ForumChannel) {
 				for (const thread of channel.threads.cache.values()) {
-					const fetched = await thread.messages.fetch({ limit, before, after, around });
+					const fetched = await thread.messages.fetch({
+						limit,
+						before,
+						after,
+						around,
+					});
 					count += fetched.size;
 				}
-			}
-			else {
-				const fetched = await (channel as BaseGuildTextChannel).messages.fetch({ limit, before, after, around });
+			} else {
+				const fetched = await (channel as BaseGuildTextChannel).messages.fetch({
+					limit,
+					before,
+					after,
+					around,
+				});
 				count += fetched.size;
 			}
 		}
