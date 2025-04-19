@@ -1,3 +1,3 @@
-import Ryneczek from "@classes/Ryneczek";
+import Ryneczek from "#client";
 
 new Ryneczek().init().then(() => null);

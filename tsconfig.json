@@ -8,9 +8,12 @@
 		"baseUrl": "src",
 		"sourceMap": true,
 		"paths": {
-			"@classes/*": ["classes/*"],
-			"@functions/*": ["functions/*"],
-			"@utils/*": ["utils/*"]
+			"#classes/*": ["classes/*"],
+			"#handlers/*": ["classes/Handlers/*"],
+			"#functions/*": ["functions/*"],
+			"#utils/*": ["utils/*"],
+			"#client": ["classes/Ryneczek.ts"],
+			"#config": ["../config.json"]
 		},
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,

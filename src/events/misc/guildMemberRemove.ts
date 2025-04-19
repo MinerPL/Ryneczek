@@ -1,4 +1,4 @@
-import Ryneczek from "@classes/Ryneczek";
+import Ryneczek from "#client";
 import { ForumChannel, GuildMember, TextChannel } from "discord.js";
 
 export async function run(client: Ryneczek, member: GuildMember) {

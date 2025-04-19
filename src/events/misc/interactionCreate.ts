@@ -1,4 +1,4 @@
-import Ryneczek from "@classes/Ryneczek";
+import Ryneczek from "#client";
 import { Interaction } from "discord.js";
 
 const commandsHandler = (interaction, client: Ryneczek) => {

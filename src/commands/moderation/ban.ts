@@ -1,4 +1,4 @@
-import Ryneczek from "@classes/Ryneczek";
+import Ryneczek from "#client";
 import { TextInputStyle } from "discord-api-types/v10";
 import {
 	ActionRowBuilder,

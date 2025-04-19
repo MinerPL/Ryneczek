@@ -1,4 +1,4 @@
-import Ryneczek from "@classes/Ryneczek";
+import Ryneczek from "#client";
 import {
 	ButtonInteraction,
 	EmbedBuilder,

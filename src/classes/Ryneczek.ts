@@ -9,14 +9,14 @@ import {
 	IntentsBitField,
 } from "discord.js";
 // @ts-expect-error
-import config from "./../../config.json";
+import config from "#config";
 
-import { CommandHandler } from "@classes/Handlers/CommandHandler";
-import EventHandler from "@classes/Handlers/EventHandler";
-import { InteractionHandler } from "@classes/Handlers/InteractionHandler";
+import { CommandHandler } from "#handlers/CommandHandler";
+import EventHandler from "#handlers/EventHandler";
+import { InteractionHandler } from "#handlers/InteractionHandler";
 import { ChannelType } from "discord-api-types/v10";
 import { Config } from "types/Config";
-import { InteractionType } from "../types/Commands";
+import { InteractionType } from "types/Commands";
 
 const durations = {
 	ms: 1,

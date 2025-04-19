@@ -1,4 +1,4 @@
-import Ryneczek from "@classes/Ryneczek";
+import Ryneczek from "#client";
 import { Routes } from "discord-api-types/v10";
 import {
 	ChatInputCommandInteraction,

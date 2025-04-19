@@ -1,5 +1,5 @@
-import Ryneczek from "@classes/Ryneczek";
-import { suggestionCreate } from "@functions/suggestionCreate";
+import Ryneczek from "#client";
+import { suggestionCreate } from "#functions/suggestionCreate";
 import { ChannelType, Message } from "discord.js";
 import { Channel } from "types/Config";
 
