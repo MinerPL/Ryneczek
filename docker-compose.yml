@@ -1,0 +1,6 @@
+services:
+  bot:
+    image: ryneczek:dev
+    restart: always
+    volumes:
+      - './config.json:/app/config.json'
