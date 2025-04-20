@@ -1,6 +1,6 @@
 services:
   bot:
-    image: ryneczek:dev
+    image: ghcr.io/minerpl/ryneczek:latest
     restart: always
     volumes:
       - './config.json:/app/config.json'
