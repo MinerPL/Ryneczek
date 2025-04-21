@@ -65,10 +65,21 @@ export async function run(
 
 	const reason = modal.fields.getTextInputValue("reason");
 
+	let day: string = String(new Date().getDay());
+	let month: string = String(new Date().getMonth() + 1);
+	const year: string = String(new Date().getFullYear());
+
+	if (Number(day) < 10) {
+		day = `0${day}`;
+	}
+	if (Number(month) < 10) {
+		month = `0${month}`;
+	}
+
 	const embed = new EmbedBuilder()
 		.setColor("#87b55b")
 		.setDescription(
-			`[${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}] **${member.user.tag}** (${member.user.id}) został wyrzucony za: **${reason}**`,
+			`[${day}.${month}.${year}] **${member.user.tag}** (${member.user.id}) został wyrzucony za: **${reason}**`,
 		)
 		.setFooter({
 			iconURL: interaction.guild.iconURL(),
