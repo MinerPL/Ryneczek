@@ -14,4 +14,5 @@ export interface Config {
 	admin_role: string;
 	offerts_category: string;
 	report_channel: string;
+	lockdown_ignored_categories: string[];
 }

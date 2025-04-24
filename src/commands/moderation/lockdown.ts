@@ -19,10 +19,12 @@ export const data = {
 };
 
 export async function run(
-    _client: Ryneczek,
+    client: Ryneczek,
     interaction: ChatInputCommandInteraction,
 ) {
-    const categories = interaction.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildCategory);
+    const categories = interaction.guild.channels.cache
+        .filter(channel => channel.type === ChannelType.GuildCategory)
+        .filter(category => !client.config.lockdown_ignored_categories.includes(category.id));
 
     const isLocked = categories.some(category => {
         return category.permissionOverwrites.cache.find(overrite => overrite.type == OverwriteType.Role && overrite.id === interaction.guild.roles.everyone.id)?.deny?.has(PermissionFlagsBits.SendMessages)
