@@ -1,11 +1,12 @@
 import Ryneczek from "#client";
 import {
 	ActionRowBuilder,
-	ButtonBuilder,
+	ButtonBuilder, ButtonComponent,
 	ButtonInteraction,
 	ForumChannel,
 	ThreadChannel,
 } from "discord.js";
+import {APIActionRowComponent} from "discord-api-types/v10";
 
 export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 	if (
@@ -25,6 +26,7 @@ export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 	).availableTags.find((tag) => tag.name === "Sprzedane");
 
 	const newComponents: ActionRowBuilder = ActionRowBuilder.from(
+		// @ts-expect-error
 		interaction.message.components[0],
 	);
 	newComponents.components.forEach((x) =>
