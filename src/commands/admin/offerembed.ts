@@ -52,7 +52,7 @@ export async function run(
                 new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true)
             )
             .addTextDisplayComponents(
-                new TextDisplayBuilder().setContent("Witaj w kreatorze ofert! Aby utworzyć ofertę **sprzedaży** wPLN należy wybrać hosting z poniższej listy oraz uzupełnić wymagane informacje. \n\n**Uwaga!** Podawanie nieprawdziwych informacji może skutkować permamentym banem na serwerze.")
+                new TextDisplayBuilder().setContent("Witaj w kreatorze ofert! Aby utworzyć ofertę **sprzedaży** wPLN należy wybrać hosting z poniższej listy oraz uzupełnić wymagane informacje. \n\n**Uwaga!** Podawanie nieprawdziwych informacji może skutkować permanentnym banem na serwerze.")
             )
             .addSeparatorComponents(
                 new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true)
