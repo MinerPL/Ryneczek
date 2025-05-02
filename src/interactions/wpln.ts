@@ -76,15 +76,15 @@ export async function run(client: Ryneczek, interaction: AnySelectMenuInteractio
         });
     }
 
-    const exchange = response.fields.getField('exchange').value;
+    const exchange = Number(response.fields.getField('exchange').value);
     let oldExchange: number;
     let newExchange: number;
     if (exchange < 1) {
-        oldExchange = Number(exchange);
-        newExchange = Number((1 / Number(exchange)).toFixed(2));
+        oldExchange = exchange;
+        newExchange = Number((1 / exchange).toFixed(2));
     } else {
-        newExchange = Number(exchange);
-        oldExchange = Number((1 / Number(exchange)).toFixed(2));
+        newExchange = exchange;
+        oldExchange = Number((1 / exchange).toFixed(2));
     }
 
     const container = new ContainerBuilder()
