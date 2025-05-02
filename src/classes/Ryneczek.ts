@@ -1,12 +1,13 @@
 import {
+	AnySelectMenuInteraction,
 	APIModalInteractionResponseCallbackData,
-	BaseGuildTextChannel,
+	BaseGuildTextChannel, ButtonInteraction,
 	Client,
 	Collection,
 	CommandInteraction,
 	ForumChannel,
 	Guild,
-	IntentsBitField,
+	IntentsBitField, SelectMenuInteraction,
 } from "discord.js";
 // @ts-expect-error
 import config from "#config";
@@ -105,7 +106,7 @@ export default class Ryneczek extends Client {
 	}
 
 	async useModal(
-		interaction: CommandInteraction,
+		interaction: CommandInteraction | ButtonInteraction | AnySelectMenuInteraction,
 		modal: APIModalInteractionResponseCallbackData,
 		timeout = this.ms("60s"),
 	) {
