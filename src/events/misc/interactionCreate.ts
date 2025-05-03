@@ -15,9 +15,17 @@ const commandsHandler = (interaction, client: Ryneczek) => {
 };
 
 const otherInteractions = (interaction, client: Ryneczek) => {
-	client.interactions
-		.get(interaction.customId.split("_")[0])
-		?.run(client, interaction);
+	const int = client.interactions
+		.get(interaction.customId.split("_")[0]);
+
+	if ((!int || !int.run) && !interaction.isModalSubmit()) {
+		return interaction.reply({
+			content: "Coś poszło nie tak!",
+			flags: 64,
+		});
+	}
+
+	int?.run(client, interaction);
 };
 
 export async function run(client: Ryneczek, interaction: Interaction) {

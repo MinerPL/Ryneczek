@@ -1,7 +1,7 @@
 import Ryneczek from "#client";
 import { suggestionCreate } from "#functions/suggestionCreate";
 import { ChannelType, Message } from "discord.js";
-import { Channel } from "types/Config";
+import { Channel } from "#types/Config";
 
 export async function run(client: Ryneczek, message: Message) {
 	if (message.channel.type === ChannelType.DM) {
