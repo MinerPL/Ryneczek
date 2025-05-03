@@ -1,7 +1,12 @@
 import { readdirSync } from "fs";
 import Ryneczek from "#client";
 import { Collection } from "discord.js";
-import { InteractionType } from "../../types/Commands";
+import { InteractionType } from "#types/Commands";
+import {fileURLToPath} from "node:url";
+import {dirname, join} from "node:path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export class InteractionHandler extends Collection<string, InteractionType> {
 	client: typeof Ryneczek;
@@ -18,7 +23,7 @@ export class InteractionHandler extends Collection<string, InteractionType> {
 			}
 
 			const interaction = await import(
-				`${__dirname}/../../interactions/${file}`
+				`file:${join(__dirname, '../../interactions', file)}`
 				);
 
 			this.set(file.slice(0, -3), interaction);
