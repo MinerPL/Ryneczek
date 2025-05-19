@@ -21,7 +21,7 @@ export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 
 	const action = interaction.customId.split("_")[1];
 	const thread = interaction.channel as ThreadChannel;
-	const selledTag = (
+	const soldTag = (
 		thread.guild.channels.cache.get(thread.parentId) as ForumChannel
 	).availableTags.find((tag) => tag.name === "Sprzedane");
 
@@ -39,14 +39,14 @@ export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 		components: [newComponents],
 	});
 
-	if (action === "selled") {
+	if (action === "sold") {
 		await interaction.reply({
 			content: "Oferta została oznaczona jako sprzedana.",
 		});
 		await thread.edit({
 			archived: true,
 			locked: true,
-			appliedTags: [...thread.appliedTags, selledTag.id],
+			appliedTags: [...thread.appliedTags, soldTag.id],
 		});
 	} else if (action === "close") {
 		await interaction.reply({

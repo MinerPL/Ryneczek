@@ -171,7 +171,7 @@ export async function run(
 				additionalInfo: response.fields.getField("additional_information")
 					.value,
 				verifiedCount: false,
-				selled: false,
+				sold: false,
 			},
 		})
 		.catch((e) => {

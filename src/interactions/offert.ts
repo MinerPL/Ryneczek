@@ -80,7 +80,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				id: offertOwner.id,
 			},
 			data: {
-				selled: true,
+				sold: true,
 			},
 		});
 	} else if (action === "change") {

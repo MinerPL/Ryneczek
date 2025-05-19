@@ -11,7 +11,7 @@ const buttonsManager = (thread: ThreadChannel) => {
 		new ButtonBuilder()
 			.setLabel("Oznacz jako sprzedane")
 			.setStyle(ButtonStyle.Secondary)
-			.setCustomId("threadCreate_selled"),
+			.setCustomId("threadCreate_sold"),
 		new ButtonBuilder()
 			.setLabel("Zamknij wątek")
 			.setStyle(ButtonStyle.Danger)

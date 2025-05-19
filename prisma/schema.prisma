@@ -35,7 +35,7 @@ model Offerts {
   paymentMethod  String
   additionalInfo String?
   verifiedCount  Boolean
-  selled         Boolean
+  sold           Boolean
   Sales          Sales[]
 }
 
@@ -52,7 +52,7 @@ model Sales {
   id        Int      @id @default(autoincrement())
   offertId  Int
   buyerId   String
-  amount   Int
+  amount    Int
   channelId String
   isDone    Boolean
   createdAt DateTime @default(now())

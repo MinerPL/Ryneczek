@@ -1,15 +1,8 @@
 import {
-	BaseGuildTextChannel,
-	ChannelType,
 	ChatInputCommandInteraction,
-	ColorResolvable,
-	ContextMenuCommandInteraction,
-	EmbedBuilder,
-	OverwriteType,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 	SlashCommandSubcommandBuilder,
-	SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 import Ryneczek from "#client";
 
@@ -18,7 +11,7 @@ export const data = {
 		.addSubcommand(
 			new SlashCommandSubcommandBuilder()
 				.setName("add")
-				.setDescription("Blokuje możliwość pisania na wszystkich kanałach.")
+				.setDescription("Dodaje nowy hosting do bazy danych.")
 				.addStringOption((option) =>
 					option
 						.setName("name")
@@ -41,7 +34,7 @@ export const data = {
 		.addSubcommand(
 			new SlashCommandSubcommandBuilder()
 				.setName("remove")
-				.setDescription("Blokuje możliwość pisania na wszystkich kanałach.")
+				.setDescription("Usuwa hosting z bazy danych.")
 				.addStringOption((option) =>
 					option
 						.setName("name")

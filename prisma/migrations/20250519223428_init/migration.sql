@@ -21,7 +21,7 @@ CREATE TABLE "Offerts" (
     "paymentMethod" TEXT NOT NULL,
     "additionalInfo" TEXT,
     "verifiedCount" BOOLEAN NOT NULL,
-    "selled" BOOLEAN NOT NULL,
+    "sold" BOOLEAN NOT NULL,
     CONSTRAINT "Offerts_hostingId_fkey" FOREIGN KEY ("hostingId") REFERENCES "Hostings" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
