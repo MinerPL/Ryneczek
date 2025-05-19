@@ -14,6 +14,8 @@ COPY config.example.json config.json
 
 RUN yarn build
 
+RUN rm config.json
+
 FROM node:22-alpine AS runner
 
 WORKDIR /app
