@@ -212,7 +212,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 						.setLabel("Ilość wPLN")
 						.setPlaceholder("Ilość wPLN")
 						.setStyle(TextInputStyle.Short)
-						.setCustomId("ammount")
+						.setCustomId("amount")
 						.setRequired(true),
 				),
 				new ActionRowBuilder<TextInputBuilder>().addComponents(
@@ -239,17 +239,17 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			});
 		}
 
-		const ammount = Number(modal.fields.getField("ammount").value);
+		const amount = Number(modal.fields.getField("amount").value);
 		const paymentMethod = modal.fields.getField("payment_method").value;
 
-		if (isNaN(ammount) || ammount <= 0) {
+		if (isNaN(amount) || amount <= 0) {
 			return modal.reply({
 				content: "Ilość musi być liczbą!",
 				flags: 64,
 			});
 		}
 
-		if (ammount > offertOwner.count) {
+		if (amount > offertOwner.count) {
 			return modal.reply({
 				content: `Nie możesz kupić więcej niż ${offertOwner.count} wPLN!`,
 				flags: 64,
@@ -290,7 +290,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			data: {
 				offertId: offertOwner.id,
 				buyerId: interaction.user.id,
-				ammount: 0,
+				amount: 0,
 				channelId: channel.id,
 				isDone: false,
 			},
@@ -304,7 +304,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const container = new ContainerBuilder()
 			.addTextDisplayComponents(
 				new TextDisplayBuilder().setContent(
-					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Ilość:** ${ammount}\n**Metoda Płatności:** ${paymentMethod}\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
+					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Ilość:** ${amount}\n**Metoda Płatności:** ${paymentMethod}\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
 				),
 			)
 			.addSeparatorComponents(

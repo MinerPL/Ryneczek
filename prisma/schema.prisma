@@ -52,7 +52,7 @@ model Sales {
   id        Int      @id @default(autoincrement())
   offertId  Int
   buyerId   String
-  ammount   Int
+  amount   Int
   channelId String
   isDone    Boolean
   createdAt DateTime @default(now())
