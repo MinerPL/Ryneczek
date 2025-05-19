@@ -74,7 +74,7 @@ export async function run(
 		const hosting_id = name
 			.toLowerCase()
 			.replace(/[^a-z0-9]/g, "")
-			.replace(" ", "");
+			.replace(/\s+/g, "");
 
 		const hosting = await client.prisma.hostings
 			.create({
