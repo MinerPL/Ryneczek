@@ -1,19 +1,15 @@
 {
-	"token": "TOKEN",
-	"hostgier_forum": "HOSTGIER_API_FORUM",
-	"hostgier_channel": "HOSTGIER_WEBHOOK_CHANNEL",
-	"hostgier_resend": "HOSTGIER_FORUM_RESEND_CHANNEL",
-	"channels": [
-		{
-			"id": "ID",
-			"clear": true,
-			"autoPublish": true
-		}
-	],
-	"suggestions": "SUGGESTIONS CHANNEL ID",
-	"logs": "LOGS CHANNEL ID",
-	"moderation_alerts": "MODERATION ALERTS CHANNEL ID",
-	"guild_id": "GUILD_ID",
-	"admin_role": "ADMIN_ROLE_ID",
-	"offerts_category": "OFFERTS_CATEGORY_ID"
+	"token": "",
+	"channels": [],
+	"suggestions": "",
+	"logs": "",
+	"moderation_alerts": "",
+	"guild_id": "",
+	"admin_role": "",
+	"offerts_category": "",
+	"report_channel": "",
+	"lockdown_ignored_categories": [],
+	"wpln_forum": "",
+	"ticket_category": "",
+	"ticket_archive": ""
 }
