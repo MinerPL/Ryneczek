@@ -1,4 +1,3 @@
-import Ryneczek from "#client";
 import {
 	AnySelectMenuInteraction,
 	AutocompleteInteraction,
@@ -7,6 +6,7 @@ import {
 	ModalSubmitInteraction,
 	SlashCommandBuilder,
 } from "discord.js";
+import Ryneczek from "#client";
 
 export interface Command {
 	data: SlashCommandBuilder;

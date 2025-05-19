@@ -1,7 +1,7 @@
-import Ryneczek from "#client";
-import { fetchAllMessages } from "#utils/fetchAllMessages";
 import { GuildBan, Message } from "discord.js";
+import Ryneczek from "#client";
 import { Channel } from "#types/Config";
+import { fetchAllMessages } from "#utils/fetchAllMessages";
 
 export async function run(client: Ryneczek, member: GuildBan) {
 	const channelsToCheck: Channel[] = client.config.channels.filter(

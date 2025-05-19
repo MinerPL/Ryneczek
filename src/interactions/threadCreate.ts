@@ -1,12 +1,13 @@
-import Ryneczek from "#client";
+import { APIActionRowComponent } from "discord-api-types/v10";
 import {
 	ActionRowBuilder,
-	ButtonBuilder, ButtonComponent,
+	ButtonBuilder,
+	ButtonComponent,
 	ButtonInteraction,
 	ForumChannel,
 	ThreadChannel,
 } from "discord.js";
-import {APIActionRowComponent} from "discord-api-types/v10";
+import Ryneczek from "#client";
 
 export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 	if (

@@ -1,4 +1,3 @@
-import Ryneczek from "#client";
 import {
 	BaseGuildTextChannel,
 	ChannelType,
@@ -8,6 +7,7 @@ import {
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from "discord.js";
+import Ryneczek from "#client";
 
 export const data = {
 	...new SlashCommandBuilder()

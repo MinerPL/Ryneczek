@@ -20,7 +20,7 @@
 			"#functions/*": ["functions/*"],
 			"#utils/*": ["utils/*"],
 			"#client": ["classes/Ryneczek.ts"],
-			"#types/":  ["types/*"],
+			"#types/": ["types/*"],
 			"#prisma": ["../prisma/generated/prisma/client"]
 		}
 	},

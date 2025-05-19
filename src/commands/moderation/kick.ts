@@ -1,4 +1,3 @@
-import Ryneczek from "#client";
 import { TextInputStyle } from "discord-api-types/v10";
 import {
 	ActionRowBuilder,
@@ -12,6 +11,7 @@ import {
 	PermissionFlagsBits,
 	TextInputBuilder,
 } from "discord.js";
+import Ryneczek from "#client";
 
 export const data = {
 	...new ContextMenuCommandBuilder()

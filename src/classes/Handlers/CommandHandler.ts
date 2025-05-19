@@ -1,9 +1,9 @@
 import { readdirSync } from "fs";
-import Ryneczek from "#client";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Collection } from "discord.js";
+import Ryneczek from "#client";
 import { Command } from "#types/Commands";
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,8 +27,8 @@ export class CommandHandler extends Collection<string, Command> {
 				}
 
 				const command = await import(
-					`file:${join(__dirname, '../../commands', dir, file)}`
-					);
+					`file:${join(__dirname, "../../commands", dir, file)}`
+				);
 
 				this.set(command.data.name, { ...command });
 			}

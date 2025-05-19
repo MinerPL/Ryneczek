@@ -1,9 +1,9 @@
-import Ryneczek from "#client";
 import {
 	ButtonInteraction,
 	EmbedBuilder,
 	GuildMemberRoleManager,
 } from "discord.js";
+import Ryneczek from "#client";
 
 export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	if (

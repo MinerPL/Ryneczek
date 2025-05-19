@@ -1,7 +1,7 @@
 import { readdirSync } from "fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import Ryneczek from "#client";
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,8 +24,8 @@ export default class EventHandler {
 					continue;
 				}
 				const file = await import(
-						`file:${join(__dirname, '../../events', dir, rawFile)}`
-					);
+					`file:${join(__dirname, "../../events", dir, rawFile)}`
+				);
 
 				this.client.on(rawFile.slice(0, -3), (...event) => {
 					file.run(this.client, ...event);

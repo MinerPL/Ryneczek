@@ -1,5 +1,5 @@
-import Ryneczek from "#client";
 import { BaseGuildTextChannel, EmbedBuilder, GuildMember } from "discord.js";
+import Ryneczek from "#client";
 
 export async function run(client: Ryneczek, member: GuildMember) {
 	const channel = member.guild.channels.cache.get(

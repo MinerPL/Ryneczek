@@ -1,10 +1,10 @@
-import Ryneczek from "#client";
 import {
 	ActionRowBuilder,
 	ButtonBuilder,
 	ButtonStyle,
 	ThreadChannel,
 } from "discord.js";
+import Ryneczek from "#client";
 
 const buttonsManager = (thread: ThreadChannel) => {
 	const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
