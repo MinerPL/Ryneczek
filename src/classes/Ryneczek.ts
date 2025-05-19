@@ -190,6 +190,13 @@ export default class Ryneczek extends Client {
 				emoji: "1344086774871359488",
 			},
 			{
+				hosting_id: "ivhost",
+				name: "IVhost",
+				website: "https://ivhost.pl/",
+				icon: "https://minerpl.xyz/ryneczek/ivhost.png",
+				emoji: "1371179535349055659",
+			},
+			{
 				hosting_id: "hostgier",
 				name: "HostGier",
 				website: "https://hostgier.pl",

@@ -36,6 +36,7 @@ export async function run(
 					.setCustomId("count")
 					.setPlaceholder("Ilość wPLN (np. 1000)")
 					.setLabel("Ilość wPLN")
+					.setMaxLength(5)
 					.setStyle(TextInputStyle.Short)
 					.setRequired(true),
 			),
@@ -45,6 +46,7 @@ export async function run(
 					.setPlaceholder("Kurs sprzedaży wPLN (np. 2.00 lub 0.5)")
 					.setLabel("Kurs")
 					.setStyle(TextInputStyle.Short)
+					.setMaxLength(3)
 					.setRequired(true),
 			),
 			new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
@@ -119,6 +121,10 @@ export async function run(
 
 	let message: ForumThreadChannel | Message;
 	if (channel.isThreadOnly()) {
+		const tag = channel.availableTags.find(
+			(t) => t.name?.toLowerCase() === dbHosting.name?.toLowerCase(),
+		);
+
 		message = await channel.threads
 			.create({
 				name: `Oferta ${response.user.username}`,
@@ -127,8 +133,12 @@ export async function run(
 					components: [container],
 					flags: MessageFlags.IsComponentsV2,
 				},
+				appliedTags: tag ? [tag.id] : [],
 			})
-			.catch(() => null);
+			.catch((e) => {
+				console.log(e);
+				return null;
+			});
 		if (message) {
 			await (message as ForumThreadChannel).members.add(response.user.id);
 		}
@@ -164,7 +174,10 @@ export async function run(
 				selled: false,
 			},
 		})
-		.catch(() => null);
+		.catch((e) => {
+			console.log(e);
+			return null;
+		});
 
 	await interaction.message.edit({
 		components: interaction.message.components,

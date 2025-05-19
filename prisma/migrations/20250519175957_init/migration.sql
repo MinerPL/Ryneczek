@@ -27,8 +27,22 @@ CREATE TABLE "Offerts" (
 
 -- CreateTable
 CREATE TABLE "Opinions" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "user" TEXT NOT NULL,
     "positive" BOOLEAN NOT NULL,
-    "comment" TEXT
+    "comment" TEXT,
+    "saleId" INTEGER,
+    CONSTRAINT "Opinions_saleId_fkey" FOREIGN KEY ("saleId") REFERENCES "Sales" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Sales" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "offertId" INTEGER NOT NULL,
+    "buyerId" TEXT NOT NULL,
+    "ammount" INTEGER NOT NULL,
+    "channelId" TEXT NOT NULL,
+    "isDone" BOOLEAN NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Sales_offertId_fkey" FOREIGN KEY ("offertId") REFERENCES "Offerts" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );

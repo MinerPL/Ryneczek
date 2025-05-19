@@ -53,7 +53,18 @@ export async function run(
 
 	const channel = interaction.options.getChannel("channel") as GuildChannel;
 
-	const hostings = await client.prisma.hostings.findMany();
+	let hostings = await client.prisma.hostings.findMany();
+
+	hostings = hostings.sort((a, b) => {
+		if (a.hosting_id === "other") {
+			return 1;
+		}
+		if (b.hosting_id === "other") {
+			return -1;
+		}
+
+		return a.name.localeCompare(b.name);
+	});
 
 	const arr = hostings.map((hosting) => {
 		return new StringSelectMenuOptionBuilder()

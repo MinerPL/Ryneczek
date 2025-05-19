@@ -28,25 +28,30 @@ interface OfferContainerProps {
 }
 
 export function OfferContainer(data: OfferContainerProps) {
-	const section = new SectionBuilder().addTextDisplayComponents(
+	const container = new ContainerBuilder();
+
+	const text =
 		new TextDisplayBuilder().setContent(`**Sprzedający:** ${data.OfferDetails.user} (${data.OfferDetails.user.username})
 **Hosting:** ${data.dbHosting?.website ? ` [${data.dbHosting?.name}](${data.dbHosting?.website})` : data.dbHosting?.name}
-**Kurs:** ${data.OfferDetails.newExchange}/${data.OfferDetails.oldExchange} -> 1zł = ${data.OfferDetails.newExchange}wPLN
+**Kurs:** 1zł -> ${data.OfferDetails.newExchange}wPLN
 **Ilość:** ${data.OfferDetails.count}
 **Metody płatności:** ${data.OfferDetails.methods}
 
 **Dodatkowe informacje:** ${data.OfferDetails.additional_information || "Brak"}
-`),
-	);
+`);
 
-	if (data.dbHosting.icon) {
-		section.setThumbnailAccessory(
-			new ThumbnailBuilder().setURL(data.dbHosting.icon),
+	if (data.dbHosting?.icon) {
+		container.addSectionComponents(
+			new SectionBuilder()
+				.addTextDisplayComponents(text)
+				.setThumbnailAccessory(
+					new ThumbnailBuilder().setURL(data.dbHosting.icon),
+				),
 		);
+	} else {
+		container.addTextDisplayComponents(text);
 	}
-
-	return new ContainerBuilder()
-		.addSectionComponents(section)
+	return container
 		.addSeparatorComponents(
 			new SeparatorBuilder()
 				.setDivider(true)
