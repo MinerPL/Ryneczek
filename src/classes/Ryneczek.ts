@@ -174,42 +174,8 @@ export default class Ryneczek extends Client {
 	}
 
 	async initHostings() {
+		// Other is a default hosting for this table
 		const hostings: HostingsCreateManyInput[] = [
-			{
-				hosting_id: "skillhost",
-				name: "SkillHost",
-				website: "https://skillhost.pl",
-				icon: "https://minerpl.xyz/ryneczek/skillhost.png",
-				emoji: "1009540151590014986",
-			},
-			{
-				hosting_id: "icehost",
-				name: "IceHost",
-				website: "https://icehost.pl",
-				icon: "https://minerpl.xyz/ryneczek/icehost.png",
-				emoji: "1344086774871359488",
-			},
-			{
-				hosting_id: "ivhost",
-				name: "IVhost",
-				website: "https://ivhost.pl/",
-				icon: "https://minerpl.xyz/ryneczek/ivhost.png",
-				emoji: "1371179535349055659",
-			},
-			{
-				hosting_id: "hostgier",
-				name: "HostGier",
-				website: "https://hostgier.pl",
-				icon: "https://minerpl.xyz/ryneczek/hostgier.png",
-				emoji: "848185895710228490",
-			},
-			{
-				hosting_id: "pukawka",
-				name: "Pukawka",
-				website: "https://pukawka.pl",
-				icon: "https://minerpl.xyz/ryneczek/pukawka.png",
-				emoji: "1344743153927979091",
-			},
 			{
 				hosting_id: "other",
 				name: "Inne",
