@@ -22,4 +22,6 @@ WORKDIR /app
 
 COPY --from=builder /app .
 
+RUN npx prisma migrate deploy
+
 CMD ["yarn", "start"]
