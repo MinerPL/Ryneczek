@@ -69,6 +69,14 @@ export async function run(
 		.toJSON();
 
 	const response = await client.useModal(interaction, modal, client.ms("5m"));
+
+	if (!response) {
+		return interaction.reply({
+			content: "Nie udało się odebrać formularza!",
+			flags: 64,
+		});
+	}
+
 	const count = Number(response.fields.getField("count").value);
 	const exchange = Number(response.fields.getField("exchange").value);
 
