@@ -1,10 +1,10 @@
-import Ryneczek from "#client";
 import {
 	AttachmentBuilder,
 	BaseGuildTextChannel,
 	EmbedBuilder,
 	Message,
 } from "discord.js";
+import Ryneczek from "#client";
 
 export async function run(client: Ryneczek, message: Message) {
 	const channel = message.guild.channels.cache.get(

@@ -1,4 +1,3 @@
-import Ryneczek from "#client";
 import { Routes } from "discord-api-types/v10";
 import {
 	ChatInputCommandInteraction,
@@ -6,6 +5,7 @@ import {
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from "discord.js";
+import Ryneczek from "#client";
 
 export const data = {
 	...new SlashCommandBuilder()

@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Hostings {
+  id         Int     @id @default(autoincrement())
+  hosting_id String
+  name       String
+  emoji      String?
+  website    String?
+  icon       String?
+
+  Offerts Offerts[]
+}
+
+model Offerts {
+  id             Int      @id @default(autoincrement())
+  messageId      String
+  channelId      String
+  userId         String
+  hostingId      Int
+  hosting        Hostings @relation(fields: [hostingId], references: [id])
+  email          String?
+  exchange       Int
+  count          Int
+  paymentMethod  String
+  additionalInfo String?
+  verifiedCount  Boolean
+  sold           Boolean
+  Sales          Sales[]
+}
+
+model Opinions {
+  id       Int     @id @default(autoincrement())
+  user     String
+  positive Boolean
+  comment  String?
+  Sales    Sales?  @relation(fields: [saleId], references: [id])
+  saleId   Int?
+}
+
+model Sales {
+  id        Int      @id @default(autoincrement())
+  offertId  Int
+  buyerId   String
+  amount    Int
+  channelId String
+  isDone    Boolean
+  createdAt DateTime @default(now())
+
+  offert   Offerts    @relation(fields: [offertId], references: [id])
+  Opinions Opinions[]
+}

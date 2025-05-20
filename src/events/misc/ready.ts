@@ -1,5 +1,5 @@
-import Ryneczek from "#client";
 import { ActivityType, Routes } from "discord-api-types/v10";
+import Ryneczek from "#client";
 
 export async function run(client: Ryneczek) {
 	console.log(`${client.user.tag} is ready!`);

@@ -4,3 +4,6 @@ node_modules/
 config.json
 dist/
 forum.json
+prisma/generated
+.env
+database.db

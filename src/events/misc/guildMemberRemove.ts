@@ -1,5 +1,5 @@
-import Ryneczek from "#client";
 import { ForumChannel, GuildMember, TextChannel } from "discord.js";
+import Ryneczek from "#client";
 
 export async function run(client: Ryneczek, member: GuildMember) {
 	if (member.user.bot) {

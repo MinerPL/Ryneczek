@@ -1,5 +1,5 @@
-import Ryneczek from "#client";
 import { BaseGuildTextChannel, EmbedBuilder, Message } from "discord.js";
+import Ryneczek from "#client";
 
 export async function run(
 	client: Ryneczek,

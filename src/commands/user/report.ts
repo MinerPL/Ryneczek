@@ -1,4 +1,3 @@
-import Ryneczek from "#client";
 import {
 	ActionRowBuilder,
 	BaseGuildTextChannel,
@@ -12,6 +11,7 @@ import {
 	TextInputBuilder,
 	TextInputStyle,
 } from "discord.js";
+import Ryneczek from "#client";
 
 export const data = {
 	...new SlashCommandBuilder()

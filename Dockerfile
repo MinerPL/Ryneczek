@@ -8,7 +8,13 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
+RUN npx prisma generate
+
+COPY config.example.json config.json
+
 RUN yarn build
+
+RUN rm config.json
 
 FROM node:22-alpine AS runner
 

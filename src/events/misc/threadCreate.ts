@@ -1,17 +1,17 @@
-import Ryneczek from "#client";
 import {
 	ActionRowBuilder,
 	ButtonBuilder,
 	ButtonStyle,
 	ThreadChannel,
 } from "discord.js";
+import Ryneczek from "#client";
 
 const buttonsManager = (thread: ThreadChannel) => {
 	const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
 		new ButtonBuilder()
 			.setLabel("Oznacz jako sprzedane")
 			.setStyle(ButtonStyle.Secondary)
-			.setCustomId("threadCreate_selled"),
+			.setCustomId("threadCreate_sold"),
 		new ButtonBuilder()
 			.setLabel("Zamknij wątek")
 			.setStyle(ButtonStyle.Danger)

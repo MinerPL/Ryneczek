@@ -15,4 +15,7 @@ export interface Config {
 	offerts_category: string;
 	report_channel: string;
 	lockdown_ignored_categories: string[];
+	wpln_forum: string;
+	ticket_category: string;
+	ticket_archive: string;
 }
