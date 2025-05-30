@@ -19,6 +19,7 @@ import { InteractionType } from "#types/Commands";
 import { Config } from "#types/Config";
 import config from "../../config.json" with { type: "json" };
 import HostingsCreateManyInput = Prisma.HostingsCreateManyInput;
+import * as Sentry from "@sentry/node";
 
 const durations = {
 	ms: 1,
@@ -37,6 +38,7 @@ export default class Ryneczek extends Client {
 	interactions: Collection<string, InteractionType>;
 	config: Config;
 	prisma: PrismaClient;
+	Sentry: Sentry.NodeClient;
 
 	constructor() {
 		super({
@@ -63,6 +65,12 @@ export default class Ryneczek extends Client {
 	}
 
 	async init(): Promise<void> {
+		if (process.env.SENTRY_URL !== "") {
+			this.Sentry = Sentry.init({
+				dsn: process.env.SENTRY_URL,
+				normalizeDepth: 10,
+			});
+		}
 		this.prisma = new PrismaClient({
 			log: ["error", "warn"],
 		});
