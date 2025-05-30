@@ -71,10 +71,15 @@ export async function run(
 	const response = await client.useModal(interaction, modal, client.ms("5m"));
 
 	if (!response) {
-		return interaction.reply({
-			content: "Nie udało się odebrać formularza!",
-			flags: 64,
-		});
+		if (interaction.replied) {
+			return;
+		}
+		return interaction
+			.reply({
+				content: "Nie udało się odebrać formularza!",
+				flags: 64,
+			})
+			.catch(() => null);
 	}
 
 	const count = Number(response.fields.getField("count").value);
@@ -194,10 +199,12 @@ export async function run(
 
 	if (!dbOffer) {
 		await message.delete().catch(() => null);
-		return response.followUp({
-			content: "Nie udało się dodać oferty do bazy danych!",
-			flags: 64,
-		});
+		return response
+			.followUp({
+				content: "Nie udało się dodać oferty do bazy danych!",
+				flags: 64,
+			})
+			.catch(() => null);
 	}
 
 	await response.reply({

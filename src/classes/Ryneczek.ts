@@ -151,22 +151,26 @@ export default class Ryneczek extends Client {
 			.values()) {
 			if (channel instanceof ForumChannel) {
 				for (const thread of channel.threads.cache.values()) {
-					const fetched = await thread.messages.fetch({
+					const fetched = await thread.messages
+						.fetch({
+							limit,
+							before,
+							after,
+							around,
+						})
+						.catch(() => null);
+					count += fetched?.size || 0;
+				}
+			} else {
+				const fetched = await (channel as BaseGuildTextChannel).messages
+					.fetch({
 						limit,
 						before,
 						after,
 						around,
-					});
-					count += fetched.size;
-				}
-			} else {
-				const fetched = await (channel as BaseGuildTextChannel).messages.fetch({
-					limit,
-					before,
-					after,
-					around,
-				});
-				count += fetched.size;
+					})
+					.catch(() => null);
+				count += fetched?.size || 0;
 			}
 		}
 

@@ -67,10 +67,15 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	);
 
 	if (!modal) {
-		return interaction.reply({
-			content: "Nie udało się odczytać modala!",
-			flags: 64,
-		});
+		if (interaction.replied) {
+			return;
+		}
+		return interaction
+			.reply({
+				content: "Nie udało się odczytać modala!",
+				flags: 64,
+			})
+			.catch(() => null);
 	}
 
 	const comment =

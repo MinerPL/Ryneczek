@@ -125,10 +125,15 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		);
 
 		if (!modal) {
-			return interaction.reply({
-				content: "Nie udało się odczytać modala!",
-				flags: 64,
-			});
+			if (interaction.replied) {
+				return;
+			}
+			return interaction
+				.reply({
+					content: "Nie udało się odczytać modala!",
+					flags: 64,
+				})
+				.catch(() => null);
 		}
 
 		const count = Number(modal.fields.getField("count").value);
@@ -233,10 +238,15 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		);
 
 		if (!modal) {
-			return interaction.reply({
-				content: "Nie udało się odczytać modala!",
-				flags: 64,
-			});
+			if (interaction.replied) {
+				return;
+			}
+			return interaction
+				.reply({
+					content: "Nie udało się odczytać modala!",
+					flags: 64,
+				})
+				.catch(() => null);
 		}
 
 		const amount = Number(modal.fields.getField("amount").value);
@@ -296,10 +306,12 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			},
 		});
 
-		await modal.reply({
-			content: `Stworzono kanał <#${channel.id}>!`,
-			flags: 64,
-		});
+		await modal
+			.reply({
+				content: `Stworzono kanał <#${channel.id}>!`,
+				flags: 64,
+			})
+			.catch(() => null);
 
 		const container = new ContainerBuilder()
 			.addTextDisplayComponents(
