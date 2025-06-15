@@ -71,6 +71,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			]);
 
 			await interaction.channel.setLocked(true);
+			await interaction.channel.delete();
 		} else {
 			await interaction.message.delete();
 		}
