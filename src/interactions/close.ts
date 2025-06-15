@@ -8,13 +8,24 @@ import {
 import Ryneczek from "#client";
 
 export async function run(client: Ryneczek, interaction: ButtonInteraction) {
+	const offerChannel = await client.prisma.sales.findFirst({
+		where: {
+			channelId: interaction.channel.id,
+		},
+		include: {
+			offert: true,
+		},
+	});
+
 	if (
 		!(interaction.member.roles as GuildMemberRoleManager).cache.has(
 			client.config.admin_role,
-		)
+		) ||
+		offerChannel.offert.userId !== interaction.user.id
 	) {
 		return interaction.reply({
-			content: "Tylko administracja może zamknąć dyskusje!",
+			content:
+				"Nie masz uprawnień do zamknięcia tego kanału. Musisz być administratorem lub właścicielem oferty.",
 			flags: 64,
 		});
 	}
