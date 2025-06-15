@@ -207,8 +207,10 @@ export async function run(
 			.catch(() => null);
 	}
 
-	await response.reply({
-		content: "Utworzono ofertę!",
-		flags: 64,
-	});
+	await response
+		.reply({
+			content: "Utworzono ofertę!",
+			flags: 64,
+		})
+		.catch(() => null);
 }
