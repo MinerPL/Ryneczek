@@ -22,8 +22,12 @@ export async function run(client: Ryneczek, member: GuildMember) {
 					content:
 						"Użytkownik opuścił serwer, wątek został zarchiwizowany oraz zablokowany.",
 				});
-				await thread.setLocked(true);
-				await thread.setArchived(true);
+				if (thread.parent.parentId === client.config.wpln_forum) {
+					await thread.delete();
+				} else {
+					await thread.setLocked(true);
+					await thread.setArchived(true);
+				}
 			}
 		} else {
 			const messages = await (channel as TextChannel).messages.fetch({
