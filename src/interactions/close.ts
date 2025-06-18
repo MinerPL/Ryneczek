@@ -3,7 +3,6 @@ import {
 	ButtonInteraction,
 	GuildMemberRoleManager,
 	GuildTextBasedChannel,
-	TextBasedChannel,
 } from "discord.js";
 import Ryneczek from "#client";
 
@@ -20,7 +19,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	if (
 		!(interaction.member.roles as GuildMemberRoleManager).cache.has(
 			client.config.admin_role,
-		) ||
+		) &&
 		offerChannel.offert.userId !== interaction.user.id
 	) {
 		return interaction.reply({
