@@ -6,4 +6,5 @@ dist/
 forum.json
 prisma/generated
 .env
-database.db
+*.db
+*.sqlite3
