@@ -28,6 +28,14 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		where: {
 			messageId: interaction.message.id,
 		},
+		include: {
+			hosting: {
+				select: {
+					id: true,
+					name: true,
+				}
+			}
+		}
 	});
 
 	if (!offertOwner) {
@@ -317,7 +325,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const container = new ContainerBuilder()
 			.addTextDisplayComponents(
 				new TextDisplayBuilder().setContent(
-					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Ilość:** ${amount}\n**Metoda Płatności:** ${paymentMethod}\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
+					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Hosting:** ${offertOwner.hosting.name}\n**Ilość:** ${amount}\n**Metoda Płatności:** ${paymentMethod}\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
 				),
 			)
 			.addSeparatorComponents(
@@ -332,6 +340,15 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 						.setCustomId("close_ticket")
 						.setStyle(ButtonStyle.Secondary)
 						.setEmoji("🔒"),
+					new ButtonBuilder()
+						.setLabel("Poproś o middlemana")
+						.setCustomId("request_middleman")
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji("🤝"),
+				),
+			)
+			.addActionRowComponents(
+				new ActionRowBuilder<ButtonBuilder>().addComponents(
 					new ButtonBuilder()
 						.setLabel("Oceń pozytywnie")
 						.setCustomId(`opinion_positive_${sale.id}`)
