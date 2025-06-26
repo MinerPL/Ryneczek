@@ -33,9 +33,9 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				select: {
 					id: true,
 					name: true,
-				}
-			}
-		}
+				},
+			},
+		},
 	});
 
 	if (!offertOwner) {
@@ -322,10 +322,12 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			})
 			.catch(() => null);
 
+		const price = (amount / offertOwner.exchange).toFixed(2);
+
 		const container = new ContainerBuilder()
 			.addTextDisplayComponents(
 				new TextDisplayBuilder().setContent(
-					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Hosting:** ${offertOwner.hosting.name}\n**Ilość:** ${amount}\n**Metoda Płatności:** ${paymentMethod}\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
+					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Hosting:** ${offertOwner.hosting.name}\n**Ilość:** ${amount}\n**Metoda Płatności:** ${paymentMethod}\n**Koszt za wybraną ilość wpln:** ${price}zł\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
 				),
 			)
 			.addSeparatorComponents(
