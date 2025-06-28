@@ -31,13 +31,13 @@ export function OfferContainer(data: OfferContainerProps) {
 	const container = new ContainerBuilder();
 
 	const text =
-		new TextDisplayBuilder().setContent(`**Sprzedający:** ${data.OfferDetails.user} (${data.OfferDetails.user.username})
+		new TextDisplayBuilder().setContent(`**Sprzedający:** ${data.OfferDetails?.user ?? "Brak"} (${data.OfferDetails?.user?.username ?? "Brak"})
 **Hosting:** ${data.dbHosting?.website ? ` [${data.dbHosting?.name}](${data.dbHosting?.website})` : data.dbHosting?.name}
-**Kurs:** 1zł -> ${data.OfferDetails.newExchange}wPLN
-**Ilość:** ${data.OfferDetails.count}
-**Metody płatności:** ${data.OfferDetails.methods}
+**Kurs:** 1zł -> ${data.OfferDetails?.newExchange ?? 0}wPLN
+**Ilość:** ${data.OfferDetails?.count ?? 0}
+**Metody płatności:** ${data.OfferDetails?.methods ?? "Brak"}
 
-**Dodatkowe informacje:** ${data.OfferDetails.additional_information || "Brak"}
+**Dodatkowe informacje:** ${data.OfferDetails?.additional_information || "Brak"}
 `);
 
 	if (data.dbHosting?.icon) {

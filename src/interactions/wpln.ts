@@ -161,7 +161,10 @@ export async function run(
 				components: [container],
 				flags: MessageFlags.IsComponentsV2,
 			})
-			.catch(() => null);
+			.catch((e) => {
+				console.log(e);
+				return null;
+			});
 	}
 
 	if (!message) {
