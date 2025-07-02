@@ -27,7 +27,7 @@ const buttonsManager = (thread: ThreadChannel) => {
 export async function run(client: Ryneczek, thread: ThreadChannel) {
 	if (
 		thread.parent.parentId !== client.config.offerts_category ||
-		thread.parent.parentId === client.config.wpln_forum
+		thread.parent.id === client.config.wpln_forum
 	) {
 		return;
 	}

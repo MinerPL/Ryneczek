@@ -3,6 +3,7 @@ import {
 	ButtonInteraction,
 	GuildMemberRoleManager,
 	GuildTextBasedChannel,
+	MessageFlags,
 } from "discord.js";
 import Ryneczek from "#client";
 
@@ -45,6 +46,21 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				offert: true,
 			},
 		});
+
+		if (!sale) {
+			return interaction.reply({
+				content: "Nie znaleziono sprzedaży dla tego kanału!",
+				flags: 64,
+			});
+		}
+
+		for (const message of (
+			await interaction.channel.messages.fetch()
+		).values()) {
+			if (message.flags.has(MessageFlags.IsComponentsV2)) {
+				await message.delete().catch(() => null);
+			}
+		}
 
 		// @ts-expect-error
 		const transcript = await createTranscript(interaction.channel, {
