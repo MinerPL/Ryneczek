@@ -19,6 +19,7 @@ import {
 	TextInputStyle,
 } from "discord.js";
 import Ryneczek from "#client";
+import { CloseOffert } from "#utils/CloseOffert";
 import { OfferContainer } from "#utils/OfferContainer";
 
 export async function run(client: Ryneczek, interaction: ButtonInteraction) {
@@ -71,27 +72,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			content: "Oferta oznaczona jako sprzedana!",
 			flags: 64,
 		});
-		if (interaction.channel.isThread()) {
-			await interaction.channel.setAppliedTags([
-				(interaction.channel.parent as ForumChannel).availableTags.find(
-					(tag) => tag.name?.toLowerCase() === "sprzedane",
-				).id,
-			]);
 
-			await interaction.channel.setLocked(true);
-			await interaction.channel.delete();
-		} else {
-			await interaction.message.delete();
-		}
-
-		return client.prisma.offerts.update({
-			where: {
-				id: offertOwner.id,
-			},
-			data: {
-				sold: true,
-			},
-		});
+		await CloseOffert(client, interaction.channel, offertOwner);
 	} else if (action === "change") {
 		const hosting = await client.prisma.hostings.findFirst({
 			where: {

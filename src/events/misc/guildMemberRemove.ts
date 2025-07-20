@@ -1,5 +1,6 @@
 import { ForumChannel, GuildMember, TextChannel } from "discord.js";
 import Ryneczek from "#client";
+import { CloseOffert } from "#utils/CloseOffert";
 
 export async function run(client: Ryneczek, member: GuildMember) {
 	if (member.user.bot) {
@@ -36,6 +37,19 @@ export async function run(client: Ryneczek, member: GuildMember) {
 			await (channel as TextChannel).bulkDelete(
 				messages.filter((message) => message.author.id === member.id),
 			);
+		}
+	}
+
+	const userOfferts = await client.prisma.offerts.findMany({
+		where: {
+			userId: member.user.id,
+		},
+	});
+
+	if (userOfferts.length) {
+		for (const offert of userOfferts) {
+			const channel = client.channels.cache.get(offert.channelId);
+			await CloseOffert(client, channel, offert);
 		}
 	}
 }

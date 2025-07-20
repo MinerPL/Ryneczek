@@ -30,7 +30,7 @@ model Offerts {
   hostingId      Int
   hosting        Hostings @relation(fields: [hostingId], references: [id])
   email          String?
-  exchange       Int
+  exchange       Float
   count          Int
   paymentMethod  String
   additionalInfo String?

@@ -65,7 +65,7 @@ export async function run(
 
 	const reason = modal.fields.getTextInputValue("reason");
 
-	let day: string = String(new Date().getDay());
+	let day: string = String(new Date().getDate());
 	let month: string = String(new Date().getMonth() + 1);
 	const year: string = String(new Date().getFullYear());
 
