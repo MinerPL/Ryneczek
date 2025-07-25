@@ -57,6 +57,16 @@ export function OfferContainer(data: OfferContainerProps) {
 				.setDivider(true)
 				.setSpacing(SeparatorSpacingSize.Small),
 		)
+		.addTextDisplayComponents(
+			new TextDisplayBuilder().setContent(
+				"**Pamiętaj!** Jedyną bezpieczną metodą dokonywania transakcji jest przycisk `Chcę kupić!`. Nie ufaj nikomu kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji, zapytaj moderacji o opcje middleman!",
+			),
+		)
+		.addSeparatorComponents(
+			new SeparatorBuilder()
+				.setDivider(true)
+				.setSpacing(SeparatorSpacingSize.Small),
+		)
 		.addActionRowComponents(
 			new ActionRowBuilder<ButtonBuilder>().addComponents(
 				new ButtonBuilder()

@@ -81,6 +81,21 @@ export default class Ryneczek extends Client {
 		this.interactions = await new InteractionHandler(this).loadInteractions();
 
 		new EventHandler(this).loadEvents().then(() => null);
+
+		process.on("unhandledRejection", (reason) => {
+			if (this.Sentry) {
+				this.Sentry.captureException(reason);
+			}
+
+			console.error("Unhandled Rejection reason:", reason);
+		});
+		process.on("uncaughtException", (error) => {
+			if (this.Sentry) {
+				this.Sentry.captureException(error);
+			}
+
+			console.error("Uncaught Exception:", error);
+		});
 	}
 
 	ms(time = undefined): number {
