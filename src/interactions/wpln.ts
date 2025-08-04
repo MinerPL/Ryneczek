@@ -27,9 +27,29 @@ export async function run(
 		});
 	}
 
+	const userOfferts = await client.prisma.offerts.findMany({
+		where: {
+			userId: interaction.user.id,
+			sold: false,
+		},
+		include: {
+			hosting: true,
+		},
+	});
+
+	if (userOfferts.length) {
+		return interaction.reply({
+			content: `Masz już aktywne oferty na tym hostingu! Przed dodaniem nowej oferty oznacz pozostałe jako sprzedane.
+Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")}`,
+			flags: 64,
+		});
+	}
+
+	const currentDate = new Date();
+
 	const modal = new ModalBuilder()
 		.setTitle(`Oferta ${hosting}`)
-		.setCustomId(`offer_${hosting}`)
+		.setCustomId(`offer_${hosting}_${currentDate.getTime()}`)
 		.addComponents(
 			new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
 				new TextInputBuilder()
@@ -179,7 +199,7 @@ export async function run(
 			data: {
 				userId: response.user.id,
 				messageId: message.id,
-				channelId: channel.id,
+				channelId: channel.isThreadOnly() ? message.id : channel.id,
 				hostingId: dbHosting.id,
 				exchange: newExchange,
 				count: Number(response.fields.getField("count").value),

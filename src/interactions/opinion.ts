@@ -45,9 +45,11 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		});
 	}
 
+	const currentDate = new Date();
+
 	const modalBuilder = new ModalBuilder()
 		.setTitle("Uzasadnij swoją opinię")
-		.setCustomId("opinion2_comment")
+		.setCustomId(`opinion2_comment_${currentDate.getTime()}`)
 		.addComponents(
 			new ActionRowBuilder<TextInputBuilder>().addComponents(
 				new TextInputBuilder()

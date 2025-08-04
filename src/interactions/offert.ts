@@ -199,9 +199,11 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			});
 		}
 
+		const currentDate = new Date();
+
 		const modalBuilder = new ModalBuilder()
 			.setTitle("Kupno")
-			.setCustomId("buy_modal")
+			.setCustomId(`buy_modal_${currentDate.getTime()}`)
 			.addComponents(
 				new ActionRowBuilder<TextInputBuilder>().addComponents(
 					new TextInputBuilder()
