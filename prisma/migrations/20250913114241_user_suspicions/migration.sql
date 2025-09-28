@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "Suspicions" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "userId" TEXT NOT NULL,
+    "reason" TEXT NOT NULL,
+    "adminId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
