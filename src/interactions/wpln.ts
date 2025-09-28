@@ -1,6 +1,7 @@
 import {
 	ActionRowBuilder,
 	AnySelectMenuInteraction,
+	ContainerBuilder,
 	ForumThreadChannel,
 	GuildChannel,
 	GuildTextBasedChannel,
@@ -8,6 +9,9 @@ import {
 	MessageFlags,
 	ModalActionRowComponentBuilder,
 	ModalBuilder,
+	SeparatorBuilder,
+	SeparatorSpacingSize,
+	TextDisplayBuilder,
 	TextInputBuilder,
 	TextInputStyle,
 } from "discord.js";
@@ -135,6 +139,12 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 		});
 	}
 
+	const susUser = await client.prisma.suspicions.findFirst({
+		where: {
+			userId: interaction.user.id,
+		},
+	});
+
 	const container = OfferContainer({
 		dbHosting: dbHosting,
 		OfferDetails: {
@@ -174,6 +184,27 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 			});
 		if (message) {
 			await (message as ForumThreadChannel).members.add(response.user.id);
+			if (susUser) {
+				await (message as ForumThreadChannel)
+					.send({
+						components: [
+							new ContainerBuilder()
+								.addTextDisplayComponents(
+									new TextDisplayBuilder().setContent(`# Podejrzany sprzedawca\nUwaga, <@${susUser.userId}> został oznaczony jako podejrzany sprzedawca. Dla bezpieczeństwa kupującego, wszelkie płatności powinny odbywać się za pośrednictwem middlemana.`),
+								)
+								.addSeparatorComponents(
+									new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true),
+								)
+								.addTextDisplayComponents(
+									new TextDisplayBuilder().setContent("**Pamiętaj!** Usługa middlemana jest w pełni darmowa oraz jest realizowana przez administracje tego serwera na prywatnym kanale, zapewniając bezpieczeństwo dokonywanej transakcji."),
+								),
+						],
+						flags: MessageFlags.IsComponentsV2,
+					})
+					.catch((e) => {
+						console.log(e);
+					});
+			}
 		}
 	} else {
 		message = await (channel as GuildTextBasedChannel)
@@ -185,6 +216,27 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 				console.log(e);
 				return null;
 			});
+		if (susUser) {
+			await (channel as GuildTextBasedChannel)
+				.send({
+					components: [
+						new ContainerBuilder()
+							.addTextDisplayComponents(
+								new TextDisplayBuilder().setContent(`# Podejrzany sprzedawca\nUwaga, <@${susUser.userId}> został oznaczony jako podejrzany sprzedawca. Dla bezpieczeństwa kupującego, wszelkie płatności powinny odbywać się za pośrednictwem middlemana.`),
+							)
+							.addSeparatorComponents(
+								new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true),
+							)
+							.addTextDisplayComponents(
+								new TextDisplayBuilder().setContent("**Pamiętaj!** Usługa middlemana jest w pełni darmowa oraz jest realizowana przez administracje tego serwera na prywatnym kanale, zapewniając bezpieczeństwo dokonywanej transakcji."),
+							),
+					],
+					flags: MessageFlags.IsComponentsV2,
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		}
 	}
 
 	if (!message) {

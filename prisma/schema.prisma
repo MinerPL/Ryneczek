@@ -60,3 +60,11 @@ model Sales {
   offert   Offerts    @relation(fields: [offertId], references: [id])
   Opinions Opinions[]
 }
+
+model Suspicions {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  reason    String
+  adminId   String
+  createdAt DateTime @default(now())
+}

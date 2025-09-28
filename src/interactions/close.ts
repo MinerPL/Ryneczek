@@ -54,13 +54,13 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			});
 		}
 
-		for (const message of (
-			await interaction.channel.messages.fetch()
-		).values()) {
-			if (message.flags.has(MessageFlags.IsComponentsV2)) {
-				await message.delete().catch(() => null);
-			}
-		}
+		// for (const message of (
+		// 	await interaction.channel.messages.fetch()
+		// ).values()) {
+		// 	if (message.flags.has(MessageFlags.IsComponentsV2)) {
+		// 		await message.delete().catch(() => null);
+		// 	}
+		// }
 
 		// @ts-expect-error
 		const transcript = await createTranscript(interaction.channel, {
