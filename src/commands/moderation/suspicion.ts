@@ -10,6 +10,7 @@ import {
 	SlashCommandBuilder,
 	TextDisplayBuilder,
 	TextInputBuilder,
+	TextInputStyle,
 } from "discord.js";
 import Ryneczek from "#client";
 
@@ -133,7 +134,7 @@ export async function run(
 						new TextInputBuilder()
 							.setCustomId("reason")
 							.setLabel("Podaj powód")
-							.setStyle(1)
+							.setStyle(TextInputStyle.Short)
 							.setMinLength(10)
 							.setMaxLength(400)
 							.setPlaceholder("Podaj powód dodania użytkownika do listy podejrzanych")

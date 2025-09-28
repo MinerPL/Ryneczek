@@ -54,6 +54,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			});
 		}
 
+		// Deleted for now, since discord-html-transcripts already supports components v2
 		// for (const message of (
 		// 	await interaction.channel.messages.fetch()
 		// ).values()) {
