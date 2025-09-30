@@ -159,7 +159,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	});
 	const susUserContainer = new ContainerBuilder()
 		.addTextDisplayComponents(
-			new TextDisplayBuilder().setContent(`# Podejrzany sprzedawca\nUwaga, <@${susUser.userId}> został oznaczony jako podejrzany sprzedawca. Dla bezpieczeństwa kupującego, wszelkie płatności powinny odbywać się za pośrednictwem middlemana.`),
+			new TextDisplayBuilder().setContent(`# Podejrzany sprzedawca\nUwaga, <@${susUser?.userId}> został oznaczony jako podejrzany sprzedawca. Dla bezpieczeństwa kupującego, wszelkie płatności powinny odbywać się za pośrednictwem middlemana.`),
 		)
 		.addSeparatorComponents(
 			new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true),
