@@ -78,7 +78,7 @@ export async function run(
 			if (!offerChannel) {
 				return interaction.reply({
 					content: "To nie jest kanał sprzedaży!",
-					ephemeral: true,
+					flags: 64,
 				});
 			}
 			await interaction.channel.permissionsFor(user.id).add(PermissionsBitField.Flags.ViewChannel);
@@ -87,7 +87,7 @@ export async function run(
 			}).then(msg => setTimeout(() => msg.delete().catch(() => null), 500));
 			return interaction.reply({
 				content: `Pomyślnie przywołano <@${user.id}>.`,
-				ephemeral: true,
+				flags: 64,
 			});
 		}
 		case "info": {
@@ -100,7 +100,7 @@ export async function run(
 			if (!suspicions) {
 				return interaction.reply({
 					content: "Ten użytkownik nie jest na liście podejrzanych.",
-					ephemeral: true,
+					flags: 64,
 				});
 			}
 			return interaction.reply({
@@ -109,8 +109,7 @@ export async function run(
 						new TextDisplayBuilder().setContent(`# Informacje o użytkowniku\nUżytkownik <@${user.id}> znajduje się na liście podejrzanych sprzedawców z powodu \`${suspicions.reason}\`.\n> Dodany <t:${Math.floor(suspicions.createdAt.getTime() / 1000)}:F> przez <@${suspicions.adminId}>`)
 					)
 				],
-				flags: [MessageFlags.IsComponentsV2],
-				ephemeral: true,
+				flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
 			});
 		}
 		case "add": {
@@ -123,7 +122,7 @@ export async function run(
 			if (existing) {
 				return interaction.reply({
 					content: "Ten użytkownik jest już na liście podejrzanych.",
-					ephemeral: true,
+					flags: 64,
 				});
 			}
 			const modal = new ModalBuilder()
@@ -159,7 +158,7 @@ export async function run(
 			});
 			return modalSubmit.reply({
 				content: `Pomyślnie dodano <@${user.id}> do listy podejrzanych.`,
-				ephemeral: true,
+				flags: 64,
 			});
 		}
 		case "remove": {
@@ -172,7 +171,7 @@ export async function run(
 			if (!existing) {
 				return interaction.reply({
 					content: "Ten użytkownik nie jest na liście podejrzanych.",
-					ephemeral: true,
+					flags: 64,
 				});
 			}
 			await client.prisma.suspicions.deleteMany({
@@ -182,13 +181,13 @@ export async function run(
 			});
 			return interaction.reply({
 				content: `Pomyślnie usunięto <@${user.id}> z listy podejrzanych.`,
-				ephemeral: true,
+				flags: 64,
 			});
 		}
 		default: {
 			return interaction.reply({
 				content: "Nieznana podkomenda.",
-				ephemeral: true,
+				flags: 64,
 			});
 		}
 	}
