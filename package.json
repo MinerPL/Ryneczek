@@ -25,16 +25,16 @@
 		"#types/*": "./dist/types/*.js"
 	},
 	"dependencies": {
-		"@prisma/client": "^6.16.2",
-		"@sentry/node": "^10.15.0",
-		"discord-api-types": "^0.38.26",
+		"@prisma/client": "^6.18.0",
+		"@sentry/node": "^10.22.0",
+		"discord-api-types": "^0.38.31",
 		"discord-html-transcripts": "^3.3.0",
-		"discord.js": "^14.22.1",
-		"undici": "^7.10.0"
+		"discord.js": "^14.24.0",
+		"undici": "^7.16.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.2.4",
-		"prisma": "^6.16.2",
-		"typescript": "^5.9.2"
+		"@biomejs/biome": "^2.3.0",
+		"prisma": "^6.18.0",
+		"typescript": "^5.9.3"
 	}
 }
