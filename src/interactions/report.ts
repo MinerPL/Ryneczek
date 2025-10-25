@@ -1,6 +1,8 @@
 import {
 	ButtonInteraction,
 	EmbedBuilder,
+	ForumChannel,
+	ForumThreadChannel,
 	GuildMemberRoleManager,
 } from "discord.js";
 import Ryneczek from "#client";
@@ -26,20 +28,35 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	const embed = EmbedBuilder.from(interaction.message.embeds[0]);
 
 	if (action === "accept") {
-		embed.setColor("#87b55b").setFooter({
-			text: "Zaakceptowane przez " + interaction.user.tag,
-		});
+		interaction.channel.send({
+			content: `Zakceptowane przez: <@${interaction.user.id}> (${interaction.user.username})`,
+		})
 		await interaction.reply({
 			content:
 				"Zgłoszenie zostało zaakceptowane! W celu ukarania użytkownika użyj `ban` znajdującego się w context menu (PPM na użytkownika).",
 			flags: 64,
 		});
+
+		if(interaction.channel.parent instanceof ForumChannel) {
+			const acceptTag = interaction.channel.parent.availableTags.find(tag => tag.emoji.name === "✅");
+			if(acceptTag) {
+				await (interaction.channel as ForumThreadChannel).edit({
+					appliedTags: [acceptTag.id],
+				});
+			}
+		}
 	} else {
-		embed.setColor("#b55b5b").setFooter({
-			text: "Odrzucone przez " + interaction.user.tag,
+		interaction.channel.send({
+			content: `Odrzucone przez: <@${interaction.user.id}> (${interaction.user.username})`,
 		});
+		if(interaction.channel.parent instanceof ForumChannel) {
+			const rejectTag = interaction.channel.parent.availableTags.find(tag => tag.emoji.name === "❌");
+			if(rejectTag) {
+				await (interaction.channel as ForumThreadChannel).edit({
+					appliedTags: [rejectTag.id],
+				});
+			}
+		}
 		await interaction.deferUpdate();
 	}
-
-	await interaction.message.edit({ embeds: [embed], components: [] });
 }
