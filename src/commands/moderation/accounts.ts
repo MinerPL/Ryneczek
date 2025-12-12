@@ -21,6 +21,7 @@ export const data = {
 				.addChoices(
 					{ name: "SkillHost", value: "skillhost" },
 					{ name: "IceHost", value: "icehost" },
+					{ name: "IVHost", value: "ivhost" },
 				),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
@@ -30,6 +31,7 @@ export const data = {
 const accounts = {
 	skillhost: "12556",
 	icehost: "ryneczek@minerpl.xyz",
+	ivhost: "3977",
 };
 
 export async function run(
