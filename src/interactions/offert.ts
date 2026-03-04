@@ -221,6 +221,14 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 						.setCustomId("payment_method")
 						.setRequired(true),
 				),
+				new ActionRowBuilder<TextInputBuilder>().addComponents(
+					new TextInputBuilder()
+						.setLabel("Email Lub ID konta kupującego")
+						.setPlaceholder("np. contact@minerpl.xyz lub 2137")
+						.setStyle(TextInputStyle.Short)
+						.setCustomId("buyer_details")
+						.setRequired(true),
+					),
 			)
 			.toJSON();
 
@@ -307,11 +315,12 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			.catch(() => null);
 
 		const price = (amount / offertOwner.exchange).toFixed(2);
+		const buyersDetails = modal.fields.getTextInputValue("buyer_details")?.trim() || "Brak";
 
 		const container = new ContainerBuilder()
 			.addTextDisplayComponents(
 				new TextDisplayBuilder().setContent(
-					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Hosting:** ${offertOwner.hosting.name}\n**Ilość:** ${amount}\n**Metoda Płatności:** ${paymentMethod}\n**Koszt za wybraną ilość wpln:** ${price}zł\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
+					`Witaj ${interaction.user}! Na tym kanale możesz porozmawiać z właścicielem oferty <@${offertOwner.userId}> o szczegółach zakupu.\n\n**Hosting:** ${offertOwner.hosting.name}\n**Ilość:** ${amount}\n**Metoda Płatności:** ${paymentMethod}\n**Koszt za wybraną ilość wpln:** ${price}zł\n**Email/ID Kupującego:** ||${buyersDetails}||\n\n**Pamiętaj!** Jest to jedyne bezpieczne miejsce do dokonywania zakupów. Nie ufaj nikomu, kto prosi o kontakt na privie! Jeżeli nie jesteś pewien transakcji zapytaj moderacji o opcje "middleman"!\n\nPrzed zamknięciem ticketa wystaw opinię!`,
 				),
 			)
 			.addSeparatorComponents(
