@@ -15,6 +15,7 @@ import { CommandHandler } from "#handlers/CommandHandler";
 import EventHandler from "#handlers/EventHandler";
 import { InteractionHandler } from "#handlers/InteractionHandler";
 import { Prisma, PrismaClient } from "#prisma";
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { InteractionType } from "#types/Commands";
 import { Config } from "#types/Config";
 import config from "../../config.json" with { type: "json" };
@@ -71,9 +72,11 @@ export default class Ryneczek extends Client {
 				normalizeDepth: 10,
 			});
 		}
+
 		this.prisma = new PrismaClient({
-			log: ["error", "warn"],
+			adapter: new PrismaBetterSqlite3({ url: process.env.DATABASE_URL}),
 		});
+
 		await this.initHostings();
 		this.login(this.config.token).then(() => null);
 
