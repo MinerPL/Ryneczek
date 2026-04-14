@@ -2,7 +2,8 @@ import { Channel, ForumChannel } from "discord.js";
 import Ryneczek from "#client";
 
 export async function CloseOffert(client: Ryneczek, channel: Channel, db) {
-	if (channel.isThread()) {
+	if (!channel) return;
+	if (channel?.isThread()) {
 		await channel.setAppliedTags([
 			(channel.parent as ForumChannel).availableTags.find(
 				(tag) => tag.name?.toLowerCase() === "sprzedane",
@@ -10,7 +11,7 @@ export async function CloseOffert(client: Ryneczek, channel: Channel, db) {
 		]);
 
 		await channel.setLocked(true);
-		await channel.delete();
+		await channel.delete().catch(() => null);
 	}
 
 	return client.prisma.offerts.update({

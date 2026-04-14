@@ -47,7 +47,7 @@ export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 		await thread.edit({
 			archived: true,
 			locked: true,
-			appliedTags: [...thread.appliedTags, soldTag.id],
+			appliedTags: soldTag ? [...thread?.appliedTags, soldTag.id] : thread.appliedTags,
 		});
 	} else if (action === "close") {
 		await interaction.reply({

@@ -37,12 +37,12 @@ export async function run(
 			},
 			{
 				name: "Stara treść wiadomości",
-				value: oldMessage.content || "Brak treści",
+				value: oldMessage.content.slice(0, 1024) || "Brak treści",
 				inline: false,
 			},
 			{
 				name: "Nowa treść wiadomości",
-				value: newMessage.content || "Brak treści",
+				value: newMessage.content.slice(0, 1024) || "Brak treści",
 				inline: false,
 			},
 		])

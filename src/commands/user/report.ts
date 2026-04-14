@@ -19,7 +19,7 @@ import {
 	SlashCommandBuilder,
 	TextDisplayBuilder,
 	TextInputBuilder,
-	TextInputStyle,
+	TextInputStyle, User,
 } from "discord.js";
 import Ryneczek from "#client";
 
@@ -41,9 +41,9 @@ export async function run(
 	client: Ryneczek,
 	interaction: ChatInputCommandInteraction,
 ) {
-	const user = interaction.options.getMember("użytkownik") as GuildMember;
+	const user = interaction.options.getUser("użytkownik") as User;
 
-	if (user.user.id === interaction.user.id) {
+	if (user?.id === interaction?.user?.id) {
 		return interaction.reply({
 			content: "Nie możesz zgłosić samego siebie!",
 			flags: 64,
@@ -113,7 +113,7 @@ export async function run(
 
 	const galleryItems: MediaGalleryItemBuilder[] = [];
 
-	for(const attachment of attachments.values()) {
+	for(const attachment of attachments?.values() ?? []) {
 		const contentType = attachment.contentType.split("/")[0];
 		if(contentType !== "image" && contentType !== "video") continue;
 
@@ -126,7 +126,7 @@ export async function run(
 
 	const container = new ContainerBuilder()
             .addTextDisplayComponents(
-                new TextDisplayBuilder().setContent(`## Zgłoszenie <@${user.id}> (${user.user.username}, ${user.id})`),
+                new TextDisplayBuilder().setContent(`## Zgłoszenie <@${user.id}> (${user.username}, ${user.id})`),
             )
             .addSeparatorComponents(
                 new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true),
@@ -174,9 +174,9 @@ export async function run(
 
 	if(channel instanceof ForumChannel) {
 		await channel.threads.create({
-			name: `Zgłoszenie - ${user.user.username}`,
+			name: `Zgłoszenie - ${user.username}`,
 			autoArchiveDuration: 1440,
-			reason: `Zgłoszenie użytkownika ${user.user.username} (${user.id})`,
+			reason: `Zgłoszenie użytkownika ${user.username} (${user.id})`,
 			message: {
 				flags: MessageFlags.IsComponentsV2,
 				components: [container, components],

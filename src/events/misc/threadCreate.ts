@@ -21,7 +21,7 @@ const buttonsManager = (thread: ThreadChannel) => {
 	return thread.send({
 		content: "Menu zarządzania wątkiem.",
 		components: [buttons],
-	});
+	}).catch(() => null);
 };
 
 export async function run(client: Ryneczek, thread: ThreadChannel) {
