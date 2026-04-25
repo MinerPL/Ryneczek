@@ -146,7 +146,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 					),
 				new ActionRowBuilder<ButtonBuilder>().addComponents(
 					new ButtonBuilder()
-						.setLabel("Stworz zgloszenie")
+						.setLabel("Stwórz zgłoszenie")
 						.setStyle(ButtonStyle.Danger)
 						.setCustomId(
 							`report_create_${sale.offert.userId}_${sale.buyerId}`,
