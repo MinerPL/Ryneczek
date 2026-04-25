@@ -320,8 +320,8 @@ async function ensureCaseChannels(
 				reporterId,
 				reportedChannelId: nextReportedChannelId,
 				reporterChannelId: nextReporterChannelId,
-			}
-		})
+			},
+		});
 
 		return {
 			reportedChannel: reportedChannel?.type === ChannelType.GuildText ? reportedChannel : null,
