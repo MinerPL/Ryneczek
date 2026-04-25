@@ -51,7 +51,7 @@ model Sales {
   id        Int      @id @default(autoincrement())
   offertId  Int
   buyerId   String
-  amount    Int
+  amount    Float
   channelId String
   isDone    Boolean
   createdAt DateTime @default(now())
@@ -67,3 +67,18 @@ model Suspicions {
   adminId   String
   createdAt DateTime @default(now())
 }
+
+model ReportCases {
+  id                Int      @id @default(autoincrement())
+  caseRef           String   @unique
+  logChannelId      String
+  reportedId        String
+  reporterId        String
+  reportedChannelId String?  @unique
+  reporterChannelId String?  @unique
+  closed            Boolean  @default(false)
+  closedBy          String?
+  createdAt         DateTime @default(now())
+  closedAt          DateTime?
+}
+
