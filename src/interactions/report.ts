@@ -407,7 +407,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		)
 	) {
 		return interaction.reply({
-			content: "Nie możesz zarządzaj zgłoszeniami!",
+			content: "Nie możesz zarządzać zgłoszeniami!",
 			flags: 64,
 		});
 	}
@@ -504,6 +504,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const reportedId = interaction.customId.split("_")[4];
 		const reporterId = interaction.customId.split("_")[5];
 
+		await interaction.deferReply({ flags: 64 });
+
 		const channels = await ensureCaseChannels(
 			client,
 			interaction,
@@ -514,9 +516,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		);
 
 		if (!channels) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: "Nie udało się utworzyć lub pobrać kanałów sprawy.",
-				flags: 64,
 			});
 		}
 
@@ -526,21 +527,21 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				: channels.reporterChannel;
 
 		if (!targetChannel) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: "Nie udało się znaleźć docelowego kanału sprawy.",
-				flags: 64,
 			});
 		}
 
-		return interaction.reply({
+		return interaction.editReply({
 			content: `Kanał sprawy: <#${targetChannel.id}>`,
-			flags: 64,
 		});
 	}
 
 	if (!["accept", "reject"].includes(action)) {
 		return;
 	}
+
+	await interaction.deferReply({ flags: 64 });
 
 	await removeDecisionButtons(interaction);
 
@@ -550,9 +551,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 	if (action === "accept") {
 		if (!interaction.guild) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: "Nie udało się pobrać serwera dla tej interakcji.",
-				flags: 64,
 			});
 		}
 
@@ -565,10 +565,9 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		);
 
 		if (!channels) {
-			return interaction.reply({
+			return interaction.editReply({
 				content:
 					"Nie udało się utworzyć kanałów sprawy lub zapisać danych w bazie.",
-				flags: 64,
 			});
 		}
 
@@ -579,10 +578,9 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				`- Zgłaszający: <#${channels.reporterChannel.id}>`,
 		});
 
-		await interaction.reply({
+		await interaction.editReply({
 			content:
 				"Zgłoszenie zostało zaakceptowane. Utworzono oddzielne kanały rozmowy i ukryto przyciski decyzji.",
-			flags: 64,
 		});
 
 		if (interaction.channel.parent instanceof ForumChannel) {
@@ -609,9 +607,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				});
 			}
 		}
-		await interaction.reply({
+		await interaction.editReply({
 			content: "Zgłoszenie zostało odrzucone, a przyciski decyzji usunięto.",
-			flags: 64,
 		});
 	}
 }

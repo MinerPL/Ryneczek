@@ -177,9 +177,14 @@ export async function publishReport({
 			),
 	);
 
-	const channel = client.channels.cache.get(
-		client.config.report_channel,
-	) as BaseGuildTextChannel | ForumChannel;
+	const channel = (await client.channels
+		.fetch(client.config.report_channel)
+		.catch(() => null)) as BaseGuildTextChannel | ForumChannel | null;
+
+	if (!channel) {
+		console.error(`[reportFlow] Failed to fetch report channel: ${client.config.report_channel}`);
+		return;
+	}
 
 	if (channel instanceof ForumChannel) {
 		await channel.threads.create({
