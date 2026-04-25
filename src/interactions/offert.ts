@@ -301,7 +301,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			data: {
 				offertId: offertOwner.id,
 				buyerId: interaction.user.id,
-				amount: 0,
+				amount: amount,
 				channelId: channel.id,
 				isDone: false,
 			},
