@@ -27,7 +27,6 @@ export default class ImapHandler {
       this.imap.on('exists', async (data) => {
         if (!this.imap.mailbox) return;
         const newCount = data.count - data.prevCount;
-        console.log(data.count, data.prevCount, newCount);
         const messages = await this.imap.fetchAll(`${this.imap.mailbox.exists - newCount + 1}:*`, { envelope: true, source: true });
         for (const message of messages) {
           if (!message.source) continue;
