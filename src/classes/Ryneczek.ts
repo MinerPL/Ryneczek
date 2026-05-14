@@ -21,6 +21,7 @@ import { Config } from "#types/Config";
 import config from "../../config.json" with { type: "json" };
 import HostingsCreateManyInput = Prisma.HostingsCreateManyInput;
 import * as Sentry from "@sentry/node";
+import ImapHandler from "#handlers/ImapHandler";
 
 const durations = {
 	ms: 1,
@@ -83,6 +84,7 @@ export default class Ryneczek extends Client {
 		this.commands = await new CommandHandler(this).loadCommands();
 		this.interactions = await new InteractionHandler(this).loadInteractions();
 
+    new ImapHandler(this).start().then(() => null);
 		new EventHandler(this).loadEvents().then(() => null);
 
 		process.on("unhandledRejection", (reason) => {

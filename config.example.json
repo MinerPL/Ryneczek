@@ -11,5 +11,13 @@
 	"lockdown_ignored_categories": [],
 	"wpln_forum": "",
 	"ticket_category": "",
-	"ticket_archive": ""
+	"ticket_archive": "",
+    "imap": {
+      "user": "",
+      "pass": "",
+      "host": "",
+      "port": 993,
+      "tls": true
+    },
+    "notify_channel": ""
 }
