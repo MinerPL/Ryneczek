@@ -27,21 +27,26 @@ export default class ImapHandler {
 				return;
 			}
 			this.imap.on("exists", async (data) => {
-				if (!this.imap.mailbox) {
-					return;
-				}
-				const newCount = data.count - data.prevCount;
-				const messages = await this.imap.fetchAll(
-					`${this.imap.mailbox.exists - newCount + 1}:*`,
-					{ envelope: true, source: true },
-				);
-				for (const message of messages) {
-					if (!message.source) {
-						continue;
-					}
-					const parsedMail = await simpleParser(message.source);
-					this.client.emit("mail", parsedMail);
-				}
+        const lock = await this.imap.getMailboxLock("INBOX");
+				try {
+          if (!this.imap.mailbox) {
+            return;
+          }
+          const newCount = data.count - data.prevCount;
+          const messages = await this.imap.fetchAll(
+            `${this.imap.mailbox.exists - newCount + 1}:*`,
+            { envelope: true, source: true },
+          );
+          for (const message of messages) {
+            if (!message.source) {
+              continue;
+            }
+            const parsedMail = await simpleParser(message.source);
+            this.client.emit("mail", parsedMail);
+          }
+        } finally {
+          lock.release();
+        }
 			});
 		} finally {
 			lock.release();
