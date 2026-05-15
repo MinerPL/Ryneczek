@@ -7,7 +7,7 @@ export default abstract class IceHost {
     const content = mail.html;
     if (!content) throw new Error("Received new IceHost mail with no content");
     const transferUrl = content.match(/https:\/\/dash\.icehost\.pl\/api\/client\/shop\/payment\/transfer-wpln\/[0-9a-f-]+\/confirm\?signature=[0-9a-f]+/)?.[0];
-    if (!transferUrl) throw new Error("Failed to parse SkillHost transfer data from notification");
+    if (!transferUrl) throw new Error("Failed to parse IceHost transfer data from notification");
     return {
       provider: "icehost",
       account: "unknown",

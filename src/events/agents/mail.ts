@@ -5,18 +5,17 @@ import IceHost from "#agents/icehost";
 import {TransferData} from "#types/Agents";
 import {
   ActionRowBuilder,
-  BaseGuildTextChannel,
   ButtonBuilder,
   ButtonStyle,
   ContainerBuilder,
   MessageFlags,
-  SectionBuilder,
+  SectionBuilder, TextChannel,
   TextDisplayBuilder,
   ThumbnailBuilder
 } from "discord.js";
 
 export async function run(client: Ryneczek, mail: ParsedMail) {
-  let transferData: TransferData;
+  let transferData: TransferData | undefined;
   switch (mail.from?.text.toLowerCase()) {
     case 'SkillHost@skillhost.pl'.toLowerCase():
       transferData = await SkillHost.parseMail(mail);
@@ -28,12 +27,11 @@ export async function run(client: Ryneczek, mail: ParsedMail) {
 
   if (!transferData) return;
 
-  const notifyChannel = (await client.channels
-    .fetch(client.config.notify_channel)
-    .catch(() => null)) as BaseGuildTextChannel | null;
+  const notifyChannel = client.channels.cache
+    .get(client.config.notify_channel) as TextChannel;
 
   const textDisplay = new TextDisplayBuilder()
-    .setContent(`Nowy transfer środów **${transferData.provider.toUpperCase()}**`)
+    .setContent(`Nowy transfer środków **${transferData.provider.toUpperCase()}**`)
   const container = new ContainerBuilder()
     .addSectionComponents(
       new SectionBuilder()

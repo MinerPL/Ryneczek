@@ -84,8 +84,8 @@ export default class Ryneczek extends Client {
 		this.commands = await new CommandHandler(this).loadCommands();
 		this.interactions = await new InteractionHandler(this).loadInteractions();
 
+    new EventHandler(this).loadEvents().then(() => null);
     new ImapHandler(this).start().then(() => null);
-		new EventHandler(this).loadEvents().then(() => null);
 
 		process.on("unhandledRejection", (reason) => {
 			if (this.Sentry) {
