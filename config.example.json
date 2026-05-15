@@ -13,11 +13,11 @@
 	"ticket_category": "",
 	"ticket_archive": "",
     "imap": {
-      "user": "",
-      "pass": "",
-      "host": "",
-      "port": 993,
-      "tls": true
+        "user": "",
+        "pass": "",
+        "host": "",
+        "port": 993,
+        "tls": true
     },
     "notify_channel": ""
 }

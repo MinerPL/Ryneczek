@@ -5,11 +5,11 @@ export interface Channel {
 }
 
 export interface Imap {
-  user: string;
-  pass: string;
-  host: string;
-  port: number;
-  tls: boolean;
+	user: string;
+	pass: string;
+	host: string;
+	port: number;
+	tls: boolean;
 }
 
 export interface Config {
