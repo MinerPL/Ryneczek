@@ -1,7 +1,7 @@
-import { readdirSync } from "fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Collection } from "discord.js";
+import { readdirSync } from "fs";
 import Ryneczek from "#client";
 import { InteractionType } from "#types/Commands";
 

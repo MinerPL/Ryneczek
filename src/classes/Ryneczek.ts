@@ -1,7 +1,7 @@
-import { ChannelType } from "discord-api-types/v10";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import {
-	APIModalInteractionResponseCallbackData,
 	AnySelectMenuInteraction,
+	APIModalInteractionResponseCallbackData,
 	BaseGuildTextChannel,
 	ButtonInteraction,
 	Client,
@@ -11,15 +11,17 @@ import {
 	Guild,
 	IntentsBitField,
 } from "discord.js";
+import { ChannelType } from "discord-api-types/v10";
 import { CommandHandler } from "#handlers/CommandHandler";
 import EventHandler from "#handlers/EventHandler";
 import { InteractionHandler } from "#handlers/InteractionHandler";
 import { Prisma, PrismaClient } from "#prisma";
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { InteractionType } from "#types/Commands";
 import { Config } from "#types/Config";
 import config from "../../config.json" with { type: "json" };
+
 import HostingsCreateManyInput = Prisma.HostingsCreateManyInput;
+
 import * as Sentry from "@sentry/node";
 import ImapHandler from "#handlers/ImapHandler";
 
@@ -75,7 +77,7 @@ export default class Ryneczek extends Client {
 		}
 
 		this.prisma = new PrismaClient({
-			adapter: new PrismaBetterSqlite3({ url: process.env.DATABASE_URL}),
+			adapter: new PrismaBetterSqlite3({ url: process.env.DATABASE_URL }),
 		});
 
 		await this.initHostings();
@@ -84,8 +86,8 @@ export default class Ryneczek extends Client {
 		this.commands = await new CommandHandler(this).loadCommands();
 		this.interactions = await new InteractionHandler(this).loadInteractions();
 
-    new EventHandler(this).loadEvents().then(() => null);
-    new ImapHandler(this).start().then(() => null);
+		new EventHandler(this).loadEvents().then(() => null);
+		new ImapHandler(this).start().then(() => null);
 
 		process.on("unhandledRejection", (reason) => {
 			if (this.Sentry) {

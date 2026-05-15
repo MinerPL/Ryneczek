@@ -2,7 +2,9 @@ import { Channel, ForumChannel } from "discord.js";
 import Ryneczek from "#client";
 
 export async function CloseOffert(client: Ryneczek, channel: Channel, db) {
-	if (!channel) return;
+	if (!channel) {
+		return;
+	}
 	if (channel?.isThread()) {
 		await channel.setAppliedTags([
 			(channel.parent as ForumChannel).availableTags.find(

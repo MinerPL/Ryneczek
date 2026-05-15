@@ -1,4 +1,3 @@
-import { ExportReturnType, createTranscript } from "discord-html-transcripts";
 import {
 	ActionRowBuilder,
 	BaseGuildTextChannel,
@@ -12,7 +11,9 @@ import {
 	GuildMemberRoleManager,
 	ModalSubmitFields,
 	PermissionFlagsBits,
+	TextBasedChannel,
 } from "discord.js";
+import { createTranscript, ExportReturnType } from "discord-html-transcripts";
 import Ryneczek from "#client";
 import { buildReportModal, publishReport } from "#functions/reportFlow";
 
@@ -39,8 +40,8 @@ async function withCaseChannelLock<T>(caseId: string, task: () => Promise<T>) {
 }
 
 async function removeDecisionButtons(interaction: ButtonInteraction) {
-	const componentsWithoutDecisionButtons = interaction.message.components.filter(
-		(component) => {
+	const componentsWithoutDecisionButtons =
+		interaction.message.components.filter((component) => {
 			if (component.type !== ComponentType.ActionRow) {
 				return true;
 			}
@@ -51,11 +52,10 @@ async function removeDecisionButtons(interaction: ButtonInteraction) {
 					((rowComponent.customId || "").startsWith("report_accept_") ||
 						(rowComponent.customId || "").startsWith("report_reject_")),
 			);
-		},
-	);
+		});
 
 	await interaction.message
-		.edit({ components: componentsWithoutDecisionButtons as any })
+		.edit({ components: componentsWithoutDecisionButtons })
 		.catch(() => null);
 }
 
@@ -203,7 +203,9 @@ async function resolveArchiveTarget(
 	}
 
 	const threadName = `report-case-${caseId}`;
-	const activeThreads = await reportChannel.threads.fetchActive().catch(() => null);
+	const activeThreads = await reportChannel.threads
+		.fetchActive()
+		.catch(() => null);
 	const existingThread = activeThreads?.threads.find(
 		(thread) => thread.name === threadName,
 	);
@@ -292,12 +294,17 @@ async function ensureCaseChannels(
 			);
 		}
 
-		if ((shouldEnsureReported && !reportedChannel) || (shouldEnsureReporter && !reporterChannel)) {
+		if (
+			(shouldEnsureReported && !reportedChannel) ||
+			(shouldEnsureReporter && !reporterChannel)
+		) {
 			return null;
 		}
 
-		const nextReportedChannelId = reportedChannel?.id ?? reportCase?.reportedChannelId ?? null;
-		const nextReporterChannelId = reporterChannel?.id ?? reportCase?.reporterChannelId ?? null;
+		const nextReportedChannelId =
+			reportedChannel?.id ?? reportCase?.reportedChannelId ?? null;
+		const nextReporterChannelId =
+			reporterChannel?.id ?? reportCase?.reporterChannelId ?? null;
 
 		await client.prisma.reportCases.upsert({
 			where: {
@@ -324,8 +331,14 @@ async function ensureCaseChannels(
 		});
 
 		return {
-			reportedChannel: reportedChannel?.type === ChannelType.GuildText ? reportedChannel : null,
-			reporterChannel: reporterChannel?.type === ChannelType.GuildText ? reporterChannel : null,
+			reportedChannel:
+				reportedChannel?.type === ChannelType.GuildText
+					? reportedChannel
+					: null,
+			reporterChannel:
+				reporterChannel?.type === ChannelType.GuildText
+					? reporterChannel
+					: null,
 		};
 	});
 }
@@ -376,9 +389,9 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const reason = (modalUse.fields as ModalSubmitFields).getTextInputValue(
 			"report_reason",
 		);
-		const explanation = (modalUse.fields as ModalSubmitFields).getTextInputValue(
-			"report_explanation",
-		);
+		const explanation = (
+			modalUse.fields as ModalSubmitFields
+		).getTextInputValue("report_explanation");
 		const attachments = (modalUse.fields as ModalSubmitFields).getUploadedFiles(
 			"report_attachments",
 		);
@@ -439,7 +452,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 		await interaction.deferReply({ flags: 64 });
 
-		const currentCaseChannel = interaction.channel;
+		const currentCaseChannel = interaction.channel as TextBasedChannel;
 		const transcripts = [];
 		const filename = `report-${reportCase.caseRef}-${currentCaseChannel.id}.html`;
 		const transcript = await createTranscript(currentCaseChannel as any, {
@@ -459,8 +472,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 		if (archiveTarget) {
 			await archiveTarget.send({
-				content:
-					`Archiwum rozmowy zgłoszenia **${reportCase.caseRef}**. Zamknięte przez <@${interaction.user.id}>.`,
+				content: `Archiwum rozmowy zgłoszenia **${reportCase.caseRef}**. Zamknięte przez <@${interaction.user.id}>.`,
 				files: transcripts,
 			});
 		}

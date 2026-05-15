@@ -1,5 +1,6 @@
 import {
 	ActionRowBuilder,
+	type Attachment,
 	BaseGuildTextChannel,
 	ButtonBuilder,
 	ButtonStyle,
@@ -13,11 +14,10 @@ import {
 	ModalBuilder,
 	SeparatorBuilder,
 	SeparatorSpacingSize,
+	type Snowflake,
 	TextDisplayBuilder,
 	TextInputBuilder,
 	TextInputStyle,
-	type Attachment,
-	type Snowflake,
 	type User,
 } from "discord.js";
 import Ryneczek from "#client";
@@ -53,12 +53,14 @@ export function buildReportModal(customId: string) {
 				),
 		)
 		.addLabelComponents(
-			new LabelBuilder().setLabel("Dowody").setFileUploadComponent(
-				new FileUploadBuilder()
-					.setCustomId("report_attachments")
-					.setMaxValues(10)
-					.setRequired(false),
-			),
+			new LabelBuilder()
+				.setLabel("Dowody")
+				.setFileUploadComponent(
+					new FileUploadBuilder()
+						.setCustomId("report_attachments")
+						.setMaxValues(10)
+						.setRequired(false),
+				),
 		)
 		.toJSON();
 }
@@ -162,27 +164,30 @@ export async function publishReport({
 			),
 	);
 
-	const openChannelButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-		new ButtonBuilder()
-			.setLabel("Kanał: oskarżony")
-			.setStyle(ButtonStyle.Secondary)
-			.setCustomId(
-				`report_open_reported_${reportTimestamp}_${reportedUser.id}_${reporterUser.id}`,
-			),
-		new ButtonBuilder()
-			.setLabel("Kanał: zgłaszający")
-			.setStyle(ButtonStyle.Secondary)
-			.setCustomId(
-				`report_open_reporter_${reportTimestamp}_${reportedUser.id}_${reporterUser.id}`,
-			),
-	);
+	const openChannelButtons =
+		new ActionRowBuilder<ButtonBuilder>().addComponents(
+			new ButtonBuilder()
+				.setLabel("Kanał: oskarżony")
+				.setStyle(ButtonStyle.Secondary)
+				.setCustomId(
+					`report_open_reported_${reportTimestamp}_${reportedUser.id}_${reporterUser.id}`,
+				),
+			new ButtonBuilder()
+				.setLabel("Kanał: zgłaszający")
+				.setStyle(ButtonStyle.Secondary)
+				.setCustomId(
+					`report_open_reporter_${reportTimestamp}_${reportedUser.id}_${reporterUser.id}`,
+				),
+		);
 
 	const channel = (await client.channels
 		.fetch(client.config.report_channel)
 		.catch(() => null)) as BaseGuildTextChannel | ForumChannel | null;
 
 	if (!channel) {
-		console.error(`[reportFlow] Failed to fetch report channel: ${client.config.report_channel}`);
+		console.error(
+			`[reportFlow] Failed to fetch report channel: ${client.config.report_channel}`,
+		);
 		return;
 	}
 
@@ -203,5 +208,3 @@ export async function publishReport({
 		});
 	}
 }
-
-

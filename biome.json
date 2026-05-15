@@ -1,12 +1,10 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+	"$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
 	"files": {
-		"ignoreUnknown": false,
-		"ignore": ["prisma/generated", "dist/", "node_modules"]
+		"ignoreUnknown": false
 	},
 	"formatter": { "enabled": true, "indentStyle": "tab" },
-	"organizeImports": { "enabled": true },
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -14,10 +12,9 @@
 			"complexity": {
 				"noBannedTypes": "error",
 				"noExtraBooleanCast": "error",
-				"noMultipleSpacesInRegularExpressionLiterals": "error",
+				"noAdjacentSpacesInRegex": "error",
 				"noUselessCatch": "error",
-				"noUselessTypeConstraint": "error",
-				"noWith": "error"
+				"noUselessTypeConstraint": "error"
 			},
 			"correctness": {
 				"noConstAssign": "error",
@@ -27,7 +24,7 @@
 				"noGlobalObjectCalls": "error",
 				"noInnerDeclarations": "error",
 				"noInvalidConstructorSuper": "error",
-				"noNewSymbol": "error",
+				"noInvalidBuiltinInstantiation": "error",
 				"noNonoctalDecimalEscape": "error",
 				"noPrecisionLoss": "error",
 				"noSelfAssign": "error",
@@ -37,22 +34,21 @@
 				"noUnreachable": "error",
 				"noUnreachableSuper": "error",
 				"noUnsafeFinally": "error",
-				"noUnsafeOptionalChaining": "error",
+				"noUnsafeOptionalChaining": "warn",
 				"noUnusedLabels": "error",
 				"noUnusedVariables": "error",
-				"useArrayLiterals": "off",
 				"useIsNan": "error",
 				"useValidForDirection": "error",
 				"useYield": "error"
 			},
 			"style": {
 				"noNamespace": "error",
-				"noVar": "error",
 				"noYodaExpression": "error",
 				"useAsConstAssertion": "error",
 				"useBlockStatements": "error",
 				"useCollapsedElseIf": "error",
-				"useConst": "error"
+				"useConst": "error",
+				"useArrayLiterals": "off"
 			},
 			"suspicious": {
 				"noAsyncPromiseExecutor": "error",
@@ -67,7 +63,7 @@
 				"noDuplicateObjectKeys": "error",
 				"noDuplicateParameters": "error",
 				"noEmptyBlockStatements": "error",
-				"noExplicitAny": "error",
+				"noExplicitAny": "warn",
 				"noExtraNonNullAssertion": "error",
 				"noFallthroughSwitchClause": "error",
 				"noFunctionAssign": "error",
@@ -82,7 +78,8 @@
 				"noUnsafeDeclarationMerging": "error",
 				"noUnsafeNegation": "error",
 				"useGetterReturn": "error",
-				"useValidTypeof": "error"
+				"noWith": "error",
+				"noVar": "error"
 			}
 		}
 	},

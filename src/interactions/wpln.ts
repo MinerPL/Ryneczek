@@ -159,13 +159,19 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	});
 	const susUserContainer = new ContainerBuilder()
 		.addTextDisplayComponents(
-			new TextDisplayBuilder().setContent(`# Podejrzany sprzedawca\nUwaga, <@${susUser?.userId}> został oznaczony jako podejrzany sprzedawca. Dla bezpieczeństwa kupującego, wszelkie płatności powinny odbywać się za pośrednictwem middlemana.`),
+			new TextDisplayBuilder().setContent(
+				`# Podejrzany sprzedawca\nUwaga, <@${susUser?.userId}> został oznaczony jako podejrzany sprzedawca. Dla bezpieczeństwa kupującego, wszelkie płatności powinny odbywać się za pośrednictwem middlemana.`,
+			),
 		)
 		.addSeparatorComponents(
-			new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true),
+			new SeparatorBuilder()
+				.setSpacing(SeparatorSpacingSize.Small)
+				.setDivider(true),
 		)
 		.addTextDisplayComponents(
-			new TextDisplayBuilder().setContent("**Pamiętaj!** Usługa middlemana jest w pełni darmowa oraz jest realizowana przez administracje tego serwera na prywatnym kanale, zapewniając bezpieczeństwo dokonywanej transakcji."),
+			new TextDisplayBuilder().setContent(
+				"**Pamiętaj!** Usługa middlemana jest w pełni darmowa oraz jest realizowana przez administracje tego serwera na prywatnym kanale, zapewniając bezpieczeństwo dokonywanej transakcji.",
+			),
 		);
 
 	const channel = client.channels.cache.get(

@@ -18,10 +18,12 @@ const buttonsManager = (thread: ThreadChannel) => {
 			.setCustomId("threadCreate_close"),
 	);
 
-	return thread.send({
-		content: "Menu zarządzania wątkiem.",
-		components: [buttons],
-	}).catch(() => null);
+	return thread
+		.send({
+			content: "Menu zarządzania wątkiem.",
+			components: [buttons],
+		})
+		.catch(() => null);
 };
 
 export async function run(client: Ryneczek, thread: ThreadChannel) {

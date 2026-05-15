@@ -1,4 +1,3 @@
-import { TextInputStyle } from "discord-api-types/v10";
 import {
 	ActionRowBuilder,
 	ApplicationCommandType,
@@ -11,6 +10,7 @@ import {
 	PermissionFlagsBits,
 	TextInputBuilder,
 } from "discord.js";
+import { TextInputStyle } from "discord-api-types/v10";
 import Ryneczek from "#client";
 
 export const data = {

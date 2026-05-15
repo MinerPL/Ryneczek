@@ -26,6 +26,6 @@ export interface Config {
 	wpln_forum: string;
 	ticket_category: string;
 	ticket_archive: string;
-  imap: Imap;
-  notify_channel: string;
+	imap: Imap;
+	notify_channel: string;
 }

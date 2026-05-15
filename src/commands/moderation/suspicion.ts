@@ -25,8 +25,11 @@ export const data = {
 				.setName("trigger")
 				.setDescription("Zgłasza podejrzenie oszustwa.")
 				.addUserOption((option) =>
-					option.setName("user").setDescription("Użytkownik do przywołania").setRequired(true),
-				)
+					option
+						.setName("user")
+						.setDescription("Użytkownik do przywołania")
+						.setRequired(true),
+				),
 		)
 		.addSubcommandGroup((group) =>
 			group
@@ -37,7 +40,10 @@ export const data = {
 						.setName("info")
 						.setDescription("Pobiera informacje o podejrzanym użytkowniku.")
 						.addUserOption((option) =>
-							option.setName("user").setDescription("Użytkownik do sprawdzenia").setRequired(true),
+							option
+								.setName("user")
+								.setDescription("Użytkownik do sprawdzenia")
+								.setRequired(true),
 						),
 				)
 				.addSubcommand((subcommand) =>
@@ -45,7 +51,10 @@ export const data = {
 						.setName("add")
 						.setDescription("Dodaje użytkownika do listy podejrzanych.")
 						.addUserOption((option) =>
-							option.setName("user").setDescription("Użytkownik do dodania").setRequired(true),
+							option
+								.setName("user")
+								.setDescription("Użytkownik do dodania")
+								.setRequired(true),
 						),
 				)
 				.addSubcommand((subcommand) =>
@@ -53,7 +62,10 @@ export const data = {
 						.setName("remove")
 						.setDescription("Usuwa użytkownika z listy podejrzanych.")
 						.addUserOption((option) =>
-							option.setName("user").setDescription("Użytkownik do usunięcia").setRequired(true),
+							option
+								.setName("user")
+								.setDescription("Użytkownik do usunięcia")
+								.setRequired(true),
 						),
 				),
 		)
@@ -81,10 +93,14 @@ export async function run(
 					flags: 64,
 				});
 			}
-			await interaction.channel.permissionsFor(user.id).add(PermissionsBitField.Flags.ViewChannel);
-			await interaction.channel.send({
-				content: `<@${user.id}>`,
-			}).then(msg => setTimeout(() => msg.delete().catch(() => null), 500));
+			await interaction.channel
+				.permissionsFor(user.id)
+				.add(PermissionsBitField.Flags.ViewChannel);
+			await interaction.channel
+				.send({
+					content: `<@${user.id}>`,
+				})
+				.then((msg) => setTimeout(() => msg.delete().catch(() => null), 500));
 			return interaction.reply({
 				content: `Pomyślnie przywołano <@${user.id}>.`,
 				flags: 64,
@@ -106,8 +122,10 @@ export async function run(
 			return interaction.reply({
 				components: [
 					new ContainerBuilder().addTextDisplayComponents(
-						new TextDisplayBuilder().setContent(`# Informacje o użytkowniku\nUżytkownik <@${user.id}> znajduje się na liście podejrzanych sprzedawców z powodu \`${suspicions.reason}\`.\n> Dodany <t:${Math.floor(suspicions.createdAt.getTime() / 1000)}:F> przez <@${suspicions.adminId}>`)
-					)
+						new TextDisplayBuilder().setContent(
+							`# Informacje o użytkowniku\nUżytkownik <@${user.id}> znajduje się na liście podejrzanych sprzedawców z powodu \`${suspicions.reason}\`.\n> Dodany <t:${Math.floor(suspicions.createdAt.getTime() / 1000)}:F> przez <@${suspicions.adminId}>`,
+						),
+					),
 				],
 				flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
 			});
@@ -136,7 +154,9 @@ export async function run(
 							.setStyle(TextInputStyle.Short)
 							.setMinLength(10)
 							.setMaxLength(400)
-							.setPlaceholder("Podaj powód dodania użytkownika do listy podejrzanych")
+							.setPlaceholder(
+								"Podaj powód dodania użytkownika do listy podejrzanych",
+							)
 							.setRequired(true),
 					),
 				);

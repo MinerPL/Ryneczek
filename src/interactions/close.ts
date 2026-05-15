@@ -1,4 +1,3 @@
-import { ExportReturnType, createTranscript } from "discord-html-transcripts";
 import {
 	ActionRowBuilder,
 	ButtonBuilder,
@@ -13,6 +12,7 @@ import {
 	SeparatorSpacingSize,
 	TextDisplayBuilder,
 } from "discord.js";
+import { createTranscript, ExportReturnType } from "discord-html-transcripts";
 import Ryneczek from "#client";
 
 export async function run(client: Ryneczek, interaction: ButtonInteraction) {
@@ -148,9 +148,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 					new ButtonBuilder()
 						.setLabel("Stwórz zgłoszenie")
 						.setStyle(ButtonStyle.Danger)
-						.setCustomId(
-							`report_create_${sale.offert.userId}_${sale.buyerId}`,
-						),
+						.setCustomId(`report_create_${sale.offert.userId}_${sale.buyerId}`),
 				),
 			],
 		});
