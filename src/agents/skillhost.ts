@@ -1,5 +1,5 @@
 import type { ParsedMail } from "mailparser";
-import { TransferData } from "../types/Agents.js";
+import { TransferData } from "#types/Agents";
 
 export default class SkillHost {
 	static parseMail = async (
