@@ -21,7 +21,8 @@
 			"#utils/*": ["utils/*"],
 			"#client": ["classes/Ryneczek.ts"],
 			"#types/": ["types/*"],
-			"#prisma": ["../prisma/generated/prisma/client"]
+			"#prisma": ["../prisma/generated/prisma/client"],
+            "#agents/*": ["agents/*"]
 		}
 	},
 	"include": ["src/**/*"],

@@ -1,4 +1,3 @@
-import { APIActionRowComponent } from "discord-api-types/v10";
 import {
 	ActionRowBuilder,
 	ButtonBuilder,
@@ -7,6 +6,7 @@ import {
 	ForumChannel,
 	ThreadChannel,
 } from "discord.js";
+import { APIActionRowComponent } from "discord-api-types/v10";
 import Ryneczek from "#client";
 
 export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
@@ -47,7 +47,9 @@ export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 		await thread.edit({
 			archived: true,
 			locked: true,
-			appliedTags: soldTag ? [...thread?.appliedTags, soldTag.id] : thread.appliedTags,
+			appliedTags: soldTag
+				? [...thread?.appliedTags, soldTag.id]
+				: thread.appliedTags,
 		});
 	} else if (action === "close") {
 		await interaction.reply({

@@ -1,9 +1,4 @@
 import {
-	ButtonStyle,
-	MessageFlags,
-	SeparatorSpacingSize,
-} from "discord-api-types/v10";
-import {
 	ActionRowBuilder,
 	ButtonBuilder,
 	ButtonInteraction,
@@ -18,6 +13,11 @@ import {
 	TextInputBuilder,
 	TextInputStyle,
 } from "discord.js";
+import {
+	ButtonStyle,
+	MessageFlags,
+	SeparatorSpacingSize,
+} from "discord-api-types/v10";
 import Ryneczek from "#client";
 import { CloseOffert } from "#utils/CloseOffert";
 import { OfferContainer } from "#utils/OfferContainer";
@@ -228,7 +228,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 						.setStyle(TextInputStyle.Short)
 						.setCustomId("buyer_details")
 						.setRequired(true),
-					),
+				),
 			)
 			.toJSON();
 
@@ -315,7 +315,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			.catch(() => null);
 
 		const price = (amount / offertOwner.exchange).toFixed(2);
-		const buyersDetails = modal.fields.getTextInputValue("buyer_details")?.trim() || "Brak";
+		const buyersDetails =
+			modal.fields.getTextInputValue("buyer_details")?.trim() || "Brak";
 
 		const container = new ContainerBuilder()
 			.addTextDisplayComponents(

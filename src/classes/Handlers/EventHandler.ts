@@ -1,6 +1,6 @@
-import { readdirSync } from "fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { readdirSync } from "fs";
 import Ryneczek from "#client";
 
 const __filename = fileURLToPath(import.meta.url);

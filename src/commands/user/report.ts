@@ -51,9 +51,15 @@ export async function run(
 		flags: 64,
 	});
 
-	const reason = (modalUse.fields as ModalSubmitFields).getTextInputValue("report_reason");
-	const explanation = (modalUse.fields as ModalSubmitFields).getTextInputValue("report_explanation");
-	const attachments = (modalUse.fields as ModalSubmitFields).getUploadedFiles("report_attachments");
+	const reason = (modalUse.fields as ModalSubmitFields).getTextInputValue(
+		"report_reason",
+	);
+	const explanation = (modalUse.fields as ModalSubmitFields).getTextInputValue(
+		"report_explanation",
+	);
+	const attachments = (modalUse.fields as ModalSubmitFields).getUploadedFiles(
+		"report_attachments",
+	);
 
 	await publishReport({
 		client,

@@ -1,10 +1,10 @@
-import { Routes } from "discord-api-types/v10";
 import {
 	ChatInputCommandInteraction,
 	GuildMember,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from "discord.js";
+import { Routes } from "discord-api-types/v10";
 import Ryneczek from "#client";
 
 export const data = {

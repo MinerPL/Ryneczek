@@ -4,6 +4,14 @@ export interface Channel {
 	autoPublish?: boolean;
 }
 
+export interface Imap {
+	user: string;
+	pass: string;
+	host: string;
+	port: number;
+	tls: boolean;
+}
+
 export interface Config {
 	token: string;
 	channels: Channel[];
@@ -18,4 +26,6 @@ export interface Config {
 	wpln_forum: string;
 	ticket_category: string;
 	ticket_archive: string;
+	imap: Imap;
+	notify_channel: string;
 }
