@@ -17,6 +17,7 @@ import {
 	ThreadAutoArchiveDuration,
 	ThreadChannel,
 	ThumbnailBuilder,
+	User,
 } from "discord.js";
 import Ryneczek from "#client";
 
@@ -181,7 +182,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 	await client.prisma.opinions.create({
 		data: {
-			user: sale.offert.userId,
+			user: interaction.user.id,
 			positive: isPositive,
 			comment: comment,
 			saleId: sale.id,
@@ -228,55 +229,57 @@ ${comment || "Brak"}
 		client.config.public_opinion_channel,
 	);
 
-	if ("send" in opinionChannel) {
-		await opinionChannel.send({
-			components: [container],
-			flags: MessageFlags.IsComponentsV2,
-		});
-	} else if (opinionChannel.isThreadOnly()) {
-		const opinionThread = await client.prisma.profile.findFirst({
-			where: {
-				userId: sale.offert.userId,
-			},
-		});
-
-		let userOpinionThread: ThreadChannel | null = null;
-
-		if (!opinionThread?.opinionThread) {
-			const seller = client.users.cache.get(sale.offert.userId);
-			userOpinionThread = await opinionChannel.threads.create({
-				name: `Opinie użytkownika ${seller.username}`,
-				autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
-				reason: "Tworzenie nowego wątku dla opinii użytkownika",
-				message: {
-					content: `Opinie o użytkowniku <@${sale.offert.userId}>`,
-				},
+	if (opinionChannel) {
+		if ("send" in opinionChannel) {
+			await opinionChannel.send({
+				components: [container],
+				flags: MessageFlags.IsComponentsV2,
 			});
-
-			await client.prisma.profile.upsert({
+		} else if (opinionChannel.isThreadOnly()) {
+			const opinionThread = await client.prisma.profile.findFirst({
 				where: {
 					userId: sale.offert.userId,
 				},
-				update: {
-					opinionThread: userOpinionThread.id,
-				},
-				create: {
-					userId: sale.offert.userId,
-					opinionThread: userOpinionThread.id,
-				},
 			});
-		} else {
-			userOpinionThread = await opinionChannel.threads
-				.fetch(opinionThread?.opinionThread)
-				.catch(() => null);
-			await userOpinionThread.setArchived(false).catch(() => null);
-			await userOpinionThread.setLocked(false).catch(() => null);
-		}
 
-		await userOpinionThread.send({
-			components: [container],
-			flags: MessageFlags.IsComponentsV2,
-		});
+			let userOpinionThread: ThreadChannel | null =
+				opinionChannel.threads.cache.get(opinionThread?.opinionThread);
+
+			if (!opinionThread?.opinionThread) {
+				const seller: User | null = await client.users
+					.fetch(sale.offert.userId)
+					.catch(() => null);
+				userOpinionThread = await opinionChannel.threads.create({
+					name: `Opinie użytkownika ${seller?.username || sale.offert.userId}`,
+					autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+					reason: "Tworzenie nowego wątku dla opinii użytkownika",
+					message: {
+						content: `Opinie o użytkowniku <@${sale.offert.userId}>`,
+					},
+				});
+
+				await client.prisma.profile.upsert({
+					where: {
+						userId: sale.offert.userId,
+					},
+					update: {
+						opinionThread: userOpinionThread.id,
+					},
+					create: {
+						userId: sale.offert.userId,
+						opinionThread: userOpinionThread.id,
+					},
+				});
+			} else {
+				await userOpinionThread.setArchived(false).catch(() => null);
+				await userOpinionThread.setLocked(false).catch(() => null);
+			}
+
+			await userOpinionThread.send({
+				components: [container],
+				flags: MessageFlags.IsComponentsV2,
+			});
+		}
 	}
 
 	await modal.reply({

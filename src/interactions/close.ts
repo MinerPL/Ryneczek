@@ -223,10 +223,12 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (buyer) {
 			await buyer.createDM().catch(() => null);
 
-			await buyer.send({
-				content: `**Potrzebna twoja opinia!**\n\nOceń swoją transakcję zakupu wPLN u użytkownika <@${sale.offert.userId}>.\n\nKliknij przycisk poniżej, aby ocenić transakcję.`,
-				components: components,
-			});
+			await buyer
+				.send({
+					content: `**Potrzebna twoja opinia!**\n\nOceń swoją transakcję zakupu wPLN u użytkownika <@${sale.offert.userId}>.\n\nKliknij przycisk poniżej, aby ocenić transakcję.`,
+					components: components,
+				})
+				.catch(() => null);
 		}
 
 		await interaction.channel.delete();

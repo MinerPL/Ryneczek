@@ -47,6 +47,10 @@ export async function showUserSummary(
 		}
 	}
 
+	if (totalSales === 0) {
+		totalSales = 1; // To avoid division by zero
+	}
+
 	const positiveOpinions = opinions.filter(
 		(opinion) => opinion.positive,
 	).length;
@@ -101,7 +105,7 @@ export async function showUserSummary(
 			new TextDisplayBuilder().setContent(`## Ogólne statystyki
 **Pozytywne:** ${positiveOpinions}
 **Negatywne:** ${negativeOpinions}
-**Transakcje wykonane przez Middlemana:** ${(middlemanRequests / totalSales).toFixed(2)}%`),
+**Transakcje wykonane przez Middlemana:** ${((middlemanRequests / totalSales) * 100).toFixed(2)}%`),
 		)
 		.addSeparatorComponents(
 			new SeparatorBuilder()

@@ -82,7 +82,7 @@ export function OfferContainer(data: OfferContainerProps) {
 					.setStyle(ButtonStyle.Secondary)
 					.setCustomId("offert_change"),
 				new ButtonBuilder()
-					.setLabel("Przelicz kurs przed zamowienie")
+					.setLabel("Przelicz kurs przed zamówieniem")
 					.setStyle(ButtonStyle.Secondary)
 					.setCustomId("offert_before"),
 			),
