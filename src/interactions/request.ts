@@ -41,5 +41,22 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		}
 	});
 
+	const sale = await client.prisma.sales.findFirst({
+		where: {
+			channelId: interaction.channelId,
+		},
+	});
+
+	if (sale) {
+		await client.prisma.sales.update({
+			where: {
+				id: sale.id,
+			},
+			data: {
+				middleman: true,
+			},
+		});
+	}
+
 	interaction.message.edit({ components: [components] }).catch(() => null);
 }

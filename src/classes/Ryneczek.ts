@@ -10,6 +10,7 @@ import {
 	ForumChannel,
 	Guild,
 	IntentsBitField,
+	ModalSubmitInteraction,
 } from "discord.js";
 import { ChannelType } from "discord-api-types/v10";
 import { CommandHandler } from "#handlers/CommandHandler";
@@ -87,7 +88,9 @@ export default class Ryneczek extends Client {
 		this.interactions = await new InteractionHandler(this).loadInteractions();
 
 		new EventHandler(this).loadEvents().then(() => null);
-		new ImapHandler(this).start().then(() => null);
+		if (this.config.imap.enabled) {
+			new ImapHandler(this).start().then(() => null);
+		}
 
 		process.on("unhandledRejection", (reason) => {
 			if (this.Sentry) {
@@ -147,7 +150,7 @@ export default class Ryneczek extends Client {
 			| AnySelectMenuInteraction,
 		modal: APIModalInteractionResponseCallbackData,
 		timeout = this.ms("60s"),
-	) {
+	): Promise<null | ModalSubmitInteraction> {
 		await interaction.showModal(modal);
 
 		return interaction

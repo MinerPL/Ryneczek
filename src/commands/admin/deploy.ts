@@ -1,6 +1,7 @@
 import {
 	ChatInputCommandInteraction,
 	GuildMember,
+	MessageFlags,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from "discord.js";
@@ -27,7 +28,7 @@ export async function run(
 	) {
 		return interaction.reply({
 			content: "Nie masz uprawnień do tej komendy!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 	await interaction.deferReply();

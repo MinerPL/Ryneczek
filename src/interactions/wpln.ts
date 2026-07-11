@@ -13,10 +13,12 @@ import {
 	SeparatorSpacingSize,
 	TextDisplayBuilder,
 	TextInputBuilder,
+	TextInputModalData,
 	TextInputStyle,
 } from "discord.js";
 import Ryneczek from "#client";
 import { OfferContainer } from "#utils/OfferContainer";
+import { showUserSummary } from "#utils/ShowUserSummary";
 
 export async function run(
 	client: Ryneczek,
@@ -27,7 +29,7 @@ export async function run(
 	if (!hosting) {
 		return interaction.reply({
 			content: "Nie wybrano hostingu!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -45,7 +47,7 @@ export async function run(
 		return interaction.reply({
 			content: `Masz już aktywne oferty na tym hostingu! Przed dodaniem nowej oferty oznacz pozostałe jako sprzedane.
 Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")}`,
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -101,18 +103,22 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 		return interaction
 			.reply({
 				content: "Nie udało się odebrać formularza!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			})
 			.catch(() => null);
 	}
 
-	const count = Number(response.fields.getField("count").value);
-	const exchange = Number(response.fields.getField("exchange").value);
+	const count = Number(
+		(response.fields.getField("count") as TextInputModalData).value,
+	);
+	const exchange = Number(
+		(response.fields.getField("exchange") as TextInputModalData).value,
+	);
 
 	if (isNaN(exchange) || isNaN(count) || exchange <= 0 || count <= 0) {
 		return response.reply({
 			content: "Kurs i ilość muszą być liczbami!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -135,7 +141,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	if (!dbHosting) {
 		return response.reply({
 			content: "Nie znaleziono hostingu!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -151,10 +157,14 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 			user: response.user,
 			newExchange: newExchange,
 			oldExchange: oldExchange,
-			methods: response.fields.getField("methods").value,
-			count: Number(response.fields.getField("count").value),
-			additional_information: response.fields.getField("additional_information")
+			methods: (response.fields.getField("methods") as TextInputModalData)
 				.value,
+			count: Number(
+				(response.fields.getField("count") as TextInputModalData).value,
+			),
+			additional_information: (
+				response.fields.getField("additional_information") as TextInputModalData
+			).value,
 		},
 	});
 	const susUserContainer = new ContainerBuilder()
@@ -179,6 +189,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	) as GuildChannel;
 
 	let message: ForumThreadChannel | Message;
+	const summaryContainer = await showUserSummary(client, interaction.user.id);
 	if (channel.isThreadOnly()) {
 		const tag = channel.availableTags.find(
 			(t) => t.name?.toLowerCase() === dbHosting.name?.toLowerCase(),
@@ -189,7 +200,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 				name: `Oferta ${response.user.username}`,
 				autoArchiveDuration: 60,
 				message: {
-					components: [container],
+					components: [container, summaryContainer],
 					flags: MessageFlags.IsComponentsV2,
 				},
 				appliedTags: tag ? [tag.id] : [],
@@ -214,7 +225,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	} else {
 		message = await (channel as GuildTextBasedChannel)
 			.send({
-				components: [container],
+				components: [container, summaryContainer],
 				flags: MessageFlags.IsComponentsV2,
 			})
 			.catch((e) => {
@@ -236,7 +247,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	if (!message) {
 		return response.reply({
 			content: "Nie udało się wysłać wiadomości!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -248,10 +259,17 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 				channelId: channel.isThreadOnly() ? message.id : channel.id,
 				hostingId: dbHosting.id,
 				exchange: newExchange,
-				count: Number(response.fields.getField("count").value),
-				paymentMethod: response.fields.getField("methods").value,
-				additionalInfo: response.fields.getField("additional_information")
-					.value,
+				count: Number(
+					(response.fields.getField("count") as TextInputModalData).value,
+				),
+				paymentMethod: (
+					response.fields.getField("methods") as TextInputModalData
+				).value,
+				additionalInfo: (
+					response.fields.getField(
+						"additional_information",
+					) as TextInputModalData
+				).value,
 				verifiedCount: false,
 				sold: false,
 			},
@@ -271,7 +289,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 		return response
 			.followUp({
 				content: "Nie udało się dodać oferty do bazy danych!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			})
 			.catch(() => null);
 	}
@@ -279,7 +297,7 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	await response
 		.reply({
 			content: "Utworzono ofertę!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		})
 		.catch(() => null);
 }

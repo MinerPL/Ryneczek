@@ -4,6 +4,7 @@ import {
 	ChatInputCommandInteraction,
 	ColorResolvable,
 	EmbedBuilder,
+	MessageFlags,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from "discord.js";
@@ -66,5 +67,8 @@ export async function run(
 		.setTimestamp();
 
 	await channel.send({ embeds: [embed] });
-	await interaction.reply({ content: "Wysłano ogłoszenie.", flags: 64 });
+	await interaction.reply({
+		content: "Wysłano ogłoszenie.",
+		flags: MessageFlags.Ephemeral,
+	});
 }

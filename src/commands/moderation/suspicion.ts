@@ -90,7 +90,7 @@ export async function run(
 			if (!offerChannel) {
 				return interaction.reply({
 					content: "To nie jest kanał sprzedaży!",
-					flags: 64,
+					flags: MessageFlags.Ephemeral,
 				});
 			}
 			await interaction.channel
@@ -103,7 +103,7 @@ export async function run(
 				.then((msg) => setTimeout(() => msg.delete().catch(() => null), 500));
 			return interaction.reply({
 				content: `Pomyślnie przywołano <@${user.id}>.`,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 		case "info": {
@@ -116,7 +116,7 @@ export async function run(
 			if (!suspicions) {
 				return interaction.reply({
 					content: "Ten użytkownik nie jest na liście podejrzanych.",
-					flags: 64,
+					flags: MessageFlags.Ephemeral,
 				});
 			}
 			return interaction.reply({
@@ -140,7 +140,7 @@ export async function run(
 			if (existing) {
 				return interaction.reply({
 					content: "Ten użytkownik jest już na liście podejrzanych.",
-					flags: 64,
+					flags: MessageFlags.Ephemeral,
 				});
 			}
 			const modal = new ModalBuilder()
@@ -178,7 +178,7 @@ export async function run(
 			});
 			return modalSubmit.reply({
 				content: `Pomyślnie dodano <@${user.id}> do listy podejrzanych.`,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 		case "remove": {
@@ -191,7 +191,7 @@ export async function run(
 			if (!existing) {
 				return interaction.reply({
 					content: "Ten użytkownik nie jest na liście podejrzanych.",
-					flags: 64,
+					flags: MessageFlags.Ephemeral,
 				});
 			}
 			await client.prisma.suspicions.deleteMany({
@@ -201,13 +201,13 @@ export async function run(
 			});
 			return interaction.reply({
 				content: `Pomyślnie usunięto <@${user.id}> z listy podejrzanych.`,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 		default: {
 			return interaction.reply({
 				content: "Nieznana podkomenda.",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 	}

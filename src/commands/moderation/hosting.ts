@@ -1,5 +1,6 @@
 import {
 	ChatInputCommandInteraction,
+	MessageFlags,
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 	SlashCommandSubcommandBuilder,
@@ -66,7 +67,7 @@ export async function run(
 		if (!name || !page || !emoji_id) {
 			return interaction.reply({
 				content: "Nie podano wszystkich wymaganych argumentów!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -91,7 +92,7 @@ export async function run(
 		if (!hosting) {
 			return interaction.reply({
 				content: "Nie udało się dodać hostingu!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -104,7 +105,7 @@ export async function run(
 		if (!hosting) {
 			return interaction.reply({
 				content: "Nie podano hostingu!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -117,7 +118,7 @@ export async function run(
 		if (!dbHosting) {
 			return interaction.reply({
 				content: "Nie znaleziono hostingu!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 

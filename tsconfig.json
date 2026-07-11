@@ -22,7 +22,7 @@
 			"#client": ["classes/Ryneczek.ts"],
 			"#types/": ["types/*"],
 			"#prisma": ["../prisma/generated/prisma/client"],
-            "#agents/*": ["agents/*"]
+			"#agents/*": ["agents/*"]
 		}
 	},
 	"include": ["src/**/*"],

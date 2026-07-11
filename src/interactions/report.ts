@@ -9,6 +9,7 @@ import {
 	ForumChannel,
 	ForumThreadChannel,
 	GuildMemberRoleManager,
+	MessageFlags,
 	ModalSubmitFields,
 	PermissionFlagsBits,
 	TextBasedChannel,
@@ -357,14 +358,14 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (!reportedUser) {
 			return interaction.reply({
 				content: "Nie udało się pobrać użytkownika do zgłoszenia.",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
 		if (reportedUser.id === interaction.user.id) {
 			return interaction.reply({
 				content: "Nie możesz zgłosić samego siebie!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -383,7 +384,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 		await modalUse.reply({
 			content: "Zgłoszenie zostało wysłane!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 
 		const reason = (modalUse.fields as ModalSubmitFields).getTextInputValue(
@@ -421,7 +422,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	) {
 		return interaction.reply({
 			content: "Nie możesz zarządzać zgłoszeniami!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -429,7 +430,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (interaction.channel.type !== ChannelType.GuildText) {
 			return interaction.reply({
 				content: "Tę sprawę można zamknąć tylko z kanału tekstowego.",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -446,11 +447,11 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (!reportCase) {
 			return interaction.reply({
 				content: "Nie znaleziono danych sprawy w tym kanale.",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
-		await interaction.deferReply({ flags: 64 });
+		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 		const currentCaseChannel = interaction.channel as TextBasedChannel;
 		const transcripts = [];
@@ -516,7 +517,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const reportedId = interaction.customId.split("_")[4];
 		const reporterId = interaction.customId.split("_")[5];
 
-		await interaction.deferReply({ flags: 64 });
+		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 		const channels = await ensureCaseChannels(
 			client,
@@ -553,7 +554,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		return;
 	}
 
-	await interaction.deferReply({ flags: 64 });
+	await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 	await removeDecisionButtons(interaction);
 
