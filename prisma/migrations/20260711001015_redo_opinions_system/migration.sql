@@ -27,8 +27,8 @@ CREATE TABLE "new_Sales" (
     "amount" REAL NOT NULL,
     "channelId" TEXT NOT NULL,
     "isDone" BOOLEAN NOT NULL,
-    "middleman" BOOLEAN NOT NULL,
-    "realCount" REAL NOT NULL,
+    "middleman" BOOLEAN NOT NULL DEFAULT false,
+    "realCount" REAL NOT NULL DEFAULT 0,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Sales_offertId_fkey" FOREIGN KEY ("offertId") REFERENCES "Offerts" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
