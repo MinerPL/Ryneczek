@@ -1,38 +1,16 @@
 import {
 	ButtonInteraction,
-	ContainerBuilder,
-	GuildTextBasedChannel,
 	LabelBuilder,
 	MessageFlags,
 	ModalBuilder,
 	RadioGroupBuilder,
 	RadioGroupOptionBuilder,
-	SectionBuilder,
-	SeparatorBuilder,
-	SeparatorSpacingSize,
 	StringSelectMenuBuilder,
 	StringSelectMenuOptionBuilder,
-	TextDisplayBuilder,
 	TextInputBuilder,
-	ThreadAutoArchiveDuration,
-	ThreadChannel,
-	ThumbnailBuilder,
-	User,
 } from "discord.js";
 import Ryneczek from "#client";
-
-const surveyMapping = {
-	fast: "Transakcja była szybka",
-	good_contact: "Świetny i bezproblemowy kontakt",
-	good_price: "Atrakcyjny przelicznik",
-	as_described: "Wszystko zgodnie z ustaleniami",
-	helpful_seller: "Sprzedawca był bardzo pomocny",
-	suspicious_seller: "Sprzedawca zachowywał się podejrzanie",
-	long_wait: "Długi czas oczekiwania",
-	changed_mind: "Próba zmiany ustaleń w trakcie",
-	wrong_amount: "Kwota niezgodna z umową",
-	rude_seller: "Nieprzyjemne zachowanie sprzedawcy",
-};
+import { sendOpinionToConfiguredChannel } from "#utils/opinionDelivery";
 
 export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	const [_, saleId] = interaction.customId.split("_");
@@ -107,7 +85,6 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 						.setMinValues(0)
 						.setRequired(false)
 						.addOptions(
-							// --- TWOJA OPCJA ---
 							new StringSelectMenuOptionBuilder()
 								.setLabel("Transakcja była szybka.")
 								.setValue("fast"),
@@ -123,8 +100,6 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 							new StringSelectMenuOptionBuilder()
 								.setLabel("Sprzedawca był bardzo pomocny.")
 								.setValue("helpful_seller"),
-
-							// --- NEGATYWY ---
 							new StringSelectMenuOptionBuilder()
 								.setLabel("Sprzedawca zachowywał się podejrzanie.")
 								.setValue("suspicious_seller"),
@@ -191,97 +166,12 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		},
 	});
 
-	const container = new ContainerBuilder()
-		.addSectionComponents(
-			new SectionBuilder()
-				.setThumbnailAccessory(
-					new ThumbnailBuilder().setURL(
-						client.users.cache.get(sale.offert.userId)?.displayAvatarURL() ??
-							"https://cdn.discordapp.com/embed/avatars/0.png",
-					),
-				)
-				.addTextDisplayComponents(
-					new TextDisplayBuilder().setContent(
-						`Nowa ${isPositive ? "pozytywna" : "negatywna"} opinia o <@${sale.offert.userId}>`,
-					),
-				),
-		)
-		.addSeparatorComponents(
-			new SeparatorBuilder()
-				.setSpacing(SeparatorSpacingSize.Small)
-				.setDivider(true),
-		)
-		.addTextDisplayComponents(
-			new TextDisplayBuilder().setContent(`## Ankieta
-${surveyResults.map((result) => `* ${surveyMapping[result]}`).join("\n")}`),
-		)
-		.addSeparatorComponents(
-			new SeparatorBuilder()
-				.setSpacing(SeparatorSpacingSize.Small)
-				.setDivider(true),
-		)
-		.addTextDisplayComponents(
-			new TextDisplayBuilder().setContent(`## Dodatkowy komentarz
-\`\`\`
-${comment || "Brak"}
-\`\`\``),
-		);
-	const opinionChannel = client.channels.cache.get(
-		client.config.public_opinion_channel,
-	);
-
-	if (opinionChannel) {
-		if ("send" in opinionChannel) {
-			await opinionChannel.send({
-				components: [container],
-				flags: MessageFlags.IsComponentsV2,
-			});
-		} else if (opinionChannel.isThreadOnly()) {
-			const opinionThread = await client.prisma.profile.findFirst({
-				where: {
-					userId: sale.offert.userId,
-				},
-			});
-
-			let userOpinionThread: ThreadChannel | null =
-				await opinionChannel.threads.fetch(opinionThread?.opinionThread);
-
-			if (!opinionThread?.opinionThread || !userOpinionThread?.id) {
-				const seller: User | null = await client.users
-					.fetch(sale.offert.userId)
-					.catch(() => null);
-				userOpinionThread = await opinionChannel.threads.create({
-					name: `Opinie użytkownika ${seller?.username || sale.offert.userId}`,
-					autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
-					reason: "Tworzenie nowego wątku dla opinii użytkownika",
-					message: {
-						content: `Opinie o użytkowniku <@${sale.offert.userId}>`,
-					},
-				});
-
-				await client.prisma.profile.upsert({
-					where: {
-						userId: sale.offert.userId,
-					},
-					update: {
-						opinionThread: userOpinionThread.id,
-					},
-					create: {
-						userId: sale.offert.userId,
-						opinionThread: userOpinionThread.id,
-					},
-				});
-			} else {
-				await userOpinionThread.setArchived(false).catch(() => null);
-				await userOpinionThread.setLocked(false).catch(() => null);
-			}
-
-			await userOpinionThread.send({
-				components: [container],
-				flags: MessageFlags.IsComponentsV2,
-			});
-		}
-	}
+	await sendOpinionToConfiguredChannel(client, {
+		user: sale.offert.userId,
+		positive: isPositive,
+		comment,
+		surveyResults,
+	});
 
 	await modal.reply({
 		content: "Dziękujemy za twoją opinię jest ona dla nas bardzo ważna!",
