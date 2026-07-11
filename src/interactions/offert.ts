@@ -398,6 +398,13 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const type = modalResponse.fields.getRadioGroup("radio_group").valueOf();
 		const amount = Number(modalResponse.fields.getTextInputValue("wpln"));
 
+		if (isNaN(amount) || amount <= 0) {
+			return modalResponse.reply({
+				content: "Kwota musi być liczbą większą od 0!",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+
 		if (type === "wpln_pln") {
 			const final = amount * offertOwner.exchange;
 

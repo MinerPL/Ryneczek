@@ -55,7 +55,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 	const currentOpinions = await client.prisma.opinions.findMany({
 		where: {
-			user: interaction.user.id,
+			addedBy: interaction.user.id,
 			saleId: sale.id,
 		},
 	});
@@ -182,7 +182,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 	await client.prisma.opinions.create({
 		data: {
-			user: interaction.user.id,
+			user: sale.offert.userId,
+			addedBy: interaction.user.id,
 			positive: isPositive,
 			comment: comment,
 			saleId: sale.id,
@@ -196,7 +197,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				.setThumbnailAccessory(
 					new ThumbnailBuilder().setURL(
 						client.users.cache.get(sale.offert.userId)?.displayAvatarURL() ??
-							client.users.cache.get(sale.offert.userId)?.defaultAvatarURL,
+							"https://cdn.discordapp.com/embed/avatars/0.png",
 					),
 				)
 				.addTextDisplayComponents(
@@ -243,9 +244,9 @@ ${comment || "Brak"}
 			});
 
 			let userOpinionThread: ThreadChannel | null =
-				opinionChannel.threads.cache.get(opinionThread?.opinionThread);
+				await opinionChannel.threads.fetch(opinionThread?.opinionThread);
 
-			if (!opinionThread?.opinionThread) {
+			if (!opinionThread?.opinionThread || !userOpinionThread?.id) {
 				const seller: User | null = await client.users
 					.fetch(sale.offert.userId)
 					.catch(() => null);

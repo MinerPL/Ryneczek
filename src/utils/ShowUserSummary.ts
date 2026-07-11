@@ -87,7 +87,7 @@ export async function showUserSummary(
 				.setThumbnailAccessory(
 					new ThumbnailBuilder().setURL(
 						client.users.cache.get(userId)?.displayAvatarURL() ??
-							client.users.cache.get(userId)?.defaultAvatarURL,
+							"https://cdn.discordapp.com/embed/avatars/0.png",
 					),
 				)
 				.addTextDisplayComponents(
