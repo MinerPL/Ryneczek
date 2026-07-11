@@ -4,6 +4,7 @@ import {
 	ButtonComponent,
 	ButtonInteraction,
 	ForumChannel,
+	MessageFlags,
 	ThreadChannel,
 } from "discord.js";
 import { APIActionRowComponent } from "discord-api-types/v10";
@@ -16,7 +17,7 @@ export async function run(_client: Ryneczek, interaction: ButtonInteraction) {
 	) {
 		return interaction.reply({
 			content: "Nie jesteś właścicielem tego wątku!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 

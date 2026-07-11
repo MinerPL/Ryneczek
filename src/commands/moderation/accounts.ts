@@ -32,6 +32,7 @@ const accounts = {
 	skillhost: "12556",
 	icehost: "ryneczek@minerpl.xyz",
 	ivhost: "3977",
+	pshost: "ryneczek@minerpl.xyz",
 };
 
 export async function run(

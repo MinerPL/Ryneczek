@@ -5,6 +5,7 @@ export interface Channel {
 }
 
 export interface Imap {
+	enabled: boolean;
 	user: string;
 	pass: string;
 	host: string;
@@ -28,4 +29,5 @@ export interface Config {
 	ticket_archive: string;
 	imap: Imap;
 	notify_channel: string;
+	public_opinion_channel: string;
 }

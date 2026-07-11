@@ -5,6 +5,7 @@ import {
 	ContextMenuCommandBuilder,
 	ContextMenuCommandInteraction,
 	EmbedBuilder,
+	MessageFlags,
 	ModalActionRowComponentBuilder,
 	ModalBuilder,
 	PermissionFlagsBits,
@@ -31,7 +32,7 @@ export async function run(
 	if (!member) {
 		return interaction.reply({
 			content: "Nie znaleziono użytkownika!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -95,13 +96,13 @@ export async function run(
 					client.config.moderation_alerts,
 				) as BaseGuildTextChannel
 			)?.send({ embeds: [embed] });
-			modal.reply({ content: "Sukces!", flags: 64 });
+			modal.reply({ content: "Sukces!", flags: MessageFlags.Ephemeral });
 		})
 		.catch((e) => {
 			console.error(e);
 			return modal.reply({
 				content: `Coś poszło nie tak!\n\nBłąd: ${e.message}`,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		});
 }

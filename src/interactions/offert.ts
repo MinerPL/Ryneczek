@@ -4,13 +4,16 @@ import {
 	ButtonInteraction,
 	CategoryChannel,
 	ContainerBuilder,
-	ForumChannel,
 	GuildMemberRoleManager,
+	LabelBuilder,
 	ModalActionRowComponentBuilder,
 	ModalBuilder,
+	RadioGroupBuilder,
+	RadioGroupOptionBuilder,
 	SeparatorBuilder,
 	TextDisplayBuilder,
 	TextInputBuilder,
+	TextInputModalData,
 	TextInputStyle,
 } from "discord.js";
 import {
@@ -42,14 +45,14 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	if (!offertOwner) {
 		return interaction.reply({
 			content: "Nie znaleziono oferty!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
 	if (interaction.channel.isThread() && interaction.channel.archived) {
 		return interaction.reply({
 			content: "Nie możesz kupić oferty w archiwum!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -62,7 +65,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (offertOwner.userId !== interaction.user.id) {
 			return interaction.reply({
 				content: "Nie jesteś właścicielem tej oferty!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 	}
@@ -70,7 +73,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	if (action === "sold") {
 		await interaction.reply({
 			content: "Oferta oznaczona jako sprzedana!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 
 		await CloseOffert(client, interaction.channel, offertOwner);
@@ -122,16 +125,18 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			return interaction
 				.reply({
 					content: "Nie udało się odczytać modala!",
-					flags: 64,
+					flags: MessageFlags.Ephemeral,
 				})
 				.catch(() => null);
 		}
 
-		const count = Number(modal.fields.getField("count").value);
+		const count = Number(
+			(modal.fields.getField("count") as TextInputModalData).value,
+		);
 		if (isNaN(count) || count <= 0) {
 			return modal.reply({
 				content: "Ilość musi być liczbą!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -152,13 +157,13 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		});
 		return modal.reply({
 			content: "Oferta zmieniona!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	} else if (action === "buy") {
 		if (offertOwner.userId === interaction.user.id) {
 			return interaction.reply({
 				content: "Nie możesz kupić swojej oferty!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -169,7 +174,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (!category) {
 			return interaction.reply({
 				content: "Nie znaleziono kategorii! Skontaktuj się z administracją.",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -180,7 +185,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		) {
 			return interaction.reply({
 				content: "Właściciel oferty nie jest już na serwerze!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -195,7 +200,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (currentUserBuyOfferts.length > 0) {
 			return interaction.reply({
 				content: `Już masz otwarty ticket! (${currentUserBuyOfferts.map((channel) => `<#${channel.channelId}>`).join(", ")})`,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -245,25 +250,29 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			return interaction
 				.reply({
 					content: "Nie udało się odczytać modala!",
-					flags: 64,
+					flags: MessageFlags.Ephemeral,
 				})
 				.catch(() => null);
 		}
 
-		const amount = Number(modal.fields.getField("amount").value);
-		const paymentMethod = modal.fields.getField("payment_method").value;
+		const amount = Number(
+			(modal.fields.getField("amount") as TextInputModalData).value,
+		);
+		const paymentMethod = (
+			modal.fields.getField("payment_method") as TextInputModalData
+		).value;
 
 		if (isNaN(amount) || amount <= 0) {
 			return modal.reply({
 				content: "Ilość musi być liczbą!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
 		if (amount > offertOwner.count) {
 			return modal.reply({
 				content: `Nie możesz kupić więcej niż ${offertOwner.count} wPLN!`,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
@@ -293,11 +302,11 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (!channel) {
 			return modal.reply({
 				content: "Nie udało się stworzyć ticketu!",
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 
-		const sale = await client.prisma.sales.create({
+		await client.prisma.sales.create({
 			data: {
 				offertId: offertOwner.id,
 				buyerId: interaction.user.id,
@@ -310,7 +319,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		await modal
 			.reply({
 				content: `Stworzono kanał <#${channel.id}>!`,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			})
 			.catch(() => null);
 
@@ -342,25 +351,74 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 						.setStyle(ButtonStyle.Secondary)
 						.setEmoji("🤝"),
 				),
-			)
-			.addActionRowComponents(
-				new ActionRowBuilder<ButtonBuilder>().addComponents(
-					new ButtonBuilder()
-						.setLabel("Oceń pozytywnie")
-						.setCustomId(`opinion_positive_${sale.id}`)
-						.setStyle(ButtonStyle.Success)
-						.setEmoji("👍"),
-					new ButtonBuilder()
-						.setLabel("Oceń negatywnie")
-						.setCustomId(`opinion_negative_${sale.id}`)
-						.setStyle(ButtonStyle.Danger)
-						.setEmoji("👎"),
-				),
 			);
 
 		await channel.send({
 			flags: MessageFlags.IsComponentsV2,
 			components: [container],
 		});
+	} else if (action === "before") {
+		const modal = new ModalBuilder()
+			.setCustomId("calculate_modal")
+			.setTitle("Przelicz kurs")
+			.addLabelComponents(
+				new LabelBuilder()
+					.setLabel("Którego przeliczniku chcesz użyć?")
+					.setRadioGroupComponent(
+						new RadioGroupBuilder()
+							.setRequired(true)
+							.setCustomId("radio_group")
+							.setOptions(
+								new RadioGroupOptionBuilder()
+									.setLabel("wPLN -> PLN")
+									.setValue("wpln_pln")
+									.setDescription("Przelicz kurs z wPLN na PLN"),
+								new RadioGroupOptionBuilder()
+									.setLabel("PLN -> wPLN")
+									.setValue("pln_wpln")
+									.setDescription("Przelicz kurs z PLN na wPLN"),
+							),
+					),
+				new LabelBuilder()
+					.setLabel("Wpisz kwotę do przeliczenia")
+					.setTextInputComponent(
+						new TextInputBuilder()
+							.setCustomId("wpln")
+							.setStyle(TextInputStyle.Short),
+					),
+			)
+			.toJSON();
+
+		const modalResponse = await client.useModal(interaction, modal);
+
+		if (!modalResponse) {
+			return;
+		}
+
+		const type = modalResponse.fields.getRadioGroup("radio_group").valueOf();
+		const amount = Number(modalResponse.fields.getTextInputValue("wpln"));
+
+		if (isNaN(amount) || amount <= 0) {
+			return modalResponse.reply({
+				content: "Kwota musi być liczbą większą od 0!",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+
+		if (type === "wpln_pln") {
+			const final = amount * offertOwner.exchange;
+
+			await modalResponse.reply({
+				content: `Za ${amount} wPLN zapłacisz ~${final.toFixed(2)} PLN`,
+				flags: MessageFlags.Ephemeral,
+			});
+		} else if (type === "pln_wpln") {
+			const final = amount / offertOwner.exchange;
+
+			await modalResponse.reply({
+				content: `Za ${amount} PLN otrzymasz ~${final.toFixed(2)} wPLN`,
+				flags: MessageFlags.Ephemeral,
+			});
+		}
 	}
 }

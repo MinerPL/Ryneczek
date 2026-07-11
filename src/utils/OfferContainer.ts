@@ -81,6 +81,10 @@ export function OfferContainer(data: OfferContainerProps) {
 					.setLabel("Zmień ilość")
 					.setStyle(ButtonStyle.Secondary)
 					.setCustomId("offert_change"),
+				new ButtonBuilder()
+					.setLabel("Przelicz kurs przed zamówieniem")
+					.setStyle(ButtonStyle.Secondary)
+					.setCustomId("offert_before"),
 			),
 		);
 }

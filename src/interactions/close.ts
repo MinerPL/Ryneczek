@@ -3,46 +3,90 @@ import {
 	ButtonBuilder,
 	ButtonInteraction,
 	ButtonStyle,
+	CheckboxBuilder,
 	ContainerBuilder,
 	FileBuilder,
 	GuildMemberRoleManager,
 	GuildTextBasedChannel,
+	LabelBuilder,
+	LabelComponent,
 	MessageFlags,
+	ModalBuilder,
 	SeparatorBuilder,
 	SeparatorSpacingSize,
 	TextDisplayBuilder,
+	TextInputBuilder,
+	User,
 } from "discord.js";
+import { TextInputStyle } from "discord-api-types/v10";
 import { createTranscript, ExportReturnType } from "discord-html-transcripts";
 import Ryneczek from "#client";
 
 export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	try {
-		const offerChannel = await client.prisma.sales.findFirst({
-			where: {
-				channelId: interaction.channel.id,
-			},
-			include: {
-				offert: true,
-			},
-		});
-
 		if (
 			!(interaction.member.roles as GuildMemberRoleManager).cache.has(
 				client.config.admin_role,
-			) &&
-			offerChannel.offert.userId !== interaction.user.id
+			)
 		) {
 			return interaction.reply({
 				content:
-					"Nie masz uprawnień do zamknięcia tego kanału. Musisz być administratorem lub właścicielem oferty.",
-				flags: 64,
+					"Nie masz uprawnień do zamknięcia tej sprzedaży! Skontaktuj się z administratorem w celu zamknięcia sprzedaży.",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+
+		const adminSurvey = new ModalBuilder()
+			.addLabelComponents(
+				new LabelBuilder()
+					.setLabel("Czy transakcja doszła do skutku?")
+					.setCheckboxComponent(
+						new CheckboxBuilder()
+							.setCustomId("transactionOutcome")
+							.setDefault(true),
+					),
+				new LabelBuilder()
+					.setLabel("Kwota transakcji (w wPLN)")
+					.setTextInputComponent(
+						new TextInputBuilder()
+							.setCustomId("transactionAmount")
+							.setRequired(true)
+							.setStyle(TextInputStyle.Short),
+					),
+			)
+			.setCustomId("adminSurveyModal")
+			.setTitle("Ankieta dla administratora")
+			.toJSON();
+
+		const modal = await client.useModal(interaction, adminSurvey);
+
+		if (!modal) {
+			return interaction.reply({
+				content: "Wystąpił błąd podczas tworzenia ankiety!",
+				flags: MessageFlags.Ephemeral,
+			});
+		}
+
+		await modal.deferReply({ flags: MessageFlags.Ephemeral });
+
+		const transactionStatus = modal.fields
+			.getCheckbox("transactionOutcome")
+			.valueOf();
+		const transactionAmount = modal.fields
+			.getTextInputValue("transactionAmount")
+			.valueOf();
+
+		const transactionAmountFloat = parseFloat(transactionAmount);
+
+		if (isNaN(transactionAmountFloat) || transactionAmountFloat < 0) {
+			return modal.editReply({
+				content: "Wprowadzona kwota transakcji jest nieprawidłowa!",
 			});
 		}
 
 		if (!interaction.channel.isTextBased() || interaction.channel.isDMBased()) {
-			return interaction.reply({
+			return modal.editReply({
 				content: "Nie można utworzyć transkryptu na tym kanale!",
-				flags: 64,
 			});
 		}
 
@@ -56,9 +100,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		});
 
 		if (!sale) {
-			return interaction.reply({
+			return modal.editReply({
 				content: "Nie znaleziono sprzedaży dla tego kanału!",
-				flags: 64,
 			});
 		}
 
@@ -75,9 +118,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		) as GuildTextBasedChannel;
 
 		if (!archiveChannel) {
-			return interaction.reply({
+			return modal.editReply({
 				content: "Nie można znaleźć kanału archiwizacji!",
-				flags: 64,
 			});
 		}
 
@@ -87,10 +129,10 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			},
 		});
 
-		const seller =
+		const seller: User | null =
 			client.users.cache.get(sale.offert.userId) ||
 			(await client.users.fetch(sale.offert.userId).catch(() => null));
-		const buyer =
+		const buyer: User | null =
 			client.users.cache.get(sale.buyerId) ||
 			(await client.users.fetch(sale.buyerId).catch(() => null));
 
@@ -153,10 +195,9 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			],
 		});
 
-		await interaction
-			.reply({
+		await modal
+			.editReply({
 				content: "Transkrypt został wysłany do archiwum!",
-				flags: 64,
 			})
 			.catch(() => null);
 
@@ -165,9 +206,30 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				id: sale.id,
 			},
 			data: {
-				isDone: true,
+				isDone: transactionStatus,
+				realCount: transactionAmountFloat,
 			},
 		});
+
+		const components = [
+			new ActionRowBuilder<ButtonBuilder>().addComponents(
+				new ButtonBuilder()
+					.setLabel("Oceń transakcję")
+					.setStyle(ButtonStyle.Primary)
+					.setCustomId(`rate_${sale.id}`),
+			),
+		];
+
+		if (buyer) {
+			await buyer.createDM().catch(() => null);
+
+			await buyer
+				.send({
+					content: `**Potrzebna twoja opinia!**\n\nOceń swoją transakcję zakupu wPLN u użytkownika <@${sale.offert.userId}>.\n\nKliknij przycisk poniżej, aby ocenić transakcję.`,
+					components: components,
+				})
+				.catch(() => null);
+		}
 
 		await interaction.channel.delete();
 	} catch (e) {
@@ -175,12 +237,12 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (interaction.deferred || interaction.replied) {
 			return interaction.followUp({
 				content: `Wystąpił błąd podczas przetwarzania tej interakcji.\n\n\`\`\`${e.message}\`\`\``,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		} else {
 			return interaction.reply({
 				content: `Wystąpił błąd podczas przetwarzania tej interakcji.\n\n\`\`\`${e.message}\`\`\``,
-				flags: 64,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 	}

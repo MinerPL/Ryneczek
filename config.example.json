@@ -12,7 +12,9 @@
 	"wpln_forum": "",
 	"ticket_category": "",
 	"ticket_archive": "",
+	"public_opinion_channel": "",
 	"imap": {
+		"enabled": false,
 		"user": "",
 		"pass": "",
 		"host": "",

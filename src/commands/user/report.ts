@@ -1,5 +1,6 @@
 import {
 	ChatInputCommandInteraction,
+	MessageFlags,
 	ModalSubmitFields,
 	SlashCommandBuilder,
 	User,
@@ -30,7 +31,7 @@ export async function run(
 	if (user?.id === interaction?.user?.id) {
 		return interaction.reply({
 			content: "Nie możesz zgłosić samego siebie!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -48,7 +49,7 @@ export async function run(
 
 	await modalUse.reply({
 		content: "Zgłoszenie zostało wysłane!",
-		flags: 64,
+		flags: MessageFlags.Ephemeral,
 	});
 
 	const reason = (modalUse.fields as ModalSubmitFields).getTextInputValue(

@@ -47,7 +47,7 @@ export async function run(
 	) {
 		return interaction.reply({
 			content: "Nie masz uprawnień do tej komendy!",
-			flags: 64,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 
@@ -100,7 +100,7 @@ export async function run(
 
 	await interaction.reply({
 		content: "Gotowe.",
-		flags: 64,
+		flags: MessageFlags.Ephemeral,
 	});
 
 	if (channel.isThreadOnly()) {
