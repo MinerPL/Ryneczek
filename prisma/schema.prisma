@@ -55,6 +55,7 @@ model Sales {
   amount    Float
   channelId String
   isDone    Boolean
+  isClosed  Boolean  @default(false)
   middleman Boolean  @default(false)
   realCount Float    @default(0)
   createdAt DateTime @default(now())

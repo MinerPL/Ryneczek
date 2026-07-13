@@ -64,7 +64,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			return interaction.reply({
 				content: "Wystąpił błąd podczas tworzenia ankiety!",
 				flags: MessageFlags.Ephemeral,
-			});
+			}).catch(() => null);
 		}
 
 		await modal.deferReply({ flags: MessageFlags.Ephemeral });
@@ -81,13 +81,13 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (isNaN(transactionAmountFloat) || transactionAmountFloat < 0) {
 			return modal.editReply({
 				content: "Wprowadzona kwota transakcji jest nieprawidłowa!",
-			});
+			}).catch(() => null);
 		}
 
 		if (!interaction.channel.isTextBased() || interaction.channel.isDMBased()) {
 			return modal.editReply({
 				content: "Nie można utworzyć transkryptu na tym kanale!",
-			});
+			}).catch(() => null);
 		}
 
 		const sale = await client.prisma.sales.findFirst({
@@ -102,7 +102,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		if (!sale) {
 			return modal.editReply({
 				content: "Nie znaleziono sprzedaży dla tego kanału!",
-			});
+			}).catch(() => null);
 		}
 
 		const transcriptFilename = `${sale.id}-${sale.offert.id}-${sale.offert.userId}-${sale.buyerId}.html`;
@@ -208,6 +208,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			data: {
 				isDone: transactionStatus,
 				realCount: transactionAmountFloat,
+				isClosed: true,
 			},
 		});
 

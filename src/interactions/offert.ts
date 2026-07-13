@@ -192,7 +192,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const currentUserBuyOfferts = await client.prisma.sales.findMany({
 			where: {
 				buyerId: interaction.user.id,
-				isDone: false,
+				isClosed: false,
 				offertId: offertOwner.id,
 			},
 		});
@@ -313,6 +313,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				amount: amount,
 				channelId: channel.id,
 				isDone: false,
+				isClosed: false,
 			},
 		});
 
