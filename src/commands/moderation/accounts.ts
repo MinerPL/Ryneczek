@@ -22,6 +22,7 @@ export const data = {
 					{ name: "SkillHost", value: "skillhost" },
 					{ name: "IceHost", value: "icehost" },
 					{ name: "IVHost", value: "ivhost" },
+					{ name: "psHost", value: "pshost" }
 				),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
