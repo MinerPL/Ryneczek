@@ -89,7 +89,7 @@ export default class Ryneczek extends Client {
 
 		new EventHandler(this).loadEvents().then(() => null);
 		if (this.config.imap.enabled) {
-			new ImapHandler(this).start().then(() => null);
+			setTimeout(() => new ImapHandler(this).start().then(() => null), 1000)
 		}
 
 		process.on("unhandledRejection", (reason) => {

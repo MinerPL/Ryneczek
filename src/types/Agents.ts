@@ -1,8 +1,14 @@
 interface TransferData {
-	provider: "skillhost" | "icehost";
+	provider: "skillhost" | "icehost" | "pshost";
 	account: string;
 	amount: number;
 	acceptUrl: string;
 }
 
-export type { TransferData };
+interface IncomingData {
+  provider: "skillhost" | "icehost" | "pshost";
+  account: string;
+  amount: number;
+}
+
+export type { TransferData, IncomingData };
