@@ -558,10 +558,6 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 	await removeDecisionButtons(interaction);
 
-	const caseId = interaction.customId.split("_")[2];
-	const reportedId = interaction.customId.split("_")[3];
-	const reporterId = interaction.customId.split("_")[4];
-
 	if (action === "accept") {
 		if (!interaction.guild) {
 			return interaction.editReply({
@@ -569,31 +565,9 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 			});
 		}
 
-		const channels = await ensureCaseChannels(
-			client,
-			interaction,
-			caseId,
-			reportedId,
-			reporterId,
-		);
-
-		if (!channels) {
-			return interaction.editReply({
-				content:
-					"Nie udało się utworzyć kanałów sprawy lub zapisać danych w bazie.",
-			});
-		}
-
-		await interaction.channel.send({
-			content:
-				`Utworzono kanały rozmowy dla sprawy **${caseId}**:\n` +
-				`- Oskarżony: <#${channels.reportedChannel.id}>\n` +
-				`- Zgłaszający: <#${channels.reporterChannel.id}>`,
-		});
-
 		await interaction.editReply({
 			content:
-				"Zgłoszenie zostało zaakceptowane. Utworzono oddzielne kanały rozmowy i ukryto przyciski decyzji.",
+				"Zgłoszenie zostało zaakceptowane.",
 		});
 
 		if (interaction.channel.parent instanceof ForumChannel) {
