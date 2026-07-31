@@ -2,15 +2,9 @@ import type { ParsedMail } from "mailparser";
 import { TransferData } from "#types/Agents";
 
 export default abstract class IceHost {
-	static parseMail = async (
+	static parseTransferMail = async (
 		mail: ParsedMail,
 	): Promise<TransferData | undefined> => {
-		if (
-			!mail.subject ||
-			mail.subject !== "Potwierdzenie transferu środków wirtualnych IceHost.pl"
-		) {
-			return undefined;
-		}
 		const content = mail.html;
 		if (!content) {
 			throw new Error("Received new IceHost mail with no content");

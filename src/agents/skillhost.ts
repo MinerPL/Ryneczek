@@ -2,12 +2,9 @@ import type { ParsedMail } from "mailparser";
 import { TransferData } from "#types/Agents";
 
 export default class SkillHost {
-	static parseMail = async (
+	static parseTransferMail = async (
 		mail: ParsedMail,
 	): Promise<TransferData | undefined> => {
-		if (!mail.subject || mail.subject !== "Transfer środków - SkillHost.PL") {
-			return undefined;
-		}
 		const content = mail.html;
 		if (!content) {
 			throw new Error("Received new SkillHost mail with no content");
@@ -18,21 +15,21 @@ export default class SkillHost {
 				"Failed to parse SkillHost transfer data from notification",
 			);
 		}
-		const amount = transferData[1];
-		const accountId = transferData[2];
-		const transferUrl = content.match(
+		const amount = parseFloat(transferData[1]);
+		const account = transferData[2];
+		const acceptUrl = content.match(
 			/https:\/\/panel\.skillhost\.pl\/[^"]*potwierdz_transfer\/[^"]*/,
 		)?.[0];
-		if (!amount || !accountId || !transferUrl) {
+		if (!amount || !account || !acceptUrl) {
 			throw new Error(
 				"Failed to parse SkillHost transfer data from notification",
 			);
 		}
 		return {
 			provider: "skillhost",
-			account: accountId,
-			amount: parseFloat(amount),
-			acceptUrl: transferUrl,
+			account,
+			amount,
+			acceptUrl,
 		};
 	};
 }
