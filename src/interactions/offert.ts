@@ -407,14 +407,14 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		}
 
 		if (type === "wpln_pln") {
-			const final = amount * offertOwner.exchange;
+			const final = amount / offertOwner.exchange;
 
 			await modalResponse.reply({
 				content: `Za ${amount} wPLN zapłacisz ~${final.toFixed(2)} PLN`,
 				flags: MessageFlags.Ephemeral,
 			});
 		} else if (type === "pln_wpln") {
-			const final = amount / offertOwner.exchange;
+			const final = amount * offertOwner.exchange;
 
 			await modalResponse.reply({
 				content: `Za ${amount} PLN otrzymasz ~${final.toFixed(2)} wPLN`,
