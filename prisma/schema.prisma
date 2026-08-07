@@ -38,14 +38,17 @@ model Offerts {
 }
 
 model Opinions {
-  id            Int     @id @default(autoincrement())
-  user          String
-  addedBy       String
-  positive      Boolean
-  comment       String?
-  surveyResults Json    @default("[]")
-  Sales         Sales?  @relation(fields: [saleId], references: [id])
-  saleId        Int?
+  id               Int     @id @default(autoincrement())
+  user             String
+  addedBy          String
+  positive         Boolean
+  comment          String?
+  surveyResults    Json    @default("[]")
+  approved         Boolean @default(false)
+  messageId        String  @default("")
+  messageChannelId String  @default("")
+  Sales            Sales?  @relation(fields: [saleId], references: [id])
+  saleId           Int?
 }
 
 model Sales {

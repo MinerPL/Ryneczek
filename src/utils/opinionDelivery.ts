@@ -1,4 +1,7 @@
 import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonStyle,
 	ContainerBuilder,
 	ForumChannel,
 	GuildTextBasedChannel,
@@ -28,6 +31,7 @@ const surveyMapping = {
 
 export type OpinionRecord = {
 	user: string;
+	addedBy: string;
 	positive: boolean;
 	comment: string | null;
 	surveyResults: unknown;
@@ -60,7 +64,7 @@ export function buildOpinionContainer(
 				)
 				.addTextDisplayComponents(
 					new TextDisplayBuilder().setContent(
-						`Nowa ${opinion.positive ? "pozytywna" : "negatywna"} opinia o <@${opinion.user}>`,
+						`Nowa ${opinion.positive ? "pozytywna" : "negatywna"} opinia o <@${opinion.user}>\nDodana przez <@${opinion.addedBy}>`,
 					),
 				),
 		)
@@ -135,13 +139,13 @@ async function getOrCreateOpinionThread(
 export async function sendOpinionToConfiguredChannel(
 	client: Ryneczek,
 	opinion: OpinionRecord,
-) {
+): Promise<{ messageId: string; channelId: string } | null> {
 	const opinionChannel = await client.channels
 		.fetch(client.config.public_opinion_channel)
 		.catch(() => null);
 
 	if (!opinionChannel) {
-		return false;
+		return null;
 	}
 
 	const container = buildOpinionContainer(client, opinion);
@@ -153,22 +157,57 @@ export async function sendOpinionToConfiguredChannel(
 			opinion.user,
 		);
 
-		await thread.send({
+		const sent = await thread.send({
 			components: [container],
 			flags: MessageFlags.IsComponentsV2,
 		});
 
-		return true;
+		return { messageId: sent.id, channelId: thread.id };
 	}
 
 	if ("send" in opinionChannel) {
-		await (opinionChannel as GuildTextBasedChannel).send({
+		const sent = await (opinionChannel as GuildTextBasedChannel).send({
 			components: [container],
 			flags: MessageFlags.IsComponentsV2,
 		});
 
-		return true;
+		return { messageId: sent.id, channelId: opinionChannel.id };
 	}
 
-	return false;
+	return null;
+}
+
+export async function sendOpinionForApproval(
+	client: Ryneczek,
+	opinionId: number,
+	opinion: OpinionRecord,
+) {
+	const moderationChannel = await client.channels
+		.fetch(client.config.opinions_validation)
+		.catch(() => null);
+
+	if (!moderationChannel || !("send" in moderationChannel)) {
+		return false;
+	}
+
+	const container = buildOpinionContainer(client, opinion);
+
+	await (moderationChannel as GuildTextBasedChannel).send({
+		components: [
+			container,
+			new ActionRowBuilder<ButtonBuilder>().addComponents(
+				new ButtonBuilder()
+					.setLabel("Zatwierdź")
+					.setStyle(ButtonStyle.Success)
+					.setCustomId(`opinionApprove_${opinionId}`),
+				new ButtonBuilder()
+					.setLabel("Odrzuć")
+					.setStyle(ButtonStyle.Danger)
+					.setCustomId(`opinionReject_${opinionId}`),
+			),
+		],
+		flags: MessageFlags.IsComponentsV2,
+	});
+
+	return true;
 }

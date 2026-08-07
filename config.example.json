@@ -13,6 +13,7 @@
 	"ticket_category": "",
 	"ticket_archive": "",
 	"public_opinion_channel": "",
+	"opinions_validation": "",
 	"imap": {
 		"enabled": false,
 		"user": "",

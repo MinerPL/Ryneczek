@@ -30,4 +30,5 @@ export interface Config {
 	imap: Imap;
 	notify_channel: string;
 	public_opinion_channel: string;
+	opinions_validation: string;
 }

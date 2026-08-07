@@ -15,6 +15,7 @@ export async function showUserSummary(
 	const opinions = await client.prisma.opinions.findMany({
 		where: {
 			user: userId,
+			approved: true,
 		},
 	});
 

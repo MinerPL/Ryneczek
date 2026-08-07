@@ -33,6 +33,6 @@ export async function run(
 	);
 	await interaction.reply({
 		components: [summaryContainer],
-		flags: MessageFlags.IsComponentsV2,
+		flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
 	});
 }
