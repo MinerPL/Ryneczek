@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { ImapFlow } from "imapflow";
 import { simpleParser } from "mailparser";
 import Ryneczek from "#client";

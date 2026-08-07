@@ -1,9 +1,8 @@
 import {
 	ChatInputCommandInteraction,
-	ContainerBuilder,
 	MessageFlags,
 	SlashCommandBuilder,
-	TextDisplayBuilder,
+
 } from "discord.js";
 import Ryneczek from "#client";
 import { showUserSummary } from "#utils/ShowUserSummary";

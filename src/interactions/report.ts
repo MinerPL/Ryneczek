@@ -21,7 +21,7 @@ import { buildReportModal, publishReport } from "#functions/reportFlow";
 const caseChannelLocks = new Map<string, Promise<void>>();
 
 async function withCaseChannelLock<T>(caseId: string, task: () => Promise<T>) {
-	const previous = caseChannelLocks.get(caseId) ?? Promise.resolve();
+	const previous = (caseChannelLocks.get(caseId) ?? Promise.resolve()) as Promise<void>;
 	let release!: () => void;
 	const next = new Promise<void>((resolve) => {
 		release = resolve;

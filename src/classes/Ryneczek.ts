@@ -108,7 +108,7 @@ export default class Ryneczek extends Client {
 		});
 	}
 
-	ms(time = undefined): number {
+	ms(time?: string): number {
 		if (!time) {
 			return undefined;
 		}
@@ -117,15 +117,15 @@ export default class Ryneczek extends Client {
 			throw new Error("Time is not a string!");
 		}
 
-		time = this.chunk(
+		const chunks = this.chunk(
 			time.split(/(\d+)(mo|[smhdyw])/gim).filter((e) => e),
 			2,
 		);
 
 		let ms = 0;
 
-		for (const array of time) {
-			ms += durations[array[1] || "s"] * array[0];
+		for (const array of chunks) {
+			ms += durations[array[1] || "s"] * Number(array[0]);
 		}
 
 		if (isNaN(ms)) {
@@ -135,7 +135,7 @@ export default class Ryneczek extends Client {
 		return ms;
 	}
 
-	chunk(array, size): string[] {
+	chunk(array: any[], size: number): string[][] {
 		const arr = [];
 		for (let i = 0; i < array.length; i += size) {
 			arr.push(array.slice(i, i + size));
