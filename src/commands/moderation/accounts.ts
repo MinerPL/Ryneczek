@@ -22,7 +22,8 @@ export const data = {
 					{ name: "SkillHost", value: "skillhost" },
 					{ name: "IceHost", value: "icehost" },
 					{ name: "IVHost", value: "ivhost" },
-					{ name: "psHost", value: "pshost" }
+					{ name: "psHost", value: "pshost" },
+					{ name: "Pukawka", value: "pukawka" }
 				),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
@@ -34,6 +35,7 @@ const accounts = {
 	icehost: "ryneczek@minerpl.xyz",
 	ivhost: "3977",
 	pshost: "ryneczek@minerpl.xyz",
+	pukawka: "399606 (id) lub ryneczek (login)"
 };
 
 export async function run(
