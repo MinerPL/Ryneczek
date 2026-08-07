@@ -37,6 +37,9 @@ export async function run(
 	});
 
 	const opinions = await client.prisma.opinions.findMany({
+		where: {
+			approved: true,
+		},
 		orderBy: {
 			id: "asc",
 		},

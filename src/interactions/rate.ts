@@ -10,7 +10,7 @@ import {
 	TextInputBuilder,
 } from "discord.js";
 import Ryneczek from "#client";
-import { sendOpinionToConfiguredChannel } from "#utils/opinionDelivery";
+import { sendOpinionForApproval } from "#utils/opinionDelivery";
 
 export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 	const [_, saleId] = interaction.customId.split("_");
@@ -155,7 +155,7 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		modal.fields.getRadioGroup("opinion_radio").valueOf() === "positive";
 	const comment = modal.fields.getTextInputValue("comment");
 
-	await client.prisma.opinions.create({
+	const opinion = await client.prisma.opinions.create({
 		data: {
 			user: sale.offert.userId,
 			addedBy: interaction.user.id,
@@ -166,14 +166,15 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		},
 	});
 
-	await sendOpinionToConfiguredChannel(client, {
+	await sendOpinionForApproval(client, opinion.id, {
 		user: sale.offert.userId,
+		addedBy: interaction.user.id,
 		positive: isPositive,
 		comment,
 		surveyResults,
 	});
 
 	await modal.reply({
-		content: "Dziękujemy za twoją opinię jest ona dla nas bardzo ważna!",
+		content: "Dziękujemy za twoją opinię! Zostanie ona opublikowana po zatwierdzeniu przez moderację.",
 	});
 }
