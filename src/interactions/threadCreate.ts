@@ -1,13 +1,11 @@
 import {
 	ActionRowBuilder,
 	ButtonBuilder,
-	ButtonComponent,
 	ButtonInteraction,
 	ForumChannel,
 	MessageFlags,
 	ThreadChannel,
 } from "discord.js";
-import { APIActionRowComponent } from "discord-api-types/v10";
 import Ryneczek from "#client";
 
 export async function run(_client: Ryneczek, interaction: ButtonInteraction) {

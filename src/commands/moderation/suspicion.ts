@@ -1,9 +1,9 @@
 import {
-	ActionRowBuilder,
 	ChatInputCommandInteraction,
 	ContainerBuilder,
+	InteractionContextType,
+	LabelBuilder,
 	MessageFlags,
-	ModalActionRowComponentBuilder,
 	ModalBuilder,
 	PermissionFlagsBits,
 	PermissionsBitField,
@@ -18,7 +18,7 @@ export const data = {
 	...new SlashCommandBuilder()
 		.setName("suspicion")
 		.setDescription("Zarządzaj podejrzanymi ofertami.")
-		.setContexts(0)
+		.setContexts(InteractionContextType.Guild)
 		.setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
 		.addSubcommand((subcommand) =>
 			subcommand
@@ -146,19 +146,20 @@ export async function run(
 			const modal = new ModalBuilder()
 				.setCustomId("suspicion_add_reason")
 				.setTitle("Powód dodania do listy podejrzanych")
-				.addComponents(
-					new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-						new TextInputBuilder()
-							.setCustomId("reason")
-							.setLabel("Podaj powód")
-							.setStyle(TextInputStyle.Short)
-							.setMinLength(10)
-							.setMaxLength(400)
-							.setPlaceholder(
-								"Podaj powód dodania użytkownika do listy podejrzanych",
-							)
-							.setRequired(true),
-					),
+				.addLabelComponents(
+					new LabelBuilder()
+						.setLabel("Podaj powód")
+						.setTextInputComponent(
+							new TextInputBuilder()
+								.setCustomId("reason")
+								.setStyle(TextInputStyle.Short)
+								.setMinLength(10)
+								.setMaxLength(400)
+								.setPlaceholder(
+									"Podaj powód dodania użytkownika do listy podejrzanych",
+								)
+								.setRequired(true),
+						),
 				);
 			const modalSubmit = await client.useModal(
 				interaction,

@@ -5,8 +5,9 @@ import {
 	ContextMenuCommandBuilder,
 	ContextMenuCommandInteraction,
 	EmbedBuilder,
+	InteractionContextType,
+	LabelBuilder,
 	MessageFlags,
-	ModalActionRowComponentBuilder,
 	ModalBuilder,
 	PermissionFlagsBits,
 	TextInputBuilder,
@@ -17,7 +18,7 @@ import Ryneczek from "#client";
 export const data = {
 	...new ContextMenuCommandBuilder()
 		.setName("Ban")
-		.setContexts(0)
+		.setContexts(InteractionContextType.Guild)
 		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
 		.setType(ApplicationCommandType.User),
 };
@@ -39,19 +40,20 @@ export async function run(
 	const reasonModal = new ModalBuilder()
 		.setTitle("Podaj powód")
 		.setCustomId("reason")
-		.addComponents(
-			new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-				new TextInputBuilder()
-					.setStyle(TextInputStyle.Paragraph)
-					.setLabel("Powód")
-					.setCustomId("reason")
-					.setPlaceholder(
-						"Dlaczego chcesz zbanować tego użytkownika? Powód będzie dostępny publicznie.",
-					)
-					.setMinLength(1)
-					.setMaxLength(1000)
-					.setRequired(true),
-			),
+		.addLabelComponents(
+			new LabelBuilder()
+				.setLabel("Powód")
+				.setTextInputComponent(
+					new TextInputBuilder()
+						.setStyle(TextInputStyle.Paragraph)
+						.setCustomId("reason")
+						.setPlaceholder(
+							"Dlaczego chcesz zbanować tego użytkownika? Powód będzie dostępny publicznie.",
+						)
+						.setMinLength(1)
+						.setMaxLength(1000)
+						.setRequired(true),
+				),
 		)
 		.toJSON();
 

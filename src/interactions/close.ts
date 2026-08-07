@@ -9,7 +9,6 @@ import {
 	GuildMemberRoleManager,
 	GuildTextBasedChannel,
 	LabelBuilder,
-	LabelComponent,
 	MessageFlags,
 	ModalBuilder,
 	SeparatorBuilder,

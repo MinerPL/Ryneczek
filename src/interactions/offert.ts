@@ -6,7 +6,6 @@ import {
 	ContainerBuilder,
 	GuildMemberRoleManager,
 	LabelBuilder,
-	ModalActionRowComponentBuilder,
 	ModalBuilder,
 	RadioGroupBuilder,
 	RadioGroupOptionBuilder,
@@ -100,17 +99,18 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 		const modalBuilder = new ModalBuilder()
 			.setTitle("Edycja oferty")
 			.setCustomId("offer2_change")
-			.addComponents(
-				new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-					new TextInputBuilder()
-						.setLabel("Nowa ilość wPLN")
-						.setCustomId("count")
-						.setMaxLength(5)
-						.setPlaceholder("Ilość wPLN")
-						.setValue(String(offertOwner.count))
-						.setStyle(TextInputStyle.Short)
-						.setRequired(true),
-				),
+			.addLabelComponents(
+				new LabelBuilder()
+					.setLabel("Nowa ilość wPLN")
+					.setTextInputComponent(
+						new TextInputBuilder()
+							.setCustomId("count")
+							.setMaxLength(5)
+							.setPlaceholder("Ilość wPLN")
+							.setValue(String(offertOwner.count))
+							.setStyle(TextInputStyle.Short)
+							.setRequired(true),
+					),
 			)
 			.toJSON();
 

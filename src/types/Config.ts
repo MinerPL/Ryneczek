@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 export interface Channel {
 	id: string;
 	clear?: boolean;
