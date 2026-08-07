@@ -7,10 +7,13 @@ import {
 	GuildTextBasedChannel,
 	Message,
 	MessageFlags,
+	LabelBuilder,
 	ModalActionRowComponentBuilder,
 	ModalBuilder,
 	SeparatorBuilder,
 	SeparatorSpacingSize,
+	StringSelectMenuBuilder,
+	StringSelectMenuOptionBuilder,
 	TextDisplayBuilder,
 	TextInputBuilder,
 	TextInputModalData,
@@ -56,41 +59,56 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 	const modal = new ModalBuilder()
 		.setTitle(`Oferta ${hosting}`)
 		.setCustomId(`offer_${hosting}_${currentDate.getTime()}`)
-		.addComponents(
-			new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-				new TextInputBuilder()
-					.setCustomId("count")
-					.setPlaceholder("Ilość wPLN (np. 1000)")
-					.setLabel("Ilość wPLN")
-					.setMaxLength(5)
-					.setStyle(TextInputStyle.Short)
-					.setRequired(true),
-			),
-			new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-				new TextInputBuilder()
-					.setCustomId("exchange")
-					.setPlaceholder("Kurs sprzedaży wPLN (np. 2.00 lub 0.5)")
-					.setLabel("Kurs")
-					.setStyle(TextInputStyle.Short)
-					.setMaxLength(3)
-					.setRequired(true),
-			),
-			new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-				new TextInputBuilder()
-					.setCustomId("methods")
-					.setPlaceholder("Metody płatności (np. Przelew, PayPal, Revolut)")
-					.setLabel("Metody płatności")
-					.setStyle(TextInputStyle.Short)
-					.setRequired(true),
-			),
-			new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-				new TextInputBuilder()
-					.setCustomId("additional_information")
-					.setPlaceholder("Dodatkowe informacje (np. Wymagania, inne)")
-					.setLabel("Dodatkowe informacje")
-					.setStyle(TextInputStyle.Paragraph)
-					.setRequired(false),
-			),
+		.addLabelComponents(
+			new LabelBuilder()
+				.setLabel("Ilość wPLN")
+				.setTextInputComponent(
+					new TextInputBuilder()
+						.setCustomId("count")
+						.setPlaceholder("Ilość wPLN (np. 1000)")
+						.setMaxLength(5)
+						.setStyle(TextInputStyle.Short)
+						.setRequired(true),
+				),
+			new LabelBuilder()
+				.setLabel("Kurs")
+				.setTextInputComponent(
+					new TextInputBuilder()
+						.setCustomId("exchange")
+						.setPlaceholder("Kurs sprzedaży wPLN (np. 2.00 lub 0.5)")
+						.setStyle(TextInputStyle.Short)
+						.setMaxLength(3)
+						.setRequired(true),
+				),
+			new LabelBuilder()
+				.setLabel("Metody płatności")
+				.setStringSelectMenuComponent(
+					new StringSelectMenuBuilder()
+						.setCustomId("methods")
+						.setRequired(true)
+						.setMinValues(1)
+						.setMaxValues(9)
+						.addOptions(
+							new StringSelectMenuOptionBuilder().setLabel("BLIK").setValue("BLIK"),
+							new StringSelectMenuOptionBuilder().setLabel("PayPal").setValue("PayPal"),
+							new StringSelectMenuOptionBuilder().setLabel("Paysafecard").setValue("Paysafecard"),
+							new StringSelectMenuOptionBuilder().setLabel("Kryptowaluty").setValue("Kryptowaluty"),
+							new StringSelectMenuOptionBuilder().setLabel("Przelew").setValue("Przelew"),
+							new StringSelectMenuOptionBuilder().setLabel("Revolut").setValue("Revolut"),
+							new StringSelectMenuOptionBuilder().setLabel("Skrill").setValue("Skrill"),
+							new StringSelectMenuOptionBuilder().setLabel("Przedmioty Steam").setValue("Przedmioty Steam"),
+							new StringSelectMenuOptionBuilder().setLabel("Tipply").setValue("Tipply"),
+						),
+				),
+			new LabelBuilder()
+				.setLabel("Dodatkowe informacje")
+				.setTextInputComponent(
+					new TextInputBuilder()
+						.setCustomId("additional_information")
+						.setPlaceholder("Dodatkowe informacje (np. Wymagania, inne)")
+						.setStyle(TextInputStyle.Paragraph)
+						.setRequired(false),
+				),
 		)
 		.toJSON();
 
@@ -108,12 +126,8 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 			.catch(() => null);
 	}
 
-	const count = Number(
-		(response.fields.getField("count") as TextInputModalData).value,
-	);
-	const exchange = Number(
-		(response.fields.getField("exchange") as TextInputModalData).value,
-	);
+	const count = Number(response.fields.getTextInputValue("count"));
+	const exchange = Number(response.fields.getTextInputValue("exchange"));
 
 	if (isNaN(exchange) || isNaN(count) || exchange <= 0 || count <= 0) {
 		return response.reply({
@@ -157,14 +171,9 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 			user: response.user,
 			newExchange: newExchange,
 			oldExchange: oldExchange,
-			methods: (response.fields.getField("methods") as TextInputModalData)
-				.value,
-			count: Number(
-				(response.fields.getField("count") as TextInputModalData).value,
-			),
-			additional_information: (
-				response.fields.getField("additional_information") as TextInputModalData
-			).value,
+			methods: response.fields.getStringSelectValues("methods").join(", "),
+			count: count,
+			additional_information: response.fields.getTextInputValue("additional_information"),
 		},
 	});
 	const susUserContainer = new ContainerBuilder()
@@ -259,17 +268,9 @@ Twoje pozostale oferty: ${userOfferts.map((o) => `<#${o.channelId}>`).join(", ")
 				channelId: channel.isThreadOnly() ? message.id : channel.id,
 				hostingId: dbHosting.id,
 				exchange: newExchange,
-				count: Number(
-					(response.fields.getField("count") as TextInputModalData).value,
-				),
-				paymentMethod: (
-					response.fields.getField("methods") as TextInputModalData
-				).value,
-				additionalInfo: (
-					response.fields.getField(
-						"additional_information",
-					) as TextInputModalData
-				).value,
+				count: count,
+				paymentMethod: response.fields.getStringSelectValues("methods").join(", "),
+				additionalInfo: response.fields.getTextInputValue("additional_information"),
 				verifiedCount: false,
 				sold: false,
 			},

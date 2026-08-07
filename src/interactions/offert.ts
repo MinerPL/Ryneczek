@@ -11,6 +11,8 @@ import {
 	RadioGroupBuilder,
 	RadioGroupOptionBuilder,
 	SeparatorBuilder,
+	StringSelectMenuBuilder,
+	StringSelectMenuOptionBuilder,
 	TextDisplayBuilder,
 	TextInputBuilder,
 	TextInputModalData,
@@ -206,34 +208,49 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 
 		const currentDate = new Date();
 
+		const paymentMethods = offertOwner.paymentMethod
+			.split(",")
+			.map((method) => method.trim())
+			.filter((method) => method.length > 0);
+
 		const modalBuilder = new ModalBuilder()
 			.setTitle("Kupno")
 			.setCustomId(`buy_modal_${currentDate.getTime()}`)
-			.addComponents(
-				new ActionRowBuilder<TextInputBuilder>().addComponents(
-					new TextInputBuilder()
-						.setLabel("Ilość wPLN")
-						.setPlaceholder("Ilość wPLN")
-						.setStyle(TextInputStyle.Short)
-						.setCustomId("amount")
-						.setRequired(true),
-				),
-				new ActionRowBuilder<TextInputBuilder>().addComponents(
-					new TextInputBuilder()
-						.setLabel("Metoda płatności")
-						.setPlaceholder("np. PayPal, Revolut, Przelew")
-						.setStyle(TextInputStyle.Short)
-						.setCustomId("payment_method")
-						.setRequired(true),
-				),
-				new ActionRowBuilder<TextInputBuilder>().addComponents(
-					new TextInputBuilder()
-						.setLabel("Email Lub ID konta kupującego")
-						.setPlaceholder("np. contact@minerpl.xyz lub 2137")
-						.setStyle(TextInputStyle.Short)
-						.setCustomId("buyer_details")
-						.setRequired(true),
-				),
+			.addLabelComponents(
+				new LabelBuilder()
+					.setLabel("Ilość wPLN")
+					.setTextInputComponent(
+						new TextInputBuilder()
+							.setPlaceholder("Ilość wPLN")
+							.setStyle(TextInputStyle.Short)
+							.setCustomId("amount")
+							.setRequired(true),
+					),
+				new LabelBuilder()
+					.setLabel("Metoda płatności")
+					.setStringSelectMenuComponent(
+						new StringSelectMenuBuilder()
+							.setCustomId("payment_method")
+							.setRequired(true)
+							.setMinValues(1)
+							.setMaxValues(paymentMethods.length)
+							.addOptions(
+								paymentMethods.map((method) =>
+									new StringSelectMenuOptionBuilder()
+										.setLabel(method)
+										.setValue(method),
+								),
+							),
+					),
+				new LabelBuilder()
+					.setLabel("Email Lub ID konta kupującego")
+					.setTextInputComponent(
+						new TextInputBuilder()
+							.setPlaceholder("np. contact@minerpl.xyz lub 2137")
+							.setStyle(TextInputStyle.Short)
+							.setCustomId("buyer_details")
+							.setRequired(true),
+					),
 			)
 			.toJSON();
 
@@ -255,12 +272,8 @@ export async function run(client: Ryneczek, interaction: ButtonInteraction) {
 				.catch(() => null);
 		}
 
-		const amount = Number(
-			(modal.fields.getField("amount") as TextInputModalData).value,
-		);
-		const paymentMethod = (
-			modal.fields.getField("payment_method") as TextInputModalData
-		).value;
+		const amount = Number(modal.fields.getTextInputValue("amount"));
+		const paymentMethod = modal.fields.getStringSelectValues("payment_method").join(', ')
 
 		if (isNaN(amount) || amount <= 0) {
 			return modal.reply({
