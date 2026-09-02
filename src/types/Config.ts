@@ -13,6 +13,8 @@ export interface Imap {
 	host: string;
 	port: number;
 	tls: boolean;
+	autoReconnect?: boolean;
+	reconnectDelay?: number;
 }
 
 export interface Config {

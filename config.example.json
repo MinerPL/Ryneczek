@@ -20,7 +20,9 @@
 		"pass": "",
 		"host": "",
 		"port": 993,
-		"tls": true
+		"tls": true,
+		"autoReconnect": true,
+		"reconnectDelay": 15000
 	},
 	"notify_channel": ""
 }
