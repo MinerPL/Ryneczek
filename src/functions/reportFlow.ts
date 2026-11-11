@@ -1,6 +1,7 @@
 import {
 	ActionRowBuilder,
 	type Attachment,
+	AttachmentBuilder,
 	BaseGuildTextChannel,
 	ButtonBuilder,
 	ButtonStyle,
@@ -10,6 +11,7 @@ import {
 	LabelBuilder,
 	MediaGalleryBuilder,
 	MediaGalleryItemBuilder,
+	type MessageCreateOptions,
 	MessageFlags,
 	ModalBuilder,
 	SeparatorBuilder,
@@ -76,6 +78,19 @@ type PublishReportOptions = {
 	transcriptUrl?: string;
 };
 
+function permanentAttachmentName(
+	name: string | null | undefined,
+	index: number,
+) {
+	const sanitized = (name || `zalacznik-${index}`).replace(/[\\/]/g, "_");
+	const dot = sanitized.lastIndexOf(".");
+	if (dot <= 0) {
+		return `${sanitized}.${index}`;
+	}
+
+	return `${sanitized.slice(0, dot)}.${index}${sanitized.slice(dot)}`;
+}
+
 export async function publishReport({
 	client,
 	reportedUser,
@@ -87,16 +102,29 @@ export async function publishReport({
 	transcriptUrl,
 }: PublishReportOptions) {
 	const galleryItems: MediaGalleryItemBuilder[] = [];
+	const files: AttachmentBuilder[] = [];
 
+	// Modal file uploads are ephemeral and expire. Re-upload them with the report
+	// and reference attachment:// so the gallery keeps a permanent CDN URL.
+	let attachmentIndex = 0;
 	for (const attachment of attachments?.values() ?? []) {
 		const contentType = attachment.contentType?.split("/")[0];
 		if (contentType !== "image" && contentType !== "video") {
 			continue;
 		}
 
+		const fileName = permanentAttachmentName(attachment.name, attachmentIndex);
+		attachmentIndex++;
+
+		files.push(
+			new AttachmentBuilder(attachment.url, {
+				name: fileName,
+				description: attachment.name || "Załącznik",
+			}),
+		);
 		galleryItems.push(
 			new MediaGalleryItemBuilder()
-				.setURL(attachment.url)
+				.setURL(`attachment://${fileName}`)
 				.setDescription(attachment.name || "Załącznik"),
 		);
 	}
@@ -191,20 +219,20 @@ export async function publishReport({
 		return;
 	}
 
+	const message: MessageCreateOptions = {
+		flags: MessageFlags.IsComponentsV2,
+		components: [container, actionButtons, openChannelButtons],
+		files,
+	};
+
 	if (channel instanceof ForumChannel) {
 		await channel.threads.create({
 			name: `Zgłoszenie - ${reportedUser.username}`,
 			autoArchiveDuration: 1440,
 			reason: `Zgłoszenie użytkownika ${reportedUser.username} (${reportedUser.id})`,
-			message: {
-				flags: MessageFlags.IsComponentsV2,
-				components: [container, actionButtons, openChannelButtons],
-			},
+			message,
 		});
 	} else {
-		await channel.send({
-			flags: MessageFlags.IsComponentsV2,
-			components: [container, actionButtons, openChannelButtons],
-		});
+		await channel.send(message);
 	}
 }
