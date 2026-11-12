@@ -18,8 +18,8 @@ export default class SkillHost {
 		const amount = parseFloat(transferData[1]);
 		const account = transferData[2];
 		const acceptUrl = content.match(
-			/https:\/\/panel\.skillhost\.pl\/[^"]*potwierdz_transfer\/[^"]*/,
-		)?.[0];
+			/href="(https?:\/\/[^"]*potwierdz_transfer[^"]*)"/,
+		)?.[1];
 		if (!amount || !account || !acceptUrl) {
 			throw new Error(
 				"Failed to parse SkillHost transfer data from notification",
